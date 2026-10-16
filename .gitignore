@@ -21,3 +21,7 @@ web/dist/
 # Runtime
 *.log
 data/dumps/
+
+# Internal tracker — never ships
+TRACKER.md
+.idea

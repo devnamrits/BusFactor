@@ -6,10 +6,10 @@
 
 *Everyone measures the bus factor. BusFactor simulates it — and heals it.*
 
-[![FalkorDB](https://img.shields.io/badge/graph-FalkorDB-e6174b?style=flat-square)](#10-falkordb-utilization-map)
-[![Python + FastAPI](https://img.shields.io/badge/agent-Python%20%2B%20FastAPI-3572A5?style=flat-square)](#6-architecture-and-invariants)
-[![React](https://img.shields.io/badge/console-React%20%2B%20force--graph-61DAFB?style=flat-square)](#11-api-console-actions-mcp-deployment)
-[![Hackathon](https://img.shields.io/badge/WeMakeDevs-Graph%20Hacks-8A2BE2?style=flat-square)](#16-tracks-disclosure-status)
+![FalkorDB](https://img.shields.io/badge/graph-FalkorDB-e6174b?style=flat-square)
+![Python + FastAPI](https://img.shields.io/badge/agent-Python%20%2B%20FastAPI-3572A5?style=flat-square)
+![React](https://img.shields.io/badge/console-React%20%2B%20force--graph-61DAFB?style=flat-square)
+![Hackathon](https://img.shields.io/badge/WeMakeDevs-Graph%20Hacks-8A2BE2?style=flat-square)
 
 </div>
 
@@ -17,11 +17,21 @@
 >
 > **The name.** *Bus factor* = how many people the project can lose before it's in trouble. For most teams it's 1. BusFactor makes that number something you can **rehearse — and raise**.
 >
-> **How to read this file.** §1 problem → §2 philosophy → §3 features → §4 glossary → §5 walkthrough. Everything from §6 on is the engineering spec you build from. If you read only one document before implementing, this is it — there is nothing else.
+> This single document is the product and system specification.
 
 ## Contents
 
-1. [The problem](#1-the-problem) · 2. [Philosophy: six principles](#2-philosophy-six-principles) · 3. [Features: what you see, what the graph computes, why](#3-features-what-you-see-what-the-graph-computes-why) · 4. [Glossary: speak the language](#4-glossary-speak-the-language) · 5. [Walkthrough: one drill, start to finish](#5-walkthrough-one-drill-start-to-finish) · 6. [Architecture and invariants](#6-architecture-and-invariants) · 7. [Graph data model](#7-graph-data-model) · 8. [Simulation engine](#8-simulation-engine) · 9. [The agent, the trust layer, memory](#9-the-agent-the-trust-layer-memory) · 10. [FalkorDB utilization map](#10-falkordb-utilization-map) · 11. [API, console, actions, MCP, deployment](#11-api-console-actions-mcp-deployment) · 12. [Build plan and implementation order](#12-build-plan-and-implementation-order) · 13. [Design decisions: why it is like that](#13-design-decisions-why-it-is-like-that) · 14. [Success metrics](#14-success-metrics-definition-of-done) · 15. [Non-goals](#15-non-goals) · 16. [Tracks, disclosure, status](#16-tracks-disclosure-status)
+1. [The problem](#1-the-problem)
+2. [Philosophy: six principles](#2-philosophy-six-principles)
+3. [Features: what you see, what the graph computes, why](#3-features-what-you-see-what-the-graph-computes-why)
+4. [Glossary: speak the language](#4-glossary-speak-the-language)
+5. [Architecture and invariants](#5-architecture-and-invariants)
+6. [Graph data model](#6-graph-data-model)
+7. [Simulation engine](#7-simulation-engine)
+8. [The agent, the trust layer, memory](#8-the-agent-the-trust-layer-memory)
+9. [FalkorDB utilization map](#9-falkordb-utilization-map)
+10. [API, console, actions, MCP, deployment](#10-api-console-actions-mcp-deployment)
+11. [Non-goals](#11-non-goals)
 
 ---
 
@@ -89,38 +99,7 @@ Aviation has simulators. Surgery has drills. Infrastructure has game days. Knowl
 | **Outcome shape** | Label on every answer: `answered_with_path` / `answered_from_memory` / `not_in_graph` / `unknown_person`. |
 | **Show your work** | The audit panel: which tool ran, on which world, with which query, in how long, returning what. |
 
-## 5. Walkthrough: one drill, start to finish
-
-*(Names illustrative until the snapshot is ingested; the demo script maps them to real module nodes.)*
-
-**1 · Ingest.** `make ingest` — no forms, just the repo. Git history, PR reviews, CODEOWNERS, design docs become a knowledge graph: people coral, modules slate, thicker lines where knowledge is stronger. A chip notes: knowledge edges are *inferred from contribution history*; the formula is one click away.
-
-**2 · Ask.** *"Who knows the query planner?"* → Show-your-work streams `who_knows` · world `main` · read-only · 12 ms. Answer: three people, ranked, each with a path (`Hristo · 0.82 · authored 61/104 commits + reviewed 22 PRs here`). Chip: `answered_with_path`.
-
-**3 · Drill.** *"Simulate: Hristo leaves."* → the graph **shatters**: a dashed ghost, retracting edges, four clusters pulling apart and pulsing red. Findings panel:
-
-> **4 islands** — 23 modules explainable by nobody remaining · **3 sole-knower modules** · **2 orphaned decisions** · **1 bridge lost**
-
-**4 · Proof.** Click any finding → camera eases into the exact hops (`auth-cache ←(KNOWS 0.82)— Hristo ←(REVIEWED)— PR #1241`), with the query and world shown. *No dashboard can tell you this, because you have to remove someone to know it.*
-
-**5 · Plan + Act.** Hit **Plan** → an ordered checklist, each step with a graph-built reason:
-
-> 1. **Pair-review** `auth-cache` with Dana — *reviewed 6 of the last 9 PRs here; 2 hops from the island.*
-> 2. **Write the runbook** for `streaming-connector` — *no doc DOCUMENTS it.*
-> 3. **Shadow the next release** — *one thread covers 3 of the 4 islands.*
-
-Hit **Act** → a real GitHub issue (checklist + evidence links) opens in the operator's sandbox repo, plus a runbook PR draft. Preview-by-default; live mode is explicit. *(This is the agent acting on connected data — Track 1.)*
-
-**6 · Heal.** Hit **Apply** → fresh clone, same departure re-applied, plan materialized as gold projected edges, algorithms re-run:
-
-> **Bus factor: 1 → 3 · Islands: 4 → 0 · Findings resolved: 5/5**
-> *"We didn't recommend a fix. We re-ran the disaster with the fix in place — and it survived."*
-
-**7 · Remember.** Next session starts with recall: *"Last drill: bus factor 2, 3 findings open, weakest node moved from query-planner to streaming."* And when someone asks *"Who wrote the Kubernetes integration?"* — something not covered — the agent says: *"Not in the graph — which is worth knowing, because it means the risk there is currently unmeasurable."* Chip: `not_in_graph`. The refusal is a feature.
-
-**The 110-second video arc:** shatter → click-to-proof → plan + live GitHub issue → gold reconnect with moving counters → refusal → close ("and the same tools are in your editor via MCP — every answer with its proof, every risk with its fix").
-
-## 6. Architecture and invariants
+## 5. Architecture and invariants
 
 ```mermaid
 flowchart LR
@@ -168,13 +147,13 @@ flowchart LR
 | I2 | The LLM never writes Cypher. Only the frozen 8-tool catalogue; queries are versioned files. | Determinism, audit, injection safety, explainability. |
 | I3 | Worlds are isolated. `main` is never mutated by agent flows; drills/heals live in `sim:<id>`; projected edges only there, tagged `source:'plan'`. | What-if must never contaminate the record. |
 | I4 | Every answer cites evidence returned this turn; refusals are first-class. | An answer you can't audit is an oracle. |
-| I5 | Everything deterministic: sha256-pinned snapshot, fixed algorithm seeds (`samplingSeed 42`), pinned demo scenario. | Reproducible benchmark; reliable stage/video. |
+| I5 | Everything deterministic: sha256-pinned snapshot, fixed algorithm seeds (`samplingSeed 42`), pinned demo scenario. | Reproducible benchmark; reliable results. |
 | I6 | Reads are read-only (`ro_query`), everywhere except inside sim worlds. | Blast-radius containment. |
 | I7 | Main-graph writes are additive and auditable only: ingest output + audit nodes (Question/Sim/Finding/Plan/Step). No destructive ops outside sims. | History is append-only. |
-| I8 | External actions (GitHub writes) are **preview-first, token-scoped, and never target third-party repos**. Demo target: our own sandbox repo. | The demo data is FalkorDB's repo — we must never write there. |
+| I8 | External actions (GitHub writes) are preview-first, token-scoped, and never target third-party repos. | Acting on reality must never risk anyone else's data. |
 | I9 | One implementation per capability: MCP tools wrap the *same* functions as the HTTP API. | One code path, one truth. |
 
-## 7. Graph data model
+## 6. Graph data model
 
 ```mermaid
 erDiagram
@@ -244,7 +223,7 @@ CREATE INDEX FOR (m:Module) ON (m.name)
 CREATE INDEX FOR (d:Doc) ON (d.path)
 ```
 
-## 8. Simulation engine
+## 7. Simulation engine
 
 **Pinned definitions:**
 
@@ -301,7 +280,7 @@ sequenceDiagram
 
 **Limits:** ≤ 32 concurrent worlds; `make clean-sims` prunes. Demo graph budget ≤ 3k nodes / ≤ 12k edges (12-month window + thresholds) → every drill < 10 s. Clone strategy: `GRAPH.COPY` (capability probed at startup via `/api/health`); fallback = replay the deterministic loader into the new graph (same graph by construction).
 
-## 9. The agent, the trust layer, memory
+## 8. The agent, the trust layer, memory
 
 ```mermaid
 flowchart TD
@@ -333,9 +312,9 @@ flowchart TD
 | `critical_people(limit=5)` | `algo.betweenness` on G_k + module PageRank + sole-knower tallies | Ranked persons + reason (bridge / breadth) | A fast prior — and it says so; ground truth comes from drilling |
 | `knowledge_islands(world)` | `algo.WCC` on G_k | Components with modules but no active persons | The shatter, made measurable |
 | `module_risk(module)` | Aggregation over `KNOWS`/`REVIEWED`/`DECIDED_BY` | Coverage, reviewers, doc safeties, orphaned decisions | Module-level verdict, not vibes |
-| `simulate_departure(person)` | Sim engine (§8) | `sim_id`, findings, deltas | The differentiator — an action, not a report |
+| `simulate_departure(person)` | Sim engine (§7) | `sim_id`, findings, deltas | The differentiator — an action, not a report |
 | `handover_plan(person, sim_id)` | Successor scoring + `algo.SPpaths` rationale | Ordered steps with named teachers + proof | Diagnosis must end in a plan |
-| `heal_and_verify(plan_id)` | Sim engine (§8) | Before/after deltas, resolved findings | The proof, not the promise |
+| `heal_and_verify(plan_id)` | Sim engine (§7) | Before/after deltas, resolved findings | The proof, not the promise |
 | `recall(query)` | `Question`/`CITED`/`Sim` traversal | Prior questions, findings, outcomes | Memory = more nodes |
 
 **Core query templates** (production versions live in `agent/.../queries/*.cypher`; validated against FalkorDB's Cypher subset during implementation):
@@ -372,12 +351,12 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 **Outcome shapes** (first-class UX, shown as chips):
 
-| Shape | Meaning | Demo moment |
-|---|---|---|
-| `answered_with_path` | Cites ≥1 path returned by the graph | "Who knows X" → names + hops |
-| `answered_from_memory` | Draws on persisted Questions/Sims/Findings | "What did we find last time?" |
-| `not_in_graph` | No evidence existed; agent says so and explains why that matters | The Kubernetes question |
-| `unknown_person` | Name couldn't be resolved; nearest candidates offered | "Who is J. Doe?" → "Did you mean…?" |
+| Shape | Meaning |
+|---|---|
+| `answered_with_path` | Cites ≥1 path returned by the graph |
+| `answered_from_memory` | Draws on persisted Questions/Sims/Findings |
+| `not_in_graph` | No evidence existed; agent says so and explains why that matters |
+| `unknown_person` | Name couldn't be resolved; nearest candidates offered |
 
 **Validator rules, in order:** (1) extract names, numbers, path claims from the draft; (2) every name must appear in this turn's returned rows; (3) every number must equal an evidence value (or a whitelisted derived metric); (4) every path claim must match a returned path; (5) one repair round naming offending tokens, then drop + downgrade; (6) log every run for Show-your-work.
 
@@ -385,9 +364,9 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 **LLM contract:** input = question + resolved ids + tool schemas + world context. Output = **JSON only** (`{tool, args}`), schema-validated server-side before execution. Temperature low. Env: `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`. Refusal instruction: if tools return no evidence, the model must say so and must not estimate.
 
-**Benchmark vs baseline:** 10 frozen questions (committed before implementation) spanning lookups, review-channel, drill, decisions-at-risk, heal-verify, memory-recall, and three seeded refusals. Baseline = text-RAG over the same corpus (chunk docs + README + PR titles, embed, top-k, same LLM, no tools) — the thing a team actually does today. Scored: `correct · grounded (validator pass ratio) · refusal_correct`. Hypothesis stated in advance: baseline does fine on lookups, fails what-if/heal **by mechanism**, fabricates where BusFactor refuses.
+**Benchmark vs baseline:** 10 frozen questions spanning lookups, review-channel, drill, decisions-at-risk, heal-verify, memory-recall, and three seeded refusals. Baseline = text-RAG over the same corpus (chunk docs + README + PR titles, embed, top-k, same LLM, no tools) — the thing a team actually does today. Scored: `correct · grounded (validator pass ratio) · refusal_correct`. Hypothesis stated in advance: baseline does fine on lookups, fails what-if/heal **by mechanism**, fabricates where BusFactor refuses.
 
-## 10. FalkorDB utilization map
+## 9. FalkorDB utilization map
 
 | Capability | Used for | Why it's the right tool |
 |---|---|---|
@@ -401,7 +380,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 | **Range indexes** | Entity resolution | Sub-ms lookups; verified via `GRAPH.EXPLAIN` |
 | **`GRAPH.LIST` / `GRAPH.DELETE`** | Worlds housekeeping | Prune sims (`make clean-sims`) |
 
-## 11. API, console, actions, MCP, deployment
+## 10. API, console, actions, MCP, deployment
 
 **API surface:**
 
@@ -429,13 +408,13 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 ├──────────────┴────────────────────────────────┴────────────────┤
 │  Show your work: tool · world · query · latency · rows         │
 ├────────────────────────────────────────────────────────────────┤
-│  Worlds filmstrip:  main → drill-7f3 → plan-2c8 → heal-9c1    │
+│  Worlds filmstrip:  main → drill-7f3 → heal-9c1                │
 └────────────────────────────────────────────────────────────────┘
 ```
 
 Style: persons coral · modules slate · docs teal · decisions violet · findings red; radius ← cached criticality; departed = dashed ghost; projected edges gold. Shatter = eased data swap + island halos; heal = gold fade-in + animated counters. Positions cached per world client-side (not in graph); render budget ≤ 5k nodes.
 
-**Actions (Track 1).** `POST /api/actions` renders the exact payload first (preview mode, default); live mode requires an explicit operator opt-in and a token scoped to a single repo the operator owns — **never a third-party repo** (I8); demo target is our sandbox repo holding the plan as a real issue + a `docs/runbooks/<module>.md` PR draft. Payload = checklist of steps + evidence paths + link to the finding. This is the "agent acts on connected data" leg of the submission.
+**Actions (Track 1).** `POST /api/actions` renders the exact payload first (preview mode, the default); live mode requires explicit operator opt-in and a token scoped to a single operator-owned repo — **never a third-party repo** (I8). The payload: an issue with the plan checklist, evidence paths, and a linked `docs/runbooks/<module>.md` PR draft. This is the agent acting on connected data, not just reading it.
 
 **MCP server.** `agent/busfactor/mcp_server.py` exposes the same 8 tools via `FastMCP` (stdio), so BusFactor is usable from Claude Code / Cursor — the exact "context for AI agents" pattern:
 
@@ -447,84 +426,15 @@ Style: persons coral · modules slate · docs teal · decisions violet · findin
 
 Read-only tools by default; `simulate`/`plan` allowed; `heal`/`actions` require env opt-in. (FalkorDB ships its own MCP server for raw graph access — ours exposes the *domain* tools; complementary, not a fork of it.)
 
-**Deployment.** `docker compose up`: `falkordb` :6379 (volume) · `api` :8000 · `web` :5173. Make targets: `up · down · ingest · ingest-live · ask "…" · demo · bench · test · clean-sims · mcp`. Reproducibility contract: clean clone + `.env` + `make up && make ingest && make demo` reproduces the full arc locally. Live URL is a bonus, never a dependency (rules accept complete local setup).
+**Deployment.** `docker compose up`: `falkordb` :6379 (volume) · `api` :8000 · `web` :5173. Make targets: `up · down · ingest · ingest-live · ask "…" · demo · bench · test · clean-sims · mcp`. Reproducibility contract: clean clone + `.env` + `make up && make ingest && make demo` reproduces the full arc locally. Live URL is optional — the local path is fully supported.
 
-## 12. Build plan and implementation order
-
-| Window | Goal | Checkpoint | Kill-criterion / fallback |
-|---|---|---|---|
-| Fri night (Oct 16) | Scaffold · ingest → snapshot → loader · `/api/graph` + first 3 tools | `make ingest` + a grounded answer visible | Ingest slips → shrink window to 6 months |
-| Sat AM | Sim engine (drill) · tools 4–8 · validator · memory | A drill produces findings with proofs | Clone slow → shrink graph; validator flaky → restrict to names+numbers |
-| Sat PM | Console flows (shatter · proof · plan · heal) · benchmark harness | Full arc clickable locally + raw backup recording | Heal animation slips → edge-highlight only |
-| Sat night | Baseline run · README finalize · deploy attempt · Actions sandbox · MCP | Benchmark table + live URL + real issue opened | Deploy fails → compose-only |
-| Sun AM | Polish · video (≤ 2 min) · submission checklist | Video + form ready | **Submit by 3 PM IST**; hard deadline 11:59 PM |
-| Sun PM | Blog post (side prize) · social clips | Published | Optional |
-
-**Implementation order (do it in this sequence):**
-
-1. Scaffold: `docker-compose.yml` (falkordb), `Makefile`, `.env.example`, `agent/pyproject.toml`, `web/` Vite app.
-2. Ingest: extractors → `data/snapshot.json` → batched Cypher loader → indexes.
-3. Queries: the 8 tools' `.cypher` files + thin Python wrappers, tested standalone.
-4. Sim engine: `clone.py` (`GRAPH.COPY` + probe) · `surgery.py` · `metrics.py` (WCC coverage, decisions, blindspots) · `diff.py`.
-5. Agent loop: `resolve.py` → tool planner → `validator.py` → outcome shapes.
-6. API + SSE: endpoints of §11; memory writes.
-7. Console: graph canvas + world switcher → ask panel → shatter → proof click → plan → heal.
-8. Benchmark: `questions.yml` → runner → baseline → `results.md`.
-9. Actions sandbox repo + `POST /api/actions`; GitHub token plumbing.
-10. MCP server (wrap the same tool functions) → test from Claude Code → deploy → record video.
-
-**Repo layout:** `README.md` · `data/snapshot.json` · `agent/busfactor/{api,loop,resolve,validator,memory,mcp_server}.py` + `tools/` (+ `queries/*.cypher`) + `sim/{clone,surgery,metrics,diff}.py` + `ingest/{git,prs,docs,weights,loader}.py` · `web/` (Vite + React: GraphCanvas, AskPanel, FindingsPanel, WorkPanel) · `benchmark/{questions.yml,runner.py,baseline_rag.py,results.md}` · `scripts/{demo.sh,record.sh}` · `docker-compose.yml` · `Makefile`.
-
-**Tests:** ingest determinism (load snapshot twice → identical stats + hash) · world isolation (main stats unchanged after drill/heal) · no-LLM-Cypher (tool layer is the only client path; invalid LLM JSON fails safely) · validator units (fabricated names/numbers rejected) · golden demo (scripted arc asserts 4 outcome shapes, islands decrease, counters move).
-
-**Open questions to settle during the build:** live host (Fly.io vs Railway) · final demo person/module names after first ingest · show raw Cypher in UI? *(lean yes, read-only only)* · module depth 2 vs 3 · harmonic centrality as 9th tool? *(lean no — catalogue frozen)*.
-
-## 13. Design decisions: why it is like that
-
-| # | Decision | Why | Rejected |
-|---|---|---|---|
-| 1 | Simulate, don't score | Metrics tell you risk exists; only counterfactuals tell you what it costs | Static dashboard; git-only calculator |
-| 2 | Worlds via `GRAPH.COPY` | Recompute on the real engine; Python-side copies would be a second, lying implementation | In-memory projections |
-| 3 | Fixed tool catalogue, no LLM Cypher | Determinism, audit, injection safety, explainability | Text2Cypher; generic graph chatbot |
-| 4 | Heal = projected edges + re-sim | "We re-ran the disaster with the fix" beats "we recommend pairing" | Mutating main after a plan; plan-as-text |
-| 5 | Actions preview-first, sandbox-only | Real writes prove Track 1 without risking anyone's repo | Auto-posting to the ingested repo |
-| 6 | Snapshot-pinned demo data (FalkorDB's own repo) | Real data, zero privacy risk, deterministic stage/video | Synthetic data; live-API-only |
-| 7 | Deterministic ingest, LLM never ingests | If ingestion hallucinates, everything downstream is theater | LLM-extracted entities |
-| 8 | Name: BusFactor | The metric every engineer knows → zero education cost in a 2-min video | Understudy, Linchpin; Shatterproof (nonprofit collision) |
-| 9 | Memory as graph nodes | "Memory = more nodes"; auditable; recall is just traversal | Vector store bolted on |
-| 10 | Modules, not files | Files are noise; modules are decisions; graph stays readable on camera | File-level graph |
-| 11 | Python + FastAPI / React + force-graph / compose | First-class algo client; 60fps canvas for shatter/heal; 5-minute reviewer checkout | Streamlit, SSR frontend, notebooks |
-| 12 | Four outcome shapes as UX | Epistemic state visible at a glance; refusals are demonstrations | Success/error duality |
-
-## 14. Success metrics: definition of done
-
-- [ ] Drill produces ≥ 3 findings across ≥ 2 channels; every finding opens to a proof path.
-- [ ] Heal re-run: islands → 0, team bus factor improves (target 1 → 3); unresolved findings reported honestly.
-- [ ] Validator: zero unsupported claims across a replay of the demo script (n ≥ 30 claims).
-- [ ] Refusals correct on all seeded cases (not-in-graph, unknown-person, blindspot).
-- [ ] Benchmark published in-repo: beats baseline on grounded-claims; baseline ≈ 0 on what-if/heal.
-- [ ] Full drill < 10 s on the pinned snapshot.
-- [ ] `make up && make ingest && make demo` works from a clean clone.
-- [ ] Actions demo opens a real issue + runbook PR draft in the sandbox repo.
-- [ ] MCP round-trip: Claude Code (or Cursor) calls `who_knows` successfully via `make mcp`.
-- [ ] Demo video ≤ 2 min with all "must land" moments; README self-sufficient for reproduction.
-
-## 15. Non-goals
+## 11. Non-goals
 
 - **Not HR surveillance.** No performance scores, activity rankings, or "who works hardest". Findings are about *modules' exposure*, never a person's worth (no such fields exist in the schema).
 - **Not attrition prediction.** Different data, different ethics; we don't claim it.
 - **Not code search or git blame.** Git is one input; docs and decisions are equal citizens.
 - **No LLM-authored Cypher, ever.** (I2.)
-- **No writes to reality.** Plans, sims, and actions never mutate `main`'s observed history; GitHub writes are preview-first and sandbox-scoped (I3, I8).
-
-## 16. Tracks, disclosure, status
-
-- **Company Brain** *(primary)* — BusFactor models how a company knows things (people, modules, docs, decisions and their dependencies) and answers: *who can we not lose?*
-- **Agents That Act on Connected Data** *(secondary)* — the agent clones worlds, performs removals, materializes plans, verifies healing, and files real GitHub issues/PRs. Bounded, preview-first, scoped.
-
-**Build disclosure.** We pair-programmed with AI coding assistants, as the rules permit, and we disclose it plainly. Every query, schema decision and heuristic in this repository was reviewed, changed, and is owned by the team; the decision log (§13) is defensible line by line. Ask us why this Cypher, why this weight, why this outcome shape — we can answer, because we understand everything that ships here.
-
-**Status:** `[x]` specs locked 2026-10-16 · `[ ]` ingest · `[ ]` sim engine · `[ ]` agent + validator · `[ ]` console · `[ ]` benchmark · `[ ]` actions + MCP · `[ ]` deploy + video · `[ ]` submitted *(deadline Oct 18, 11:59 PM IST)*.
+- **No writes to reality.** Plans, sims, and actions never mutate `main`'s observed history; GitHub writes are preview-first and scoped (I3, I8).
 
 ---
 
