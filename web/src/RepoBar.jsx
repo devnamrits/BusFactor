@@ -59,7 +59,8 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
         >
           {(repos || []).map((r) => (
             <option key={r.slug} value={r.slug}>
-              {r.slug}
+              {r.name}
+              {r.meta?.window_days ? ` — ${r.meta.window_days}d` : ''}
               {r.status === 'ready' ? '' : ` (${r.status})`}
             </option>
           ))}

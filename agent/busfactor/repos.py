@@ -52,6 +52,12 @@ def _now() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _github_name(url: str) -> str:
+    """`https://github.com/Owner/Name(.git)` → `Owner/Name`; empty if not GitHub."""
+    m = re.search(r"github\.com[:/]+([^/]+)/([^/]+?)(?:\.git)?/?$", url or "")
+    return f"{m.group(1)}/{m.group(2)}" if m else ""
+
+
 # ---------------------------------------------------------------------------
 # registry reads
 # ---------------------------------------------------------------------------
@@ -284,16 +290,18 @@ def _ingest_job(slug: str, source: str, window_days: int, token: str | None) -> 
 
             body = json.loads(snap_path.read_text(encoding="utf-8"))
             sha = hashlib.sha256(snap_path.read_bytes()).hexdigest()[:12]
-            _upsert(
-                slug,
-                {
-                    "status": "ready",
-                    "message": "",
-                    "people": len(body.get("people", [])),
-                    "modules": len(body.get("modules", [])),
-                    "commits": sum(int(p.get("commits", 0)) for p in body.get("people", [])),
-                    "snapshot_sha": sha,
-                },
-            )
+            done = {
+                "status": "ready",
+                "message": "",
+                "people": len(body.get("people", [])),
+                "modules": len(body.get("modules", [])),
+                "commits": sum(int(p.get("commits", 0)) for p in body.get("people", [])),
+                "snapshot_sha": sha,
+            }
+            # upgrade the slug-ish label to the real owner/name from the clone's remote
+            display = _github_name((body.get("meta") or {}).get("repo_url") or "")
+            if display:
+                done["name"] = display
+            _upsert(slug, done)
         except Exception as e:  # surface the reason, never a silent half-state
             set_status(slug, "error", f"{type(e).__name__}: {e}")
