@@ -137,7 +137,7 @@ flowchart LR
 | Tool catalogue | 8 tools; queries as versioned `.cypher` files | The only graph access the agent has. |
 | Sim engine | `GRAPH.COPY` + Cypher surgery + algorithm recompute + diff | Drill/heal worlds. |
 | FalkorDB | Docker image / FalkorDB Cloud | `main` + `sim:*` worlds — the substrate. |
-| LLM | OpenAI-compatible endpoint (env-configured; OpenCode Console free models work as-is) | One job: route a question to one of the 8 tools. Deterministic regexes are the fallback and the default. No Cypher, no numbers, no ingestion. |
+| LLM | OpenAI-compatible endpoint (env-configured; any gateway with app-callable free models, e.g. OpenRouter `:free`) | One job: route a question to one of the 8 tools. Deterministic regexes are the fallback and the default. No Cypher, no numbers, no ingestion. |
 
 **Invariants — the constitution. If a feature can't satisfy these, the feature changes:**
 
@@ -372,7 +372,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 **Memory:** each turn writes `Question {text, outcome, created_at}` + `CITED`/`TRIGGERED` edges. Session bootstrap: the console (and MCP server) opens with a recall summary — last sim, open findings, bus-factor trend ("weakest node moved from X to Y", computed by diffing consecutive drill metrics). `recall` resolves names first, then token-overlap over `Question.text`. Deterministic, auditable, no vector store.
 
-**LLM contract:** input = question + resolved ids + tool schemas + world context. Output = **JSON only** (`{tool, args}`), schema-validated server-side before execution. Temperature low. Env: `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`. Refusal instruction: if tools return no evidence, the model must say so and must not estimate. Any OpenAI-compatible endpoint works — OpenCode Console's free models are a zero-cost fit (`LLM_BASE_URL=https://opencode.ai/inference/openai/v1`, one of the `-free` model ids). Without an endpoint configured, the deterministic router is used and every flow in this README still holds.
+**LLM contract:** input = question + resolved ids + tool schemas + world context. Output = **JSON only** (`{tool, args}`), schema-validated server-side before execution. Temperature low. Env: `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`. Refusal instruction: if tools return no evidence, the model must say so and must not estimate. Any OpenAI-compatible endpoint works — e.g. an OpenRouter `:free` model (`LLM_BASE_URL=https://openrouter.ai/api/v1`), which is callable from a normal app. (Caveat we verified: OpenCode Console's free-tier models only answer requests from inside the OpenCode client; other callers get `403 FreeTierError`.) Without an endpoint configured, the deterministic router is used and every flow in this README still holds.
 
 **Benchmark — the honesty suite.** `make bench` replays twelve frozen tickets (`data/benchmark.yml`) through the real `ask()` loop on a reset graph: lookups, module risk, memory recall, a full drill → plan → heal arc, and three seeded refusals. Every ticket checks three things — the router picked the intended tool, the outcome shape matches, and every number survived the validator. Results land in [`results.md`](results.md). The suite is not decorative: it caught a real validator violation during development (a template printed a derived count that wasn't in its data envelope).
 
