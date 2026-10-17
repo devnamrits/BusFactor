@@ -9,6 +9,7 @@ import {
   FindingsPanel,
   Legend,
   MemoryPanel,
+  ReposPanel,
   ScenarioPanel,
   SelectedCard,
 } from './Panels.jsx'
@@ -18,6 +19,7 @@ const TABS = [
   ['scenario', 'Scenario'],
   ['findings', 'Findings'],
   ['memory', 'Memory'],
+  ['repos', 'Repos'],
 ]
 
 export default function App() {
@@ -132,6 +134,15 @@ export default function App() {
     // boot once — later loads go through loadRepo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // the selected repo can disappear (removed after a failed index) — fall back
+  // to a real one instead of querying a graph that no longer exists
+  useEffect(() => {
+    if (!repos.length || repos.some((r) => r.slug === repoSlug)) return
+    const fallback = repos.find((r) => r.slug === 'main') || repos[0]
+    guard('switch', () => loadRepo(fallback.slug))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [repos, repoSlug])
 
   const selectRepo = (slug) => {
     if (slug === repoSlug || busy) return
@@ -315,6 +326,9 @@ export default function App() {
             {tab === 'findings' && <FindingsPanel findings={findings} />}
             {tab === 'memory' && (
               <MemoryPanel repo={repo} memory={memory} config={config} onSaveConfig={saveConfig} />
+            )}
+            {tab === 'repos' && (
+              <ReposPanel repos={repos} active={repoSlug} busy={busy} onSelect={selectRepo} />
             )}
           </div>
         </aside>

@@ -474,6 +474,45 @@ export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
   )
 }
 
+export function ReposPanel({ repos, active, busy, onSelect }) {
+  return (
+    <section className="panel">
+      <h3>Repos &amp; indexing jobs</h3>
+      <ul className="joblist">
+        {(repos || []).map((r) => {
+          const ready = r.status === 'ready'
+          const counts = r.counts || {}
+          return (
+            <li
+              key={r.slug}
+              className={`jobrow ${r.slug === active ? 'on' : ''}`}
+              title={r.url}
+              onClick={() => onSelect(r.slug)}
+            >
+              <div className="jline1">
+                <span className={`istate ${r.status}`}>{r.status}</span>
+                <b className="jname">{r.name || r.slug}</b>
+                {r.slug !== active && !busy && <span className="jswitch">switch</span>}
+              </div>
+              <div className={`jline2 ${r.status === 'error' ? 'jerr' : ''}`}>
+                {ready
+                  ? `${counts.people} people · ${counts.modules} modules · ${counts.decisions} decisions${
+                      r.meta?.window_days ? ` · ${r.meta.window_days}d window` : ''
+                    }`
+                  : r.message || r.status}
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+      <p className="hint">
+        Indexing runs in the background — this list refreshes every 2s while a job is active.
+      </p>
+    </section>
+  )
+}
+
+
 export function Filmstrip({ repo, overview, timeline, world, onWorld }) {
   const sims = timeline?.sims || []
   const summary = overview?.summary

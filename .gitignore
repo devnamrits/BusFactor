@@ -6,6 +6,10 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+# JetBrains module/meta files that occasionally land outside .idea/
+*.iml
+*.ipr
+*.iws
 
 # ---------------------------------------------------------------------------
 # Python — environments, caches, packaging

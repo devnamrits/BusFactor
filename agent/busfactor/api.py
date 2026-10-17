@@ -385,7 +385,17 @@ def graph(world: str = "main", repo: str = "main") -> dict:
     w = world or "main"
     graph_name = _graph(repo)
     if w not in db.list_graphs():
-        raise HTTPException(404, f"no such world: {w}")
+        # a world that was never built (or was pruned) reads as an empty map —
+        # the same honest-empty contract that db.ro keeps for building repos
+        return {
+            "world": w,
+            "repo": graph_name,
+            "nodes": [],
+            "links": [],
+            "sim": None,
+            "findings": [],
+            "counts": {"nodes": 0, "links": 0},
+        }
 
     nrows = db.ro(
         w,
