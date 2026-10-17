@@ -476,7 +476,10 @@ def recall(question: str, repo: str = "main") -> dict:
     kind = top["kind"]
     cites: list[dict] = []
     if kind == "question":
-        answer = f"From memory — I answered this before ({top['id']}): {top['answer']}"
+        answer = (
+            "From memory — I answered this before "
+            f"({top['id']}): {memory.canonical_answer(top['answer'])}"
+        )
         cites = [cite("question", top["id"], "earlier question", top.get("snippet", ""))]
     elif kind == "decision":
         deciders = ", ".join(top.get("deciders") or ["(no decider recorded)"])

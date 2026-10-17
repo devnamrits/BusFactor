@@ -48,6 +48,23 @@ def _tokens(text: str) -> list[str]:
     ]
 
 
+# Memory answers are stored canonically, but earlier builds wrapped them on
+# every repeat — so unwrap defensively: a memory of a memory must never leak.
+_WRAPPED = re.compile(
+    r"^From memory — I answered (?:this earlier|this before) \(q-[0-9a-f]+\): "
+)
+
+
+def canonical_answer(text: str) -> str:
+    """Strip any nesting of the "From memory — …" framing to the real answer."""
+    out = text or ""
+    while True:
+        stripped = _WRAPPED.sub("", out, count=1)
+        if stripped == out:
+            return out.strip()
+        out = stripped
+
+
 def record_question(
     repo: str, text: str, answer: str, outcome: str, citations: list[dict],
     tool: str | None,

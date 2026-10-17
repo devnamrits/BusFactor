@@ -45,11 +45,12 @@ def ask(question: str, repo: str = "main") -> dict:
                 f"answering from memory of {prior['id']}"
             ),
         }
+        canonical = memory.canonical_answer(prior["answer"])
         res = {
             "tool": "recall",
             "ok": True,
             "outcome": "answered_from_memory",
-            "answer": f"From memory — I answered this earlier ({prior['id']}): {prior['answer']}",
+            "answer": f"From memory — I answered this earlier ({prior['id']}): {canonical}",
             "data": {"prior": prior},
             "citations": [{
                 "kind": "question",
@@ -59,8 +60,10 @@ def ask(question: str, repo: str = "main") -> dict:
             }],
         }
         v = validator.validate(res)
+        # Record the factual answer, not the framing — otherwise every repeat
+        # nests one more "From memory" layer around the previous answer.
         qid = memory.record_question(
-            repo, question, res["answer"], res["outcome"], res["citations"], "recall"
+            repo, question, canonical, res["outcome"], res["citations"], "recall"
         )
         return _envelope(question, res, routing, v, qid, t0)
 
