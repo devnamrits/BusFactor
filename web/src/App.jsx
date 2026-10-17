@@ -271,6 +271,7 @@ export default function App() {
         busy={busy}
         onSelect={selectRepo}
         onRefresh={refreshRepos}
+        defaultWindow={config?.ingest?.window_days}
       />
 
       {error && <div className="errorbar">{error}</div>}

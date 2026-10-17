@@ -32,6 +32,19 @@ DEMO_REPO = {
 }
 
 DEFAULT_SETTINGS = {"window_days": 3650}
+
+# The window is a preference — the commit-count guard is the real limit. Allow up
+# to 100y so nothing historical is off-limits for slow-moving repos.
+WINDOW_MIN_DAYS, WINDOW_MAX_DAYS = 30, 36500
+
+
+def check_window(days: int) -> int:
+    """Validate a history window in days; returns it as int."""
+    if not WINDOW_MIN_DAYS <= int(days) <= WINDOW_MAX_DAYS:
+        raise ValueError(
+            f"window_days must be between {WINDOW_MIN_DAYS} and {WINDOW_MAX_DAYS}"
+        )
+    return int(days)
 _JOB_LOCK = threading.Lock()
 
 
@@ -230,6 +243,9 @@ def connect(source: str, window_days: int | None = None, token: str | None = Non
     local = src.startswith(("/", "~", ".")) or "://" not in src
     if not local and "github.com" not in src:
         raise ValueError("only github URLs or local git paths are supported")
+
+    if window_days is not None:
+        check_window(window_days)
 
     current = get_repo(slug)
     if current and current["status"] in ("queued", "cloning", "building", "loading"):

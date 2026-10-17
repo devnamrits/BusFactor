@@ -443,7 +443,7 @@ export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
           <input
             type="number"
             min="30"
-            max="3650"
+            max="36500"
             value={windowDays}
             placeholder={String(ingest.window_days ?? 3650)}
             onChange={(e) => setWindowDays(e.target.value)}
@@ -452,7 +452,7 @@ export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
             {saved ? 'saved' : 'set window'}
           </button>
         </div>
-        <p className="hint">Applies to the next repo you index.</p>
+        <p className="hint">Default for the next repo you index — the index form can override it per repo.</p>
         <div className="settingrow">
           <span className="k">coverage floor (K)</span>
           <span className="v">{config?.coverage_floor ?? '–'}</span>

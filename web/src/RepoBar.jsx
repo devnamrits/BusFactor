@@ -3,8 +3,9 @@ import { api } from './api'
 
 const PENDING = new Set(['queued', 'cloning', 'building', 'loading'])
 
-export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
+export default function RepoBar({ repos, active, busy, onSelect, onRefresh, defaultWindow }) {
   const [source, setSource] = useState('')
+  const [windowDays, setWindowDays] = useState('')
   const [formError, setFormError] = useState('')
   const [opening, setOpening] = useState(false)
   const wanted = useRef(null) // slug we just kicked off, to auto-switch when done
@@ -37,9 +38,11 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
     if (!src) return
     setFormError('')
     try {
-      const job = await api.connect(src)
+      const days = parseInt(windowDays, 10)
+      const job = await api.connect(src, Number.isFinite(days) ? days : undefined)
       wanted.current = job.slug
       setSource('')
+      setWindowDays('')
       setOpening(false)
       onRefresh()
     } catch (err) {
@@ -75,6 +78,17 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
               placeholder="https://github.com/owner/name  ·  or /path/to/clone"
               spellCheck={false}
             />
+            <input
+              type="number"
+              className="window-input"
+              min="30"
+              max="36500"
+              value={windowDays}
+              onChange={(e) => setWindowDays(e.target.value)}
+              placeholder={String(defaultWindow || 3650)}
+              title="history window in days (30–36500) — how far back to mine commits; the default lives in the Memory tab"
+            />
+            <span className="winsuffix">days</span>
             <button className="btn primary" type="submit">
               Index
             </button>

@@ -246,6 +246,18 @@ button:focus-visible {
   max-width: 440px;
 }
 
+.connect-form input[type='number'] {
+  flex: none;
+  width: 74px;
+  min-width: 0;
+  max-width: none;
+}
+
+.winsuffix {
+  font: 10px var(--mono);
+  color: var(--ink-faint);
+}
+
 .formerror {
   color: var(--bad);
   font: 11px var(--mono);

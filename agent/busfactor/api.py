@@ -165,9 +165,10 @@ def config_get() -> dict:
 def config_put(body: ConfigBody) -> dict:
     values = {}
     if body.window_days is not None:
-        if not 30 <= body.window_days <= 3650:
-            raise HTTPException(400, "window_days must be between 30 and 3650")
-        values["window_days"] = body.window_days
+        try:
+            values["window_days"] = repos.check_window(body.window_days)
+        except ValueError as e:
+            raise HTTPException(400, str(e)) from e
     if values:
         repos.update_settings(values)
     return config_get()
