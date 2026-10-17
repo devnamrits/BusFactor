@@ -1,23 +1,40 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { api } from './api'
+import { useTheme } from './theme'
 import GraphCanvas from './GraphCanvas.jsx'
+import RepoBar from './RepoBar.jsx'
 import {
   AskPanel,
-  FindingsCard,
+  Filmstrip,
+  FindingsPanel,
   Legend,
-  PlanPanel,
+  MemoryPanel,
+  ScenarioPanel,
   SelectedCard,
-  TimelineBar,
-  WorldChips,
 } from './Panels.jsx'
 
+const TABS = [
+  ['ask', 'Ask'],
+  ['scenario', 'Scenario'],
+  ['findings', 'Findings'],
+  ['memory', 'Memory'],
+]
+
 export default function App() {
+  const [theme, toggleTheme] = useTheme()
+
   const [health, setHealth] = useState(null)
+  const [repos, setRepos] = useState([])
+  const [config, setConfig] = useState(null)
+  const [repoSlug, setRepoSlug] = useState('main')
   const [people, setPeople] = useState([])
   const [overview, setOverview] = useState(null)
   const [timeline, setTimeline] = useState({ sims: [], plans: [] })
+  const [memory, setMemory] = useState(null)
   const [graph, setGraph] = useState(null)
   const [world, setWorld] = useState('main')
+  const [tab, setTab] = useState('ask')
+
   const [busy, setBusy] = useState('')
   const [error, setError] = useState('')
   const [askResult, setAskResult] = useState(null)
@@ -26,39 +43,15 @@ export default function App() {
   const [heal, setHeal] = useState(null)
   const [selected, setSelected] = useState(null)
 
-  const refreshTimeline = useCallback(async () => {
-    setTimeline(await api.timeline())
-  }, [])
-
-  const loadWorld = useCallback(async (w) => {
-    setWorld(w)
-    setGraph(await api.graph(w))
-    setSelected(null)
-  }, [])
-
-  const refreshOverview = useCallback(async () => {
-    setOverview(await api.overview())
-  }, [])
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const [h, p, o, t] = await Promise.all([
-          api.health(),
-          api.people(),
-          api.overview(),
-          api.timeline(),
-        ])
-        setHealth(h)
-        setPeople(p)
-        setOverview(o)
-        setTimeline(t)
-        await loadWorld('main')
-      } catch (e) {
-        setError(String(e.message || e))
-      }
-    })()
-  }, [loadWorld])
+  const repo = useMemo(
+    () =>
+      repos.find((r) => r.slug === repoSlug) || {
+        slug: repoSlug,
+        graph: repoSlug === 'main' ? 'main' : `repo:${repoSlug}`,
+        status: 'ready',
+      },
+    [repos, repoSlug]
+  )
 
   const guard = async (tag, fn) => {
     setBusy(tag)
@@ -72,21 +65,101 @@ export default function App() {
     }
   }
 
-  const runAsk = (question) =>
-    guard('ask', async () => {
-      const r = await api.ask(question)
+  const loadWorld = async (w) => {
+    setSelected(null)
+    setWorld(w)
+    setGraph(await api.graph(w, repoSlug))
+  }
+
+  const refreshTimeline = async () => setTimeline(await api.timeline(repoSlug))
+  const refreshOverview = async () => setOverview(await api.overview(repoSlug))
+  const refreshMemory = async () => setMemory(await api.memory(repoSlug))
+  const refreshRepos = async () => setRepos((await api.repos()).repos)
+
+  const loadRepo = async (slug) => {
+    const target = repos.find((r) => r.slug === slug)
+    const g = target?.graph || (slug === 'main' ? 'main' : `repo:${slug}`)
+    setRepoSlug(slug)
+    setTab('ask')
+    setSelected(null)
+    setDrill(null)
+    setPlan(null)
+    setHeal(null)
+    setAskResult(null)
+    setWorld(g)
+    const [p, o, t, h, m] = await Promise.all([
+      api.people(slug),
+      api.overview(slug),
+      api.timeline(slug),
+      api.health(slug),
+      api.memory(slug),
+    ])
+    setPeople(p)
+    setOverview(o)
+    setTimeline(t)
+    setHealth(h)
+    setMemory(m)
+    setGraph(await api.graph(g, slug))
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const [h, r, c] = await Promise.all([api.health(), api.repos(), api.config()])
+        setHealth(h)
+        setRepos(r.repos)
+        setConfig(c)
+        const first = r.repos.find((x) => x.slug === 'main') || r.repos[0]
+        const target = first?.graph || 'main'
+        const [p, o, t, m] = await Promise.all([
+          api.people(first.slug),
+          api.overview(first.slug),
+          api.timeline(first.slug),
+          api.memory(first.slug),
+        ])
+        setRepoSlug(first.slug)
+        setPeople(p)
+        setOverview(o)
+        setTimeline(t)
+        setMemory(m)
+        setWorld(target)
+        setGraph(await api.graph(target, first.slug))
+      } catch (e) {
+        setError(String(e.message || e))
+      }
+    })()
+    // boot once — later loads go through loadRepo
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const selectRepo = (slug) => {
+    if (slug === repoSlug || busy) return
+    return guard('switch', () => loadRepo(slug))
+  }
+
+  const selectWorld = (w) => guard('world', () => loadWorld(w))
+
+  const runAsk = (question) => {
+    const text = (question || '').trim()
+    if (!text) return
+    return guard('ask', async () => {
+      const r = await api.ask(text, repoSlug)
       setAskResult(r)
+      await refreshMemory()
       const d = r.data || {}
       if (r.tool === 'simulate_departure' && d.world) {
-        setDrill({ ...d, sim_id: d.sim_id, findings: d.findings || [] })
+        setDrill({ ...d, findings: d.findings || [] })
         setPlan(null)
         setHeal(null)
+        setTab('scenario')
         await loadWorld(d.world)
         await refreshTimeline()
       } else if (r.tool === 'handover_plan' && d.plan_id) {
         setPlan(d)
+        setTab('scenario')
       } else if (r.tool === 'heal_and_verify' && d.world) {
         setHeal(d)
+        setTab('scenario')
         await loadWorld(d.world)
         await refreshTimeline()
         await refreshOverview()
@@ -94,96 +167,149 @@ export default function App() {
         await refreshOverview()
       }
     })
+  }
 
   const runDrill = (person) =>
     guard('drill', async () => {
-      const d = await api.drill(person)
-      setDrill(d)
       setPlan(null)
       setHeal(null)
+      const d = await api.drill(person, repoSlug)
+      setDrill(d)
       await loadWorld(d.world)
       await refreshTimeline()
+      await refreshMemory()
     })
 
-  const runPlan = () =>
+  const runPlan = (includeResilience) =>
     guard('plan', async () => {
-      const p = await api.plan(drill?.sim_id)
-      setPlan(p)
-      await refreshTimeline()
+      setPlan(await api.plan(drill?.sim_id, repoSlug, includeResilience))
     })
 
   const runHeal = () =>
     guard('heal', async () => {
-      const h = await api.heal(plan?.plan_id)
+      const h = await api.heal(plan?.plan_id, repoSlug)
       setHeal(h)
       await loadWorld(h.world)
       await refreshTimeline()
       await refreshOverview()
+      await refreshMemory()
     })
 
   const askAboutNode = (node) => {
     if (!node) return
-    if (node.label === 'Module') runAsk(`who knows ${node.name}?`)
-    else if (node.label === 'Person') runAsk(`what does ${node.name} carry?`)
-    else if (node.label === 'Decision') runAsk(node.name)
-    else runAsk(node.name)
+    const q =
+      node.label === 'Module'
+        ? `who knows ${node.name}?`
+        : node.label === 'Person'
+          ? `what does ${node.name} carry?`
+          : String(node.name)
+    setTab('ask')
+    return runAsk(q)
   }
 
-  const mem = overview?.memory?.stats
-  const findings =
-    drill && drill.world === world ? drill.findings : graph?.findings || []
+  const saveConfig = async (values) => setConfig(await api.saveConfig(values))
+
+  const suggestions = useMemo(() => {
+    const out = ['Who can we least afford to lose?', 'Where is knowledge stranded?']
+    if (people[0]?.name) out.push(`What does ${people[0].name} carry?`)
+    const firstModule = Object.values(overview?.coverage || {})[0]?.name
+    if (firstModule) out.push(`Who knows ${firstModule}?`)
+    out.push('What did we decide?')
+    return out.slice(0, 5)
+  }, [people, overview])
+
+  const findings = drill && drill.world === world ? drill.findings || [] : graph?.findings || []
 
   return (
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="logo">◉</span> BusFactor
+          <span className="mark">BF</span>
+          <b>BusFactor</b>
           <span className="tagline">know who your team can’t lose</span>
         </div>
-        <WorldChips timeline={timeline} world={world} onWorld={loadWorld} />
-        <div className="statline">
-          {health?.ok ? <span className="dot ok" /> : <span className="dot bad" />}
+        <div className="metrics">
+          <span className={`dot ${health?.ok ? 'ok' : 'bad'}`} title={health?.ok ? 'FalkorDB up' : 'FalkorDB down'} />
           <span>
-            {health?.nodes ?? '…'} nodes · {health?.edges ?? '…'} edges · snap{' '}
-            <code>{health?.snapshot_sha || '…'}</code>
+            {health?.nodes ?? '–'} nodes · {health?.edges ?? '–'} edges
           </span>
-          {mem && (
-            <span className="memchip" title="memory: questions remembered">
-              🧠 {mem.questions} asked · {mem.runs} runs
+          {memory?.stats && (
+            <span>
+              memory {memory.stats.questions} · runs {memory.stats.runs}
             </span>
           )}
+          <button className="btn ghost" onClick={toggleTheme} title="switch theme">
+            {theme === 'dark' ? 'light mode' : 'dark mode'}
+          </button>
         </div>
       </header>
+
+      <RepoBar
+        repos={repos}
+        active={repoSlug}
+        busy={busy}
+        onSelect={selectRepo}
+        onRefresh={refreshRepos}
+      />
 
       {error && <div className="errorbar">{error}</div>}
 
       <main>
         <section className="canvas-wrap">
-          <GraphCanvas data={graph} onSelect={setSelected} />
+          <GraphCanvas data={graph} theme={theme} selectedId={selected?.id} onSelect={setSelected} />
           <Legend />
           <SelectedCard node={selected} onAskAbout={askAboutNode} />
-          <div className="worldbadge">
-            world <code>{world}</code>
-          </div>
         </section>
 
-        <aside className="side">
-          <AskPanel result={askResult} busy={busy === 'ask'} onAsk={runAsk} />
-          <PlanPanel
-            drill={drill}
-            plan={plan}
-            heal={heal}
-            people={people}
-            busy={busy}
-            onDrill={runDrill}
-            onPlan={runPlan}
-            onHeal={runHeal}
-          />
-          <FindingsCard findings={findings} />
+        <aside className="rail">
+          <nav className="tabs">
+            {TABS.map(([id, label]) => (
+              <button
+                key={id}
+                className={`tab ${tab === id ? 'on' : ''}`}
+                onClick={() => setTab(id)}
+              >
+                {label}
+                {id === 'findings' && findings.length > 0 && <em>{findings.length}</em>}
+              </button>
+            ))}
+          </nav>
+          <div className="rail-body">
+            {tab === 'ask' && (
+              <AskPanel
+                result={askResult}
+                busy={busy === 'ask'}
+                suggestions={suggestions}
+                onAsk={runAsk}
+              />
+            )}
+            {tab === 'scenario' && (
+              <ScenarioPanel
+                drill={drill}
+                plan={plan}
+                heal={heal}
+                people={people}
+                busy={busy}
+                onDrill={runDrill}
+                onPlan={runPlan}
+                onHeal={runHeal}
+              />
+            )}
+            {tab === 'findings' && <FindingsPanel findings={findings} />}
+            {tab === 'memory' && (
+              <MemoryPanel repo={repo} memory={memory} config={config} onSaveConfig={saveConfig} />
+            )}
+          </div>
         </aside>
       </main>
 
-      <TimelineBar timeline={timeline} world={world} onWorld={loadWorld} />
+      <Filmstrip
+        repo={repo}
+        overview={overview}
+        timeline={timeline}
+        world={world}
+        onWorld={selectWorld}
+      />
     </div>
   )
 }

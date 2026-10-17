@@ -1,6 +1,6 @@
 """Memory is a first-class citizen: every question becomes a node.
 
-Questions, answers and what they cited live in `main` next to the graph
+Questions, answers and what they cited live in the repo graph next to the
 facts (append-only, invariant I7). `recall` searches this store, so the
 system gets more useful the longer a team uses it — and the memory itself
 is queryable Cypher.
@@ -49,13 +49,14 @@ def _tokens(text: str) -> list[str]:
 
 
 def record_question(
-    text: str, answer: str, outcome: str, citations: list[dict], tool: str | None
+    repo: str, text: str, answer: str, outcome: str, citations: list[dict],
+    tool: str | None,
 ) -> str:
     """Append a Question node + CITED edges. Best-effort, never breaks `ask`."""
     qid = f"q-{secrets.token_hex(3)}"
     try:
         db.rw(
-            "main",
+            repo,
             "CREATE (q:Question {id:$id, text:$text, answer:$answer, "
             "outcome:$outcome, tool:$tool, created_at:$now})",
             {
@@ -72,12 +73,12 @@ def record_question(
                 continue
             ids = [
                 c["id"] for c in citations
-                if c.get("kind") == kind and c.get("id") and kind in LABELS
+                if c.get("kind") == kind and c.get("id")
             ]
             if not ids:
                 continue
             db.rw(
-                "main",
+                repo,
                 f"MATCH (q:Question {{id:$qid}}) UNWIND $ids AS x "
                 f"MATCH (n:{label} {{id:x}}) CREATE (q)-[:CITED]->(n)",
                 {"qid": qid, "ids": list(dict.fromkeys(ids))},
@@ -87,9 +88,9 @@ def record_question(
     return qid
 
 
-def recent(limit: int = 12) -> list[dict]:
+def recent(repo: str, limit: int = 12) -> list[dict]:
     rows = db.ro(
-        "main",
+        repo,
         "MATCH (q:Question) RETURN q.id, q.text, q.answer, q.outcome, q.tool, "
         "q.created_at ORDER BY q.created_at DESC LIMIT $limit",
         {"limit": limit},
@@ -107,10 +108,10 @@ def recent(limit: int = 12) -> list[dict]:
     ]
 
 
-def stats() -> dict:
+def stats(repo: str) -> dict:
     def c(query: str) -> int:
         try:
-            return int(db.ro("main", query).result_set[0][0] or 0)
+            return int(db.ro(repo, query).result_set[0][0] or 0)
         except Exception:
             return 0
 
@@ -124,7 +125,7 @@ def stats() -> dict:
     }
 
 
-def match_question(text: str, threshold: float = 0.75) -> dict | None:
+def match_question(repo: str, text: str, threshold: float = 0.75) -> dict | None:
     """A repeat question deserves the earlier answer — that's memory working.
 
     Token overlap, at least two meaningful tokens, most recent prior hit wins.
@@ -132,7 +133,7 @@ def match_question(text: str, threshold: float = 0.75) -> dict | None:
     toks = set(_tokens(text))
     if len(toks) < 2:
         return None
-    for q in recent(50):
+    for q in recent(repo, 50):
         pt = set(_tokens(q["text"]))
         if not pt:
             continue
@@ -142,7 +143,7 @@ def match_question(text: str, threshold: float = 0.75) -> dict | None:
     return None
 
 
-def search(question: str, limit: int = 6) -> list[dict]:
+def search(repo: str, question: str, limit: int = 6) -> list[dict]:
     """Score every remembered surface by token overlap — no embeddings needed
     at team scale, and the result is explainable: here is the overlap."""
     tokens = _tokens(question)
@@ -152,7 +153,7 @@ def search(question: str, limit: int = 6) -> list[dict]:
 
     # past questions (a previous answer is the strongest memory)
     for qid, text, answer, outcome, at in db.ro(
-        "main",
+        repo,
         "MATCH (q:Question) RETURN q.id, q.text, q.answer, q.outcome, q.created_at "
         "ORDER BY q.created_at DESC LIMIT 100",
     ).result_set:
@@ -165,14 +166,14 @@ def search(question: str, limit: int = 6) -> list[dict]:
 
     # recorded decisions
     for did, title, at, ref in db.ro(
-        "main",
+        repo,
         "MATCH (d:Decision) RETURN d.id, d.title, d.decided_at, d.source_ref",
     ).result_set:
         score = sum(1 for t in tokens if t in (title or "").lower())
         if score:
             deciders = [
                 p for (p,) in db.ro(
-                    "main",
+                    repo,
                     "MATCH (d:Decision {id:$id})-[:DECIDED_BY]->(p:Person) RETURN p.name",
                     {"id": did},
                 ).result_set
@@ -185,7 +186,7 @@ def search(question: str, limit: int = 6) -> list[dict]:
 
     # previous runs
     for sid, label, kind, at in db.ro(
-        "main",
+        repo,
         "MATCH (s:Sim) RETURN s.id, s.label, s.kind, s.created_at "
         "ORDER BY s.created_at DESC LIMIT 30",
     ).result_set:
@@ -198,7 +199,7 @@ def search(question: str, limit: int = 6) -> list[dict]:
 
     # findings from previous drills
     for fid, claim, fkind, mid in db.ro(
-        "main",
+        repo,
         "MATCH (f:Finding) RETURN f.id, f.claim, f.kind, f.module_id LIMIT 300",
     ).result_set:
         score = sum(1 for t in tokens if t in (claim or "").lower())
@@ -209,14 +210,14 @@ def search(question: str, limit: int = 6) -> list[dict]:
             })
 
     # people and modules named in the question
-    for pid, name in db.ro("main", "MATCH (p:Person) RETURN p.id, p.name").result_set:
+    for pid, name in db.ro(repo, "MATCH (p:Person) RETURN p.id, p.name").result_set:
         score = sum(1 for t in tokens if t in (name or "").lower())
         if score:
             hits.append({
                 "kind": "person", "id": pid, "label": name,
                 "score": 1.8 * score,
             })
-    for mid2, name in db.ro("main", "MATCH (m:Module) RETURN m.id, m.name").result_set:
+    for mid2, name in db.ro(repo, "MATCH (m:Module) RETURN m.id, m.name").result_set:
         score = sum(1 for t in tokens if t in (name or "").lower())
         if score:
             hits.append({

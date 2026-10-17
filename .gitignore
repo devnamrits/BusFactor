@@ -1,7 +1,15 @@
-# OS
+# ---------------------------------------------------------------------------
+# OS / editors
+# ---------------------------------------------------------------------------
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
 
-# Python
+# ---------------------------------------------------------------------------
+# Python — environments, caches, packaging
+# ---------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 .venv/
@@ -9,25 +17,38 @@ venv/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+*.egg-info/
+agent/dist/
 
-# Node
+# ---------------------------------------------------------------------------
+# Node / web
+# ---------------------------------------------------------------------------
 node_modules/
 web/dist/
 
-# Env & secrets
+# ---------------------------------------------------------------------------
+# Secrets & local environment
+# ---------------------------------------------------------------------------
 .env
 .env.local
+.env.*.local
 
-# Runtime
+# ---------------------------------------------------------------------------
+# Runtime artifacts
+# ---------------------------------------------------------------------------
 *.log
 data/dumps/
 
-# Data extraction workspaces (source clones + raw API caches — never ship)
+# ---------------------------------------------------------------------------
+# Data workspaces — extracted or user-indexed, reproducible from source.
+# The pinned demo snapshot (data/snapshot.json) and the loader input are
+# committed on purpose; everything here is derived.
+# ---------------------------------------------------------------------------
 data/source/
 data/raw/
-web/node_modules/
-web/dist/
+data/snapshots/
 
-# Internal tracker — never ships
+# ---------------------------------------------------------------------------
+# Internal — never ships
+# ---------------------------------------------------------------------------
 TRACKER.md
-.idea

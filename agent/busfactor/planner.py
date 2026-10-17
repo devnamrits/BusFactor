@@ -34,9 +34,8 @@ def _clean_ref(ref: str) -> str:
 
 def _heuristic(question: str) -> dict:
     q = question.strip()
-    ql = q.lower()
 
-    m = _WHATIF.search(ql)
+    m = _WHATIF.search(q)
     if m:
         return {
             "tool": "simulate_departure",
@@ -50,7 +49,7 @@ def _heuristic(question: str) -> dict:
             "args": {"ref": _clean_ref(m.group(1))},
             "reason": "'who knows …'",
         }
-    m = re.search(r"what\s+does\s+(.+?)\s+(?:carry|own|work\s+on|know)[\?\.]?$", ql)
+    m = re.search(r"what\s+does\s+(.+?)\s+(?:carry|own|work\s+on|know)[\?\.]?$", q, re.I)
     if m:
         return {
             "tool": "who_knows",
@@ -60,24 +59,30 @@ def _heuristic(question: str) -> dict:
     if re.search(
         r"(least afford|indispensable|can'?t lose|cannot lose|most critical|"
         r"key person|critical people|bus factor|single point)",
-        ql,
+        q,
+        re.I,
     ):
         return {
             "tool": "critical_people",
             "args": {},
             "reason": "criticality question",
         }
-    if re.search(r"(stranded|island|orphan(?:ed)?\s+knowledge|no\s+one\s+(?:left\s+)?knows)", ql):
+    if re.search(r"(stranded|island|orphan(?:ed)?\s+knowledge|no\s+one\s+(?:left\s+)?knows)", q, re.I):
         return {
             "tool": "knowledge_islands",
             "args": {},
             "reason": "stranded-knowledge question",
         }
-    if re.search(r"(risk|fragile|fragility|coverage)", ql):
-        mm = re.search(r"(?:risk|fragility|coverage)\s+(?:for|of|on)\s+(.+?)[\?\.]?$", ql)
+    if re.search(r"(risk|fragile|fragility|coverage)", q, re.I):
+        mm = re.search(r"(?:risk|fragility|coverage)\s+(?:for|of|on)\s+(.+?)[\?\.]?$", q, re.I)
         if not mm:
-            mm = re.search(r"^(.+?)\s+(?:risk|fragility|coverage)[\?\.]?$", ql)
-        if mm:
+            mm = re.search(r"^(.+?)\s+(?:risk|fragility|coverage)[\?\.]?$", q, re.I)
+        # "src/udf risk" names a module; "what is our risk" names nothing
+        if mm and not re.match(
+            r"(what|where|how|who|when|why|is|are|was|do|does|our|the|this|any|is\s+any)\b",
+            mm.group(1).strip(),
+            re.I,
+        ):
             return {
                 "tool": "module_risk",
                 "args": {"ref": _clean_ref(mm.group(1))},
@@ -88,13 +93,13 @@ def _heuristic(question: str) -> dict:
             "args": {},
             "reason": "risk question → who is critical",
         }
-    if re.search(r"(handover|succession|plan|who can take over|take over|replace)", ql):
+    if re.search(r"(handover|succession|plan|who can take over|take over|replace)", q, re.I):
         return {
             "tool": "handover_plan",
             "args": {},
             "reason": "handover question",
         }
-    if re.search(r"\b(heal|verify|fix it)\b", ql):
+    if re.search(r"\b(heal|verify|fix it)\b", q, re.I):
         return {
             "tool": "heal_and_verify",
             "args": {},

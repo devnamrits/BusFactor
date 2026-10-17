@@ -1,7 +1,8 @@
 """World lifecycle: clone, prune.
 
 Worlds are cheap — GRAPH.COPY on this graph takes milliseconds — so every
-experiment gets its own. `main` is never mutated by an experiment.
+experiment gets its own. The repo graph itself is never mutated by an
+experiment.
 """
 
 from __future__ import annotations
@@ -29,10 +30,10 @@ def delete_world(world: str) -> None:
         pass
 
 
-def prune_worlds(keep: int = MAX_WORLDS) -> list[str]:
-    """Delete the oldest world graphs beyond `keep`. Sim audit nodes stay in main."""
+def prune_worlds(repo: str = "main", keep: int = MAX_WORLDS) -> list[str]:
+    """Delete this repo's oldest worlds beyond `keep`. Sim audit nodes stay."""
     try:
-        rows = db.graph().ro_query(
+        rows = db.graph(repo).ro_query(
             "MATCH (s:Sim) RETURN s.world, s.created_at ORDER BY s.created_at DESC"
         ).result_set
     except Exception:

@@ -21,5 +21,8 @@ TOOLS = {
 }
 
 
-def run_tool(name: str, args: dict | None = None) -> dict:
-    return TOOLS[name](**(args or {}))
+def run_tool(name: str, args: dict | None = None, repo: str = "main") -> dict:
+    """`repo` names the graph to read; tools never pick it themselves."""
+    call = dict(args or {})
+    call.pop("repo", None)
+    return TOOLS[name](**call, repo=repo)

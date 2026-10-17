@@ -170,6 +170,36 @@ class CodeownersRule:
     users: list[str]  # individual handles (teams are skipped — they aren't people)
 
 
+def clone_or_fetch(url: str, dest: Path, log=print) -> Path:
+    """Blobless clone, or incremental fetch when the clone already exists.
+
+    Blobless means full commit history without old file contents; `git log
+    --name-only` and `git show HEAD:<path>` still work, so a mid-size repo
+    indexes in seconds instead of minutes.
+    """
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if (dest / ".git").exists():
+        log(f"  fetching {url}")
+        _git(dest, "fetch", "--filter=blob:none", "--quiet", "origin")
+        _git(dest, "remote", "set-head", "origin", "-a")
+        for ref in ("origin/HEAD", "origin/main", "origin/master"):
+            try:
+                _git(dest, "reset", "--hard", ref)
+                return dest
+            except RuntimeError:
+                continue
+        raise RuntimeError(f"no default branch found in {dest} after fetch")
+    log(f"  cloning {url} (blobless, no checkout)")
+    proc = subprocess.run(
+        ["git", "clone", "--filter=blob:none", "--no-checkout", "--quiet", url, str(dest)],
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"git clone failed for {url}:\n{proc.stderr.strip()}")
+    return dest
+
+
 def parse_codeowners(repo: Path) -> list[CodeownersRule]:
     for candidate in ("CODEOWNERS", ".github/CODEOWNERS", "docs/CODEOWNERS"):
         path = repo / candidate

@@ -8,7 +8,7 @@ DB      ?= busfactor-falkordb
 IMAGE   ?= falkordb/falkordb:latest
 API     ?= http://localhost:8000
 
-.PHONY: up full-up down ps logs db-shell ingest ingest-live ask api web test fmt bench clean-sims mcp
+.PHONY: up full-up down ps logs db-shell ingest ingest-live index repos ask api web test fmt bench clean-sims mcp
 
 ## ---- stack --------------------------------------------------------------
 
@@ -39,6 +39,12 @@ ingest-live: ## rebuild the snapshot from the source clone (GITHUB_TOKEN=… for
 	cd agent && $(PY) -m busfactor.ingest build ../data/source/falkordb --out ../data/snapshot.json
 
 ingest-live-load: ingest-live ingest ## rebuild and load in one go
+
+index: ## index any repo: make index SRC=https://github.com/owner/name (or a local path)
+	cd agent && $(PY) -m busfactor index "$(SRC)"
+
+repos: ## list indexed repos and their status
+	cd agent && $(PY) -m busfactor repos
 
 ## ---- surfaces -----------------------------------------------------------
 

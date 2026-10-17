@@ -28,6 +28,10 @@ class Settings:
             os.getenv("SNAPSHOT_PATH", str(ROOT / "data" / "snapshot.json"))
         )
         self.raw_dir = Path(os.getenv("RAW_DIR", str(ROOT / "data" / "raw")))
+        self.source_dir = Path(os.getenv("SOURCE_DIR", str(ROOT / "data" / "source")))
+        self.snapshots_dir = Path(
+            os.getenv("SNAPSHOTS_DIR", str(ROOT / "data" / "snapshots"))
+        )
         self.auto_ingest = os.getenv("AUTO_INGEST", "0") == "1"
 
         # LLM (optional — a deterministic planner runs when unset)

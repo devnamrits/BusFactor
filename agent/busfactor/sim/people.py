@@ -1,12 +1,12 @@
-"""Person lookup against main: exact id first, then unambiguous name/handle."""
+"""Person lookup against one repo graph: exact id first, then unambiguous name."""
 
 from __future__ import annotations
 
 from .. import db
 
 
-def list_people() -> list[dict]:
-    rows = db.graph().ro_query(
+def list_people(repo: str = "main") -> list[dict]:
+    rows = db.graph(repo).ro_query(
         "MATCH (p:Person) RETURN p.id, p.name, p.handle, p.status, p.commits, "
         "p.reviews, p.last_seen ORDER BY p.commits DESC, p.id"
     ).result_set
@@ -24,8 +24,8 @@ def list_people() -> list[dict]:
     ]
 
 
-def get_person(person_ref: str) -> dict:
-    people = list_people()
+def get_person(person_ref: str, repo: str = "main") -> dict:
+    people = list_people(repo)
     for p in people:
         if p["id"] == person_ref:
             return p

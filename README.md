@@ -12,7 +12,7 @@
 
 </div>
 
-> **What this is.** A knowledge-graph agent that maps who knows what across a repository, **simulates losing a person** on a clone of the graph, produces a **handover plan**, and **proves the fix by re-running the same simulation with the plan applied** — then acts on it (real GitHub issue / runbook PR) and exposes the same tool catalogue over **MCP** so any coding agent can consult it.
+> **What this is.** A knowledge-graph agent that maps who knows what across a repository, **simulates losing a person** on a clone of the graph, produces a **handover plan**, and **proves the fix by re-running the same simulation with the plan applied** — then renders the action it would take (preview-first, repo-scoped) and exposes the same tool catalogue over **MCP** so any coding agent can consult it.
 >
 > **The name.** *Bus factor* = how many people the project can lose before it's in trouble. For most teams it's 1. BusFactor makes that number something you can **rehearse — and raise**.
 >
@@ -65,6 +65,7 @@ Aviation has simulators. Surgery has drills. Infrastructure has game days. Knowl
 
 | Feature | What the user sees | What the graph computes | Why it's like that |
 |---|---|---|---|
+| **Any repo** | Paste a GitHub URL — or point at a local clone — and it is indexed into its own graph; every feature below then runs on it | One FalkorDB graph per repo (`repo:<slug>`), a small registry graph tracks ingest status and stats | A product has to run on *your* repo, not the demo's |
 | **Knowledge map** | Interactive graph of people ↔ modules ↔ docs ↔ decisions | Derived `KNOWS` edges, recency-weighted from commits, reviews, issue references, CODEOWNERS | Risk lives on edges (P1) — you must see the wires, not boxes |
 | **Load-bearing people** | Ranked list + evidence paths per name | Sole-knower tallies + knowledge-mass rollup (`sum(KNOWS.weight)`); bridges surface as component splits during drills | A ranked *prior* — the drill is the ground truth (P2) |
 | **What-if simulation** | Pick a person → "Run simulation" | `GRAPH.COPY` → `sim:<id>`; remove their `KNOWS`/`OWNS` edges; recompute components/coverage; diff vs main | You can't audit what you can't remove (P2) |
@@ -116,7 +117,7 @@ flowchart LR
     MAIN[("main — the real world")]
     WORLDS[("sim:* — what-if worlds")]
   end
-  UI -->|"REST + SSE steps"| ROUTER
+  UI -->|"REST (JSON)"| ROUTER
   ROUTER --> LLM
   LLM --> ROUTER
   ROUTER --> TOOLS
@@ -131,7 +132,7 @@ flowchart LR
 
 | Component | Tech | Responsibility |
 |---|---|---|
-| Console UI | React 18 + Vite + TS + `react-force-graph-2d` + zustand | Render worlds; run flows; evidence panel. Canvas for 60fps at thousands of edges. |
+| Console UI | React 18 + Vite (JSX) + `react-force-graph-2d` | World switcher, ask / drill / plan / heal flows, evidence panel, dark & light themes. Canvas for 60fps at thousands of edges. |
 | Agent API | Python 3.12 + FastAPI + official `falkordb` client | Turn loop, tool execution, validation, memory. Python client is first-class for `algo.*`, `GRAPH.COPY`, `RO_QUERY`. |
 | Tool catalogue | 8 tools; queries as versioned `.cypher` files | The only graph access the agent has. |
 | Sim engine | `GRAPH.COPY` + Cypher surgery + algorithm recompute + diff | Drill/heal worlds. |
@@ -214,6 +215,18 @@ erDiagram
 
 **G_k for islands** = nodes `{Person, Module, Doc}`, edges `{KNOWS, OWNS, DOCUMENTS}`. Decisions are analyzed by their own query (owner + records), because "who can explain this" and "does this decision still have an owner" are different questions. `INTERACTS` is excluded from G_k — it merges people, not explainability.
 
+**Provenance — what a repo must have.** The only hard requirement is `git log`. Everything else is optional enrichment:
+
+| Input | Required? | If missing |
+|---|---|---|
+| Commit history | **Yes** | Nothing to analyze — this is the substrate |
+| CODEOWNERS | No | `OWNS` falls back to top-committer share (≥ 35% of a module's commits); both paths write `source` on the edge, so you can always tell which rule fired |
+| Pull requests | No | Review channel omitted; weight formula renormalizes over commits + recency |
+| Review activity | No | Needs a `GITHUB_TOKEN` for private repos / rate limits; tokenless public indexing still gets PR titles and authors |
+| Docs & ADRs | No | Decision findings are simply absent; coverage findings are unaffected |
+
+A repo that has *only* commit history gets the full drill → plan → heal arc. Enrichment sharpens the graph; it never gates the analysis.
+
 ```cypher
 // indexes (created by the loader)
 CREATE INDEX FOR (p:Person) ON (p.name)
@@ -283,24 +296,20 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-  Q["User question"] --> R["Resolve names to node ids<br/>fuzzy match + ambiguity check"]
-  R -->|"ambiguous"| CF["Ask user to confirm"]
-  CF --> R
-  R -->|"no match"| U["outcome: unknown_person<br/>+ nearest candidates"]
-  R --> P["LLM plans tool calls<br/>JSON only, schema-validated"]
-  P --> E["Execute tool on a world<br/>reads via RO_QUERY"]
-  E --> D{"Enough evidence?"}
-  D -->|"no, up to 2 more calls"| P
-  D -->|"yes"| A["Draft answer with row citations"]
-  A --> V{"Validator: names, numbers,<br/>paths within this turn's evidence?"}
-  V -->|"fail"| RP["One repair round<br/>offending tokens named"]
-  RP --> V
-  V -->|"fail again"| DG["Drop offending statements<br/>+ downgrade outcome"]
+  Q["User question"] --> M["Memory first: answered this before?<br/>token overlap ≥ 0.75 → reuse the answer"]
+  M -->|"no"| R["Resolve names to node ids<br/>exact, then unambiguous substring"]
+  R -->|"no match"| U["outcome: unknown_entity<br/>+ known candidates listed"]
+  R --> P["Route to one tool<br/>deterministic regexes; optional LLM router"]
+  P --> E["Execute on the repo graph<br/>reads via RO_QUERY"]
+  E --> A["Answer assembled from returned rows"]
+  A --> V{"Validator: every number backed<br/>by this turn's data?"}
+  V -->|"fail"| DG["flag unverified numbers<br/>on the envelope"]
   V -->|"pass"| S["Set outcome shape"]
   DG --> S
-  S --> M["Write Question node + CITED edges"]
-  U --> M
-  M --> O["Answer + citations + step log"]
+  S --> W["Write Question node + CITED edges"]
+  M -->|"yes"| W
+  U --> W
+  W --> O["Answer + citations + routing + validation"]
 ```
 
 **Tool catalogue — frozen at eight:**
@@ -352,18 +361,20 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 | Shape | Meaning |
 |---|---|
-| `answered_with_path` | Cites ≥1 path returned by the graph |
-| `answered_from_memory` | Draws on persisted Questions/Sims/Findings |
-| `not_in_graph` | No evidence existed; agent says so and explains why that matters |
-| `unknown_person` | Name couldn't be resolved; nearest candidates offered |
+| `answered_with_path` | Cites nodes/rows returned by the graph this turn |
+| `answered_from_memory` | Reused a prior answer (repeat question, or `recall` hit) |
+| `not_in_graph` | No evidence existed; the agent says so and explains why that matters |
+| `unknown_entity` | Name resolved to nothing; known candidates are listed |
+| `missing_input` | E.g. heal without a plan — the answer names the prerequisite |
+| `bad_args` / `error` | Tool mis-invocation or failure — surfaced, never guessed around |
 
-**Validator rules, in order:** (1) extract names, numbers, path claims from the draft; (2) every name must appear in this turn's returned rows; (3) every number must equal an evidence value (or a whitelisted derived metric); (4) every path claim must match a returned path; (5) one repair round naming offending tokens, then drop + downgrade; (6) log every run for Show-your-work.
+**Validator rules, in order:** (1) on answered outcomes only — refusals and errors assert nothing numeric and are exempt; (2) extract every number from the answer text; (3) each must match a value in the turn's returned data or citations within ±0.011; (4) answers format floats to 2 decimals so rounding always survives; (5) unbacked numbers flunk the envelope (`validated: false`), which the console shows as a badge. Names are protected by the tools themselves: answer templates only ever interpolate rows that came back from the graph.
 
 **Memory:** each turn writes `Question {text, outcome, created_at}` + `CITED`/`TRIGGERED` edges. Session bootstrap: the console (and MCP server) opens with a recall summary — last sim, open findings, bus-factor trend ("weakest node moved from X to Y", computed by diffing consecutive drill metrics). `recall` resolves names first, then token-overlap over `Question.text`. Deterministic, auditable, no vector store.
 
 **LLM contract:** input = question + resolved ids + tool schemas + world context. Output = **JSON only** (`{tool, args}`), schema-validated server-side before execution. Temperature low. Env: `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`. Refusal instruction: if tools return no evidence, the model must say so and must not estimate.
 
-**Benchmark vs baseline:** 10 frozen questions spanning lookups, review-channel, drill, decisions-at-risk, heal-verify, memory-recall, and three seeded refusals. Baseline = text-RAG over the same corpus (chunk docs + README + PR titles, embed, top-k, same LLM, no tools) — the thing a team actually does today. Scored: `correct · grounded (validator pass ratio) · refusal_correct`. Hypothesis stated in advance: baseline does fine on lookups, fails what-if/heal **by mechanism**, fabricates where BusFactor refuses.
+**Benchmark — the honesty suite.** `make bench` replays twelve frozen tickets (`data/benchmark.yml`) through the real `ask()` loop on a reset graph: lookups, module risk, memory recall, a full drill → plan → heal arc, and three seeded refusals. Every ticket checks three things — the router picked the intended tool, the outcome shape matches, and every number survived the validator. Results land in [`results.md`](results.md). The suite is not decorative: it caught a real validator violation during development (a template printed a derived count that wasn't in its data envelope).
 
 ## 9. FalkorDB utilization map
 
@@ -380,40 +391,53 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 ## 10. API, console, actions, MCP, deployment
 
-**API surface:**
+**API surface** (every repo-scoped call takes a `repo` slug; the registry resolves it to a graph):
 
-| Method | Path | World | Purpose |
+| Method | Path | Scope | Purpose |
 |---|---|---|---|
-| `GET` | `/api/graph?world=` | any | nodes + links + island groups for the canvas (`RO_QUERY`) |
-| `GET` | `/api/timeline` | main | sim/plan timeline + worlds list (the filmstrip) |
-| `POST` | `/api/ask` | main | grounded Q&A through the 8-tool catalogue |
-| `POST` | `/api/drill` | main→clone | run a drill `{person}`; writes findings + Sim |
-| `POST` | `/api/plan` | main | plan for `{sim_id}`; writes Plan + Step nodes |
-| `POST` | `/api/heal` | main→clone | apply `{plan_id}`, re-run same drill; writes heal Sim + delta |
-| `GET` | `/api/findings?sim_id=` | main | findings with proofs for any run |
-| `POST` | `/api/actions` | — | `{plan_id, mode: preview/live, repo}` → GitHub issue + runbook PR draft |
-| `GET` | `/api/memory` | main | questions/sims timeline + trend |
-| `GET` | `/api/health` | — | db ping, graph stats, snapshot hash |
+| `GET` | `/api/health?repo=` | server | db ping, node/edge counts |
+| `GET` | `/api/repos` | registry | every indexed repo, ingest status, settings |
+| `POST` | `/api/repos` | registry | index `{source}` — GitHub URL or local clone path; background job |
+| `GET` | `/api/config` | — | the configuration actually in force |
+| `PUT` | `/api/config` | — | update ingest defaults (history window) |
+| `GET` | `/api/overview?repo=` | repo | headline metrics, coverage, memory meta |
+| `GET` | `/api/people?repo=` | repo | roster with commit mass |
+| `GET` | `/api/timeline?repo=` | repo | sims + plans + worlds (the filmstrip) |
+| `POST` | `/api/ask` | repo | grounded Q&A through the 8-tool catalogue |
+| `POST` | `/api/drill` | repo→clone | run a drill `{person}`; writes findings + Sim |
+| `POST` | `/api/plan` | repo | plan for `{sim_id}`; writes Plan + Step nodes |
+| `POST` | `/api/heal` | repo→clone | apply `{plan_id}`, re-run the drill; writes heal Sim + delta |
+| `POST` | `/api/actions` | repo | render the exact GitHub payload a live run would send (preview only, I8) |
+| `GET` | `/api/findings?repo=&sim_id=` | repo | findings with proofs for any run |
+| `GET` | `/api/memory?repo=` | repo | question log + counters |
+| `GET` | `/api/graph?world=&repo=` | any | nodes + links + components for the canvas (`RO_QUERY`) |
 
 **Console:**
 
 ```
-┌────────────────────────────────────────────────────────────────┐
-│  BusFactor        [world: main ▾]    [ Ask ]   [ Drill ▾ ]     │
-├──────────────┬────────────────────────────────┬────────────────┤
-│  Ask panel   │        graph canvas            │ Findings/Plan/ │
-│  + outcome   │  (force-graph, world morphs)   │ Timeline tabs  │
-│  chips       │                                │ (click to proof│
-├──────────────┴────────────────────────────────┴────────────────┤
-│  Show your work: tool · world · query · latency · rows         │
-├────────────────────────────────────────────────────────────────┤
-│  Worlds filmstrip:  main → drill-7f3 → heal-9c1                │
-└────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────┐
+│ BusFactor   • 322 nodes · 1087 edges · memory 4 · runs 2  [theme]  │
+│ repo [main ▾]  [+ index a repo]                                    │
+├───────────────────────────────┬────────────────────────────────────┤
+│                               │ [Ask|Scenario|Findings|Memory]     │
+│        graph canvas           │                                    │
+│  (world morphs on switch;     │  ask card w/ citations · drill →   │
+│   legend · selected node)     │  plan steps w/ rationale · heal    │
+│                               │  deltas · findings, click to proof │
+├───────────────────────────────┴────────────────────────────────────┤
+│ worlds: [truth main · 32 modules] [drill-7f3 islands 11] [heal-9c1]│
+└────────────────────────────────────────────────────────────────────┘
 ```
 
-Style: persons coral · modules slate · docs teal · decisions violet · findings red; radius ← cached criticality; departed = dashed ghost; projected edges gold. Shatter = eased data swap + island halos; heal = gold fade-in + animated counters. Positions cached per world client-side (not in graph); render budget ≤ 5k nodes.
+Style: persons teal · modules slate · docs ochre · decisions violet · loss red; radius ← cached criticality; departed = dashed ghost; projected edges gold. Shatter = eased data swap + stranded halos; heal = gold fade-in + counters. Node positions are client-side only (never written to the graph); render budget ≤ 5k nodes. Dark and light themes, no build-time cost.
 
-**Actions.** `POST /api/actions` renders the exact payload first (preview mode, the default); live mode requires explicit operator opt-in and a token scoped to a single operator-owned repo — **never a third-party repo** (I8). The payload: an issue with the plan checklist, evidence paths, and a linked `docs/runbooks/<module>.md` PR draft. This is the agent acting on connected data, not just reading it.
+**Run it on your repo.** Three doors, one pipeline:
+
+- **Console** — `+ index a repo`, paste `https://github.com/owner/name` or a path to a clone on disk (`/srv/git/payments-api`). The job runs in the background: blobless clone → snapshot extraction → load into a dedicated graph. Progress and stats show up in the picker; switch repos from the same control. Sims, findings and memory are per repo.
+- **CLI** — `make index SRC=https://github.com/owner/name`, then `make ask Q="who can we least afford to lose?"`, or `busfactor ask --repo owner-name "…"`. `make repos` lists what's indexed.
+- **Private repos** — export `GITHUB_TOKEN` (repo scope) before indexing; it's used for the clone and for PR/review enrichment and is never written into any graph.
+
+**Actions.** `POST /api/actions` renders the exact payload — issue title, labels, and a checklist body built from the plan's steps — before anything is sent; the console shows the same payload behind *preview Actions payload*. Actually opening the issue is gated by design (I8): it requires an operator-set `ACTIONS_REPO` and a scoped `GITHUB_TOKEN` in the environment (shown as `live_available` in the response), and it can only ever target that one repo. This is the agent acting on connected data, not just reading it — with the blast radius pinned to a named repo.
 
 **MCP server.** `agent/busfactor/mcp_server.py` exposes the same 8 tools via `FastMCP` (stdio), so BusFactor is usable from Claude Code / Cursor — the exact "context for AI agents" pattern:
 
@@ -425,7 +449,7 @@ Style: persons coral · modules slate · docs teal · decisions violet · findin
 
 Read-only tools by default; `simulate`/`plan` allowed; `heal`/`actions` require env opt-in. (FalkorDB ships its own MCP server for raw graph access — ours exposes the *domain* tools; complementary, not a fork of it.)
 
-**Deployment.** `docker compose up`: `falkordb` :6379 (volume) · `api` :8000 · `web` :5173. Make targets: `up · down · ingest · ingest-live · ask "…" · demo · bench · test · clean-sims · mcp`. Reproducibility contract: clean clone + `.env` + `make up && make ingest && make demo` reproduces the full arc locally. Live URL is optional — the local path is fully supported.
+**Deployment.** `docker compose up`: `falkordb` :6379 (volume) · `api` :8000 · `web` :5173. Make targets: `up · down · ingest · ingest-live · index SRC= · repos · ask Q= · demo · bench · test · clean-sims · mcp`. Reproducibility contract: clean clone + `.env` + `make up && make ingest && make demo` reproduces the full arc locally. Live URL is optional — the local path is fully supported. The console builds once (`cd web && npm install && npm run build`) and the API serves it from `:8000`; `npm run dev` is only for frontend work.
 
 ## 11. Non-goals
 

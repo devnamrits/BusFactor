@@ -12,7 +12,7 @@ from . import memory, planner, validator
 from .tools import TOOLS
 
 
-def ask(question: str) -> dict:
+def ask(question: str, repo: str = "main") -> dict:
     t0 = time.time()
     question = (question or "").strip()
     if not question:
@@ -34,7 +34,7 @@ def ask(question: str) -> dict:
 
     # Memory first: if we answered this before, reuse it — that's the point
     # of remembering. Anything else routes fresh.
-    prior = memory.match_question(question)
+    prior = memory.match_question(repo, question)
     if prior:
         routing = {
             "tool": "recall",
@@ -60,15 +60,16 @@ def ask(question: str) -> dict:
         }
         v = validator.validate(res)
         qid = memory.record_question(
-            question, res["answer"], res["outcome"], res["citations"], "recall"
+            repo, question, res["answer"], res["outcome"], res["citations"], "recall"
         )
         return _envelope(question, res, routing, v, qid, t0)
 
     routing = planner.plan(question)
     tool = routing["tool"]
-    args = routing.get("args") or {}
+    args = dict(routing.get("args") or {})
+    args.pop("repo", None)
     try:
-        res = TOOLS[tool](**args)
+        res = TOOLS[tool](**args, repo=repo)
     except TypeError as e:
         res = {
             "tool": tool, "ok": False, "outcome": "bad_args",
@@ -82,7 +83,7 @@ def ask(question: str) -> dict:
 
     v = validator.validate(res)
     qid = memory.record_question(
-        question, res.get("answer", ""), res.get("outcome", ""),
+        repo, question, res.get("answer", ""), res.get("outcome", ""),
         res.get("citations", []), tool,
     )
     return _envelope(question, res, routing, v, qid, t0)

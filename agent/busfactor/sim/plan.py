@@ -3,8 +3,8 @@
 Candidates are active people who do not already know the module; they are
 ranked by sibling coverage (weight on modules under the same top-level
 tree, e.g. src/*) and by shared working history with the departing person.
-The rationale is stored with each step so the console can show *why this
-person* — never a black box.
+Each step stores its rationale, so the console can show *why this person* —
+never a black box.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from .. import db
 from . import metrics
 from .people import get_person
 
-RESILIENCE_MIN_SEVERITY = 2  # include pre-existing single-knower modules
+RESILIENCE_MIN_SEVERITY = 2  # rank pre-existing fragility like a real finding
 
 
 def _now() -> str:
@@ -30,25 +30,30 @@ def _prefix(module_id: str) -> str:
     return name.split("/", 1)[0] if "/" in name else name
 
 
-def _get_sim(sim_id: str | None) -> dict:
+def _get_sim(repo: str, sim_id: str | None) -> dict:
     if not sim_id or sim_id == "latest":
-        rows = db.graph().ro_query(
+        rows = db.graph(repo).ro_query(
             "MATCH (s:Sim {kind:'drill'}) RETURN s.id, s.target_person, s.label, s.metrics_json "
             "ORDER BY s.created_at DESC LIMIT 1"
         ).result_set
     else:
-        rows = db.graph().ro_query(
+        rows = db.graph(repo).ro_query(
             "MATCH (s:Sim {id:$id}) RETURN s.id, s.target_person, s.label, s.metrics_json",
             {"id": sim_id},
         ).result_set
     if not rows:
         raise ValueError("no drill to plan from — run a drill first")
     sid, target, label, mjson = rows[0]
-    return {"id": sid, "target_person": target, "label": label, "metrics": json.loads(mjson or "{}")}
+    return {
+        "id": sid,
+        "target_person": target,
+        "label": label,
+        "metrics": json.loads(mjson or "{}"),
+    }
 
 
-def _targets_from_findings(sim_id: str) -> dict[str, dict]:
-    rows = db.graph().ro_query(
+def _targets_from_findings(repo: str, sim_id: str) -> dict[str, dict]:
+    rows = db.graph(repo).ro_query(
         "MATCH (s:Sim {id:$sid})-[:FOUND]->(f:Finding) "
         "WHERE f.module_id IS NOT NULL AND f.module_id <> '' "
         "RETURN f.kind, f.severity, f.claim, f.module_id "
@@ -62,9 +67,9 @@ def _targets_from_findings(sim_id: str) -> dict[str, dict]:
     return targets
 
 
-def _resilience_targets(targets: dict[str, dict], dep: dict) -> dict[str, dict]:
+def _resilience_targets(repo: str, targets: dict[str, dict], dep: dict) -> dict[str, dict]:
     """Pre-existing single-knower modules (visible today, not caused by the drill)."""
-    snap = metrics.snapshot("main")
+    snap = metrics.snapshot(repo)
     out = dict(targets)
     for mid, info in snap["coverage"].items():
         if mid in out or len(info["knowers"]) != 1:
@@ -81,16 +86,59 @@ def _resilience_targets(targets: dict[str, dict], dep: dict) -> dict[str, dict]:
     return out
 
 
-def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dict:
-    sim = _get_sim(sim_id)
-    dep = get_person(sim["target_person"])
+def get_plan(repo: str, plan_id: str | None) -> dict:
+    """Load a plan + its ordered steps. The engine, API and MCP all share this."""
+    if not plan_id or plan_id == "latest":
+        rows = db.graph(repo).ro_query(
+            "MATCH (pl:Plan) RETURN pl.id, pl.target_person, pl.sim_id, pl.label "
+            "ORDER BY pl.created_at DESC LIMIT 1"
+        ).result_set
+    else:
+        rows = db.graph(repo).ro_query(
+            "MATCH (pl:Plan {id:$id}) RETURN pl.id, pl.target_person, pl.sim_id, pl.label",
+            {"id": plan_id},
+        ).result_set
+    if not rows:
+        raise ValueError("no plan found — run `plan` first")
+    pid, target, sim_id, label = rows[0]
+    steps = db.graph(repo).ro_query(
+        "MATCH (pl:Plan {id:$id})-[:HAS_STEP]->(st:Step) "
+        "RETURN st.id, st.kind, st.order, st.module_id, st.teacher_id, st.note, st.proof_json "
+        "ORDER BY st.order",
+        {"id": pid},
+    ).result_set
+    return {
+        "id": pid,
+        "target_person": target,
+        "sim_id": sim_id,
+        "label": label,
+        "steps": [
+            {
+                "id": sid,
+                "kind": kind,
+                "order": int(order),
+                "module_id": mid,
+                "teacher_id": tid,
+                "note": note,
+                "proof": json.loads(pj or "{}"),
+            }
+            for sid, kind, order, mid, tid, note, pj in steps
+        ],
+    }
 
-    targets = _targets_from_findings(sim["id"])
+
+def make_plan(
+    sim_id: str | None = None, include_resilience: bool = True, repo: str = "main"
+) -> dict:
+    sim = _get_sim(repo, sim_id)
+    dep = get_person(sim["target_person"], repo)
+
+    targets = _targets_from_findings(repo, sim["id"])
     if include_resilience:
-        targets = _resilience_targets(targets, dep)
+        targets = _resilience_targets(repo, targets, dep)
 
     # ---- candidate landscape (computed in Python; the graph is small) ------
-    edges = db.graph().ro_query(
+    edges = db.graph(repo).ro_query(
         "MATCH (p:Person {status:'active'})-[k:KNOWS]->(m:Module) "
         "RETURN p.id, p.name, m.id, m.name, k.weight"
     ).result_set
@@ -103,7 +151,7 @@ def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dic
         mname[mid] = mn
     dep_edges = dict(by_person.get(dep["id"], {}))
 
-    snap_main = metrics.snapshot("main")
+    snap_main = metrics.snapshot(repo)
 
     token = secrets.token_hex(2)
     plan_id = f"plan-{token}"
@@ -115,7 +163,9 @@ def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dic
         targets.items(), key=lambda kv: (-kv[1]["severity"], mname.get(kv[0], kv[0]))
     )
     for mid, t in ranked_targets:
-        existing = {k["id"] for k in snap_main["coverage"].get(mid, {"knowers": []})["knowers"]}
+        existing = {
+            k["id"] for k in snap_main["coverage"].get(mid, {"knowers": []})["knowers"]
+        }
         want = 2 if t["kind"] in ("sole_knower_lost", "module_blind") else 1
         prefix = _prefix(mid)
 
@@ -140,7 +190,6 @@ def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dic
                     "shared": sorted(mname.get(m2, m2) for m2 in shared),
                 }
             )
-        cands.sort(key=lambda c: (-c["score"], c["name"]))
         # spread the handover: a teacher already carrying several picks pays a
         # small load penalty so coverage widens instead of piling on one pair.
         chosen = sorted(
@@ -184,7 +233,7 @@ def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dic
 
     # ---- persist ------------------------------------------------------------
     db.rw(
-        "main",
+        repo,
         "CREATE (pl:Plan {id:$id, label:$label, target_person:$target, sim_id:$sim, "
         "status:'open', created_at:$now})",
         {
@@ -196,31 +245,31 @@ def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dic
         },
     )
     db.rw(
-        "main",
+        repo,
         "UNWIND $rows AS r CREATE (st:Step {id:r.id, kind:r.kind, order:r.order, "
         "module_id:r.module_id, teacher_id:r.teacher_id, note:r.note, proof_json:r.proof})",
         {"rows": steps},
     )
     db.rw(
-        "main",
+        repo,
         "MATCH (pl:Plan {id:$id}) UNWIND $ids AS sid MATCH (st:Step {id:sid}) "
         "CREATE (pl)-[:HAS_STEP]->(st)",
         {"id": plan_id, "ids": [s["id"] for s in steps]},
     )
     db.rw(
-        "main",
+        repo,
         "UNWIND $rows AS r MATCH (st:Step {id:r.sid}), (m:Module {id:r.mid}) "
         "CREATE (st)-[:COVERS]->(m)",
         {"rows": [{"sid": s["id"], "mid": s["module_id"]} for s in steps]},
     )
     db.rw(
-        "main",
+        repo,
         "UNWIND $rows AS r MATCH (st:Step {id:r.sid}), (p:Person {id:r.pid}) "
         "CREATE (st)-[:TEACHER]->(p)",
         {"rows": [{"sid": s["id"], "pid": s["teacher_id"]} for s in steps]},
     )
     db.rw(
-        "main",
+        repo,
         "MATCH (pl:Plan {id:$id}), (s:Sim {id:$sim}) CREATE (pl)-[:BASED_ON]->(s)",
         {"id": plan_id, "sim": sim["id"]},
     )

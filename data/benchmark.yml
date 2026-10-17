@@ -1,0 +1,68 @@
+# Frozen benchmark — twelve tickets a team would actually file.
+#
+# Replayed in order by `make bench` against a reset graph.
+#   tool:    the tool the router must pick
+#   outcome: "answered" (either answered_* shape) or the exact refusal shape
+#
+# Tickets B5–B7 replay one arc: drill → plan → heal, in order.
+
+- id: B1
+  question: "Who knows src/udf?"
+  tool: who_knows
+  outcome: answered
+
+- id: B2
+  question: "Who can we least afford to lose?"
+  tool: critical_people
+  outcome: answered
+
+- id: B3
+  question: "Where is knowledge stranded?"
+  tool: knowledge_islands
+  outcome: answered
+
+- id: B4
+  question: "Risk for src/udf"
+  tool: module_risk
+  outcome: answered
+
+- id: B5
+  question: "What if Roi Lipman leaves?"
+  tool: simulate_departure
+  outcome: answered
+
+- id: B6
+  question: "Build a handover plan"
+  tool: handover_plan
+  outcome: answered
+
+- id: B7
+  question: "Heal it and verify"
+  tool: heal_and_verify
+  outcome: answered
+
+- id: B8
+  question: "What did we decide about graphblas?"
+  tool: recall
+  outcome: answered
+
+- id: B9
+  question: "What are the billing SLAs?"
+  tool: recall
+  outcome: not_in_graph
+
+- id: B10
+  question: "What if Jane Nobody leaves?"
+  tool: simulate_departure
+  outcome: unknown_entity
+
+- id: B11
+  question: "Hmm."
+  tool: recall
+  outcome: not_in_graph
+
+# B12 repeats B2 verbatim — the answer must come from memory, not recomputation.
+- id: B12
+  question: "Who can we least afford to lose?"
+  tool: recall
+  outcome: answered_from_memory
