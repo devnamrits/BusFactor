@@ -20,6 +20,7 @@ from pathlib import Path
 from ..config import settings
 from . import git as gitm
 from . import pulls as pullsm
+from .identity import collapse_same_name_people
 from .weights import know_weight
 
 # ---- thresholds (pinned per snapshot; recorded in meta.thresholds) --------
@@ -602,6 +603,7 @@ def build_snapshot(
         "decided_by": decided_by,
         "affects": affects,
     }
+    collapse_same_name_people(body, log)
     canon = json.dumps(body, sort_keys=True, separators=(",", ":"))
     body["meta"]["snapshot_sha256"] = hashlib.sha256(canon.encode()).hexdigest()
 

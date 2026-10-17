@@ -1,4 +1,4 @@
-"""Person lookup against one repo graph: exact id first, then unambiguous name."""
+"""Person lookup against one repo graph: id exact, then best name match."""
 
 from __future__ import annotations
 
@@ -37,10 +37,9 @@ def get_person(person_ref: str, repo: str = "main") -> dict:
         for p in people
         if q in (p["name"] or "").lower() or q == (p["handle"] or "").lower()
     ]
-    if len(hits) == 1:
-        return hits[0]
-    if len(hits) > 1:
-        raise ValueError(
-            f"ambiguous person '{person_ref}': {', '.join(p['name'] for p in hits)}"
-        )
-    raise ValueError(f"unknown person '{person_ref}'")
+    if not hits:
+        raise ValueError(f"unknown person '{person_ref}'")
+    exact = [p for p in hits if (p["name"] or "").lower() == q]
+    pool = exact or hits
+    pool.sort(key=lambda p: (-p["commits"], -p["reviews"], p["id"]))
+    return pool[0]
