@@ -1,58 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
-  <!-- Shared IntelliJ run configurations — commit-safe, no personal paths.
-       API · uvicorn :8000      FastAPI + the built web UI (agent/ = workdir)
-       Web · vite dev :5173     UI dev server; proxies /api to :8000
-       Web · build dist         regenerate web/dist (served by the API)
-       DB · FalkorDB up         make up — podman/docker auto-detected
-       DB · load demo snapshot  make ingest — needed once on a fresh clone -->
-  <configuration default="false" name="API (uvicorn :8000)" type="PythonConfigurationType" factoryName="Python">
-    <module name="BusFactor" />
-    <option name="ENV_FILES" value="" />
+  <!-- Shared IntelliJ run configurations — plain Shell Script type, no plugins required.
+
+       Start BusFactor (db + api)  THE one to run: starts FalkorDB, then the API,
+                                   which also serves the built web UI.
+                                   Open http://localhost:8000 when it's up.
+       Web dev server (vite)       optional — live-reloading UI on :5173 (/api proxied)
+       FalkorDB (db only)          optional — just the database container -->
+  <configuration default="false" name="Start BusFactor (db + api)" type="ShConfigurationType" factoryName="Shell Script">
+    <option name="SCRIPT_TEXT" value="echo 'BusFactor -> http://localhost:8000'; make up; cd agent &amp;&amp; export PYTHONUNBUFFERED=1 &amp;&amp; exec ./.venv/bin/python -m uvicorn busfactor.api:app --port 8000 --log-level warning" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+    <option name="SCRIPT_PATH" value="" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="/bin/zsh" />
     <option name="INTERPRETER_OPTIONS" value="" />
-    <option name="PARENT_ENVS" value="true" />
-    <envs>
-      <env name="PYTHONUNBUFFERED" value="1" />
-    </envs>
-    <option name="SDK_HOME" value="$PROJECT_DIR$/agent/.venv" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/agent" />
-    <option name="IS_MODULE_SDK" value="false" />
-    <option name="ADD_CONTENT_ROOTS" value="true" />
-    <option name="ADD_SOURCE_ROOTS" value="true" />
-    <option name="MODULE_MODE" value="true" />
-    <option name="MODULE_NAME" value="uvicorn" />
-    <option name="PARAMETERS" value="busfactor.api:app --port 8000 --log-level warning" />
-    <option name="SHOW_COMMAND_LINE" value="false" />
-    <option name="EMULATE_TERMINAL" value="false" />
-    <option name="REDIRECT_INPUT" value="false" />
-    <option name="INPUT_FILE" value="" />
-  </configuration>
-  <configuration default="false" name="Web (vite dev :5173)" type="js.build_tools.npm" factoryName="npm">
-    <package-json value="$PROJECT_DIR$/web/package.json" />
-    <command value="run" />
-    <scripts>
-      <script value="dev" />
-    </scripts>
-    <node-interpreter value="project" />
+    <option name="EXECUTE_IN_TERMINAL" value="false" />
+    <option name="EXECUTE_SCRIPT_FILE" value="false" />
     <envs />
     <method v="2" />
   </configuration>
-  <configuration default="false" name="Web (build dist)" type="js.build_tools.npm" factoryName="npm">
-    <package-json value="$PROJECT_DIR$/web/package.json" />
-    <command value="run" />
-    <scripts>
-      <script value="build" />
-    </scripts>
-    <node-interpreter value="project" />
+  <configuration default="false" name="Web dev server (vite)" type="ShConfigurationType" factoryName="Shell Script">
+    <option name="SCRIPT_TEXT" value="cd web &amp;&amp; npm run dev" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+    <option name="SCRIPT_PATH" value="" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="/bin/zsh" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="EXECUTE_IN_TERMINAL" value="false" />
+    <option name="EXECUTE_SCRIPT_FILE" value="false" />
     <envs />
     <method v="2" />
   </configuration>
-  <configuration default="false" name="DB (FalkorDB up)" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
-    <makefile filename="$PROJECT_DIR$/Makefile" target="up" workingDirectory="$PROJECT_DIR$" />
-    <method v="2" />
-  </configuration>
-  <configuration default="false" name="DB (load demo snapshot)" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
-    <makefile filename="$PROJECT_DIR$/Makefile" target="ingest" workingDirectory="$PROJECT_DIR$" />
+  <configuration default="false" name="FalkorDB (db only)" type="ShConfigurationType" factoryName="Shell Script">
+    <option name="SCRIPT_TEXT" value="make up" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+    <option name="SCRIPT_PATH" value="" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="/bin/zsh" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="EXECUTE_IN_TERMINAL" value="false" />
+    <option name="EXECUTE_SCRIPT_FILE" value="false" />
+    <envs />
     <method v="2" />
   </configuration>
 </component>
