@@ -75,6 +75,63 @@ def ensure_registry() -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# provenance for the console — where a graph came from, at a glance
+# ---------------------------------------------------------------------------
+
+_snap_meta_cache: dict[str, tuple[float, dict]] = {}
+
+
+def _snapshot_path(slug: str) -> Path:
+    if slug == DEMO_SLUG:
+        return settings.snapshot_path
+    return settings.snapshots_dir / f"{slug}.json"
+
+
+def snapshot_meta(slug: str) -> dict:
+    """Origin metadata from the repo's snapshot file (mtime-cached, never raises)."""
+    path = _snapshot_path(slug)
+    try:
+        mtime = path.stat().st_mtime
+    except OSError:
+        return {}
+    cached = _snap_meta_cache.get(slug)
+    if cached and cached[0] == mtime:
+        return cached[1]
+    try:
+        meta = (json.loads(path.read_text()) or {}).get("meta") or {}
+    except Exception:
+        return {}
+    out = {
+        "origin": meta.get("repo_url") or "",
+        "window_days": meta.get("window_days"),
+        "since": meta.get("since") or "",
+        "head": (meta.get("head_commit") or "")[:12],
+        "sha": (meta.get("snapshot_sha256") or "")[:12],
+        "generated_at": datetime.fromtimestamp(mtime, UTC).strftime(
+            "%Y-%m-%d %H:%M UTC"
+        ),
+    }
+    _snap_meta_cache[slug] = (mtime, out)
+    return out
+
+
+def _graph_counts(graph: str) -> dict:
+    """Live counts — zeros (not errors) while a graph is still being built."""
+
+    def count(query: str) -> int:
+        try:
+            return int(db.ro(graph, query).result_set[0][0] or 0)
+        except Exception:
+            return 0
+
+    return {
+        "people": count("MATCH (p:Person) RETURN count(p)"),
+        "modules": count("MATCH (m:Module) RETURN count(m)"),
+        "decisions": count("MATCH (d:Decision) RETURN count(d)"),
+    }
+
+
 def list_repos() -> list[dict]:
     ensure_registry()
     rows = db.ro(
@@ -83,8 +140,11 @@ def list_repos() -> list[dict]:
         "r.message, r.created_at, r.updated_at, r.people, r.modules, r.commits, "
         "r.snapshot_sha ORDER BY r.created_at",
     ).result_set
-    return [
-        {
+    out = []
+    for row in rows:
+        (slug, name, url, graph, kind, status, message, created, updated, people,
+         modules, commits, sha) = row
+        out.append({
             "slug": slug,
             "name": name,
             "url": url,
@@ -98,10 +158,10 @@ def list_repos() -> list[dict]:
             "modules": int(modules or 0),
             "commits": int(commits or 0),
             "snapshot_sha": sha or "",
-        }
-        for slug, name, url, graph, kind, status, message, created, updated, people,
-        modules, commits, sha in rows
-    ]
+            "meta": snapshot_meta(slug),
+            "counts": _graph_counts(graph),
+        })
+    return out
 
 
 def get_repo(slug: str) -> dict | None:

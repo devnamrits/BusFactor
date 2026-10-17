@@ -11,6 +11,11 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
 
   const pending = (repos || []).filter((r) => PENDING.has(r.status))
 
+  const activeRepo = (repos || []).find((r) => r.slug === active)
+  const meta = activeRepo?.meta || {}
+  const counts = activeRepo?.counts || {}
+  const link = meta.origin || (/^https?:/.test(activeRepo?.url || '') ? activeRepo.url : '')
+
   useEffect(() => {
     if (!pending.length) return
     const t = setInterval(onRefresh, 2000)
@@ -83,6 +88,45 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
         )}
         {formError && <span className="formerror">{formError}</span>}
       </div>
+      {activeRepo && (
+        <div className="metabar">
+          {link ? (
+            <a href={link} target="_blank" rel="noreferrer" title={activeRepo.url}>
+              {activeRepo.name}
+            </a>
+          ) : (
+            <span title={activeRepo.url}>{activeRepo.name}</span>
+          )}
+          <span className="sep">·</span>
+          <span>{activeRepo.kind}</span>
+          <span className="sep">·</span>
+          <span>graph {activeRepo.graph}</span>
+          {counts.people > 0 && (
+            <>
+              <span className="sep">·</span>
+              <span>
+                {counts.people} people · {counts.modules} modules · {counts.decisions} decisions
+              </span>
+            </>
+          )}
+          {meta.window_days && (
+            <>
+              <span className="sep">·</span>
+              <span title={meta.since ? `since ${meta.since}` : ''}>
+                window {meta.window_days}d
+              </span>
+            </>
+          )}
+          {meta.head && (
+            <>
+              <span className="sep">·</span>
+              <span title={`head ${meta.head} · generated ${meta.generated_at}`}>
+                snap {meta.sha || meta.head}
+              </span>
+            </>
+          )}
+        </div>
+      )}
       {pending.map((r) => (
         <div className="ingest-strip" key={r.slug}>
           <span className={`istate ${r.status}`}>{r.status}</span>

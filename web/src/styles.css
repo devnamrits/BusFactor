@@ -254,6 +254,33 @@ button:focus-visible {
   white-space: nowrap;
 }
 
+/* provenance strip — where this graph came from, one hairline of facts */
+.metabar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--line);
+  font: 11px var(--mono);
+  color: var(--ink-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  flex: none;
+}
+.metabar a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--line-strong);
+}
+.metabar a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.metabar .sep {
+  color: var(--ink-faint);
+}
+
 .ingest-strip {
   display: flex;
   align-items: center;
