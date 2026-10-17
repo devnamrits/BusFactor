@@ -1,0 +1,7490 @@
+{
+ "affects": [
+  {
+   "decision": "dec:pr-1558",
+   "module": "m:src/udf"
+  },
+  {
+   "decision": "dec:pr-1558",
+   "module": "m:tests/flow"
+  },
+  {
+   "decision": "dec:pr-1630",
+   "module": "m:src"
+  },
+  {
+   "decision": "dec:pr-1630",
+   "module": "m:src/arithmetic"
+  },
+  {
+   "decision": "dec:pr-1630",
+   "module": "m:src/configuration"
+  },
+  {
+   "decision": "dec:pr-1630",
+   "module": "m:src/udf"
+  },
+  {
+   "decision": "dec:pr-1630",
+   "module": "m:tests/flow"
+  },
+  {
+   "decision": "dec:pr-1973",
+   "module": "m:src/serializers"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "module": "m:src"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "module": "m:src/arithmetic"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "module": "m:src/procedures"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "module": "m:src/util"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "module": "m:tests/flow"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "module": "m:tests/unit"
+  },
+  {
+   "decision": "dec:pr-2147",
+   "module": "m:src/execution_plan"
+  },
+  {
+   "decision": "dec:pr-2147",
+   "module": "m:tests/flow"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:graph"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:graph/src"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/algorithms"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/arithmetic"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/ast"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/bulk_insert"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/commands"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/configuration"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/constraint"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/cron"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/datatypes"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/effects"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/errors"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/execution_plan"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/filter_tree"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/graph"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/index"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/procedures"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/resultset"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/schema"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/serializers"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/udf"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:src/util"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests/benchmarks"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests/flow"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests/fuzz"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests/memcheck"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests/tck"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "module": "m:tests/unit"
+  },
+  {
+   "decision": "dec:pr-2695",
+   "module": "m:graph"
+  },
+  {
+   "decision": "dec:pr-2695",
+   "module": "m:graph/src"
+  },
+  {
+   "decision": "dec:pr-2695",
+   "module": "m:tests/flow"
+  }
+ ],
+ "authored": [
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1302"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:1290"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1314"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1329"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:1328"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1319"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1357"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1359"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:1366"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1368"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:1374"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1381"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1388"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1406"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1399"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1416"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1379"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1429"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1427"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1442"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1432"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1447"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1461"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1266"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:1493"
+  },
+  {
+   "person": "p:dudizimber",
+   "pr": "pr:1490"
+  },
+  {
+   "person": "p:dudizimber",
+   "pr": "pr:1460"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1521"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:1519"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1522"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1523"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1530"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1539"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1555"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1558"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1551"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1560"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1568"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:1563"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:1598"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:1590"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1604"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1612"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1625"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1630"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1641"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:1664"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1667"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1690"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1687"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:1714"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1718"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1736"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1743"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1747"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1769"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1793"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:1795"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1818"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1376"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1815"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1819"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1703"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1829"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1834"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1809"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1816"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1843"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1851"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1877"
+  },
+  {
+   "person": "p:barak-bar",
+   "pr": "pr:1874"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1903"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1912"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1935"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1961"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1965"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1963"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1973"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:1972"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:1694"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2013"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1713"
+  },
+  {
+   "person": "p:dudizimber",
+   "pr": "pr:2026"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2036"
+  },
+  {
+   "person": "p:dudizimber",
+   "pr": "pr:2060"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:1978"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2076"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2080"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2042"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2084"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2088"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2067"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2104"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2101"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2092"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2121"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2117"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2119"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2135"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2145"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2147"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2086"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2108"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2156"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2163"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2170"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2173"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2175"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2191"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2197"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2232"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2242"
+  },
+  {
+   "person": "p:swilly22",
+   "pr": "pr:2230"
+  },
+  {
+   "person": "p:gomezgab",
+   "pr": "pr:2250"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2279"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2344"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2102"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2366"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2365"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2378"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2349"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2377"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2428"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2416"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2420"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2431"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2444"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2445"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2439"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2442"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2447"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2451"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2450"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2459"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2491"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2493"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2523"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2565"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2579"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2494"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2554"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2562"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2571"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2572"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2624"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2622"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2628"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2636"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2640"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2641"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2642"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2674"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2678"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2685"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2686"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2690"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2691"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2754"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2693"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2712"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2787"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2789"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2570"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2757"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2824"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2788"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2833"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2785"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2304"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2765"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2797"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2708"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2305"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2306"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2454"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2455"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2847"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2456"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2718"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2460"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2461"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2462"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2468"
+  },
+  {
+   "person": "p:alifarhan231087",
+   "pr": "pr:2396"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2704"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2867"
+  },
+  {
+   "person": "p:yzxcj797",
+   "pr": "pr:2606"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2874"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2921"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2944"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3163"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2846"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3161"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2916"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3094"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3060"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3053"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2911"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3087"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3088"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2989"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2469"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2990"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3010"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2695"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2952"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3021"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2471"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2845"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3072"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3074"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3076"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2487"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3079"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2390"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2278"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2488"
+  },
+  {
+   "person": "p:onlyysaurabh",
+   "pr": "pr:3132"
+  },
+  {
+   "person": "p:aniruddhaadak80",
+   "pr": "pr:3125"
+  },
+  {
+   "person": "p:gkorland",
+   "pr": "pr:2489"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3081"
+  },
+  {
+   "person": "p:juliuskentbalagot",
+   "pr": "pr:2829"
+  },
+  {
+   "person": "p:aniruddhaadak80",
+   "pr": "pr:3127"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2907"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2908"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3022"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2920"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:3181"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2910"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:2350"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2912"
+  },
+  {
+   "person": "p:dvirdukhan",
+   "pr": "pr:3307"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2917"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3000"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3234"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3113"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3262"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3104"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3014"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3290"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3102"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3328"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3339"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3336"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:2897"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3285"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3252"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3335"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3334"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3277"
+  },
+  {
+   "person": "p:avi-avni",
+   "pr": "pr:3063"
+  }
+ ],
+ "decided_by": [
+  {
+   "decision": "dec:pr-1558",
+   "person": "p:swilly22"
+  },
+  {
+   "decision": "dec:pr-1630",
+   "person": "p:swilly22"
+  },
+  {
+   "decision": "dec:pr-1973",
+   "person": "p:gkorland"
+  },
+  {
+   "decision": "dec:pr-2060",
+   "person": "p:dudizimber"
+  },
+  {
+   "decision": "dec:pr-2080",
+   "person": "p:swilly22"
+  },
+  {
+   "decision": "dec:pr-2147",
+   "person": "p:gomezgab"
+  },
+  {
+   "decision": "dec:pr-2279",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "decision": "dec:pr-2102",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "decision": "dec:pr-2695",
+   "person": "p:dvirdukhan"
+  }
+ ],
+ "decisions": [
+  {
+   "decided_at": "2026-10-05T14:11:41Z",
+   "id": "dec:pr-2695",
+   "source": "pull-request",
+   "source_ref": "PR #2695",
+   "status": "merged",
+   "title": "build: replace graphblas.sh/redisearch.sh with a native-deps crate"
+  },
+  {
+   "decided_at": "2026-08-05T10:00:28Z",
+   "id": "dec:pr-2102",
+   "source": "pull-request",
+   "source_ref": "PR #2102",
+   "status": "merged",
+   "title": "feat: RediSearch 8.6 LLAPI migration \u2014 code (stacked on #2101)"
+  },
+  {
+   "decided_at": "2026-08-02T18:12:12Z",
+   "id": "dec:pr-2279",
+   "source": "pull-request",
+   "source_ref": "PR #2279",
+   "status": "merged",
+   "title": "Migrate the default development branch to the Rust engine"
+  },
+  {
+   "decided_at": "2026-06-24T06:05:11Z",
+   "id": "dec:pr-2147",
+   "source": "pull-request",
+   "source_ref": "PR #2147",
+   "status": "merged",
+   "title": "Fix optimizer rewrite"
+  },
+  {
+   "decided_at": "2026-05-31T07:40:31Z",
+   "id": "dec:pr-2080",
+   "source": "pull-request",
+   "source_ref": "PR #2080",
+   "status": "merged",
+   "title": "switch to gperf perfect hashing for built-in functions repository"
+  },
+  {
+   "decided_at": "2026-05-24T08:20:38Z",
+   "id": "dec:pr-2060",
+   "source": "pull-request",
+   "source_ref": "PR #2060",
+   "status": "merged",
+   "title": "fix(docker): replace apt-get upgrade with dist-upgrade in Dockerfiles"
+  },
+  {
+   "decided_at": "2026-05-07T07:27:00Z",
+   "id": "dec:pr-1973",
+   "source": "pull-request",
+   "source_ref": "PR #1973",
+   "status": "merged",
+   "title": "fix(serializer): replace VLA with heap allocation in RDB entity decoders"
+  },
+  {
+   "decided_at": "2026-02-25T13:47:21Z",
+   "id": "dec:pr-1630",
+   "source": "pull-request",
+   "source_ref": "PR #1630",
+   "status": "merged",
+   "title": "introduce stack,heap size quickjs configs in addition to configurable\u2026"
+  },
+  {
+   "decided_at": "2026-01-29T15:09:44Z",
+   "id": "dec:pr-1558",
+   "source": "pull-request",
+   "source_ref": "PR #1558",
+   "status": "merged",
+   "title": "Introduce graph object to UDFs"
+  }
+ ],
+ "docs": [
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:docs/profiling.md",
+   "kind": "guide",
+   "path": "docs/profiling.md",
+   "title": "Profiling using samply"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:docs/query_visualizer.md",
+   "kind": "guide",
+   "path": "docs/query_visualizer.md",
+   "title": "Query Visualizer User Guide"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:docs/write-authorization.md",
+   "kind": "guide",
+   "path": "docs/write-authorization.md",
+   "title": "Write authorization"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan",
+    "p:avi-avni"
+   ],
+   "id": "d:CLAUDE.md",
+   "kind": "guide",
+   "path": "CLAUDE.md",
+   "title": "CLAUDE.md"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan",
+    "p:avi-avni",
+    "p:danshalev7"
+   ],
+   "id": "d:README.md",
+   "kind": "readme",
+   "path": "README.md",
+   "title": "Connect to FalkorDB"
+  },
+  {
+   "authors": [
+    "p:avi-avni"
+   ],
+   "id": "d:.claude/skills/bench/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/bench/SKILL.md",
+   "title": "Bench loop"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan",
+    "p:avi-avni"
+   ],
+   "id": "d:.claude/skills/build/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/build/SKILL.md",
+   "title": "Build"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:.claude/skills/coverage/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/coverage/SKILL.md",
+   "title": "Coverage"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:.claude/skills/debug/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/debug/SKILL.md",
+   "title": "Debug"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:.claude/skills/fuzz/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/fuzz/SKILL.md",
+   "title": "Fuzz"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:.claude/skills/lint/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/lint/SKILL.md",
+   "title": "Lint (advanced)"
+  },
+  {
+   "authors": [
+    "p:avi-avni",
+    "p:dvirdukhan"
+   ],
+   "id": "d:.claude/skills/profile/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/profile/SKILL.md",
+   "title": "Profile"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan"
+   ],
+   "id": "d:.claude/skills/test/SKILL.md",
+   "kind": "guide",
+   "path": ".claude/skills/test/SKILL.md",
+   "title": "Test"
+  },
+  {
+   "authors": [
+    "p:dvirdukhan",
+    "p:avi-avni"
+   ],
+   "id": "d:.devcontainer/README.md",
+   "kind": "readme",
+   "path": ".devcontainer/README.md",
+   "title": "FalkorDB Development Container"
+  },
+  {
+   "authors": [
+    "p:avi-avni"
+   ],
+   "id": "d:bench/README.md",
+   "kind": "readme",
+   "path": "bench/README.md",
+   "title": "bench \u2014 per-query performance & coverage loop"
+  }
+ ],
+ "knows": [
+  {
+   "commits": 5,
+   "last_at": "2026-10-15T05:04:52Z",
+   "module": "m:graph",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6821
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-10-09T08:27:45Z",
+   "module": "m:graph",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5964
+  },
+  {
+   "commits": 69,
+   "last_at": "2026-10-15T13:51:48Z",
+   "module": "m:graph/src",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.7991
+  },
+  {
+   "commits": 16,
+   "last_at": "2026-10-11T18:05:32Z",
+   "module": "m:graph/src",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4006
+  },
+  {
+   "commits": 5,
+   "last_at": "2026-09-16T15:44:48+03:00",
+   "module": "m:graph/src",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2927
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-10-07T10:05:09Z",
+   "module": "m:graph/src",
+   "person": "p:aniruddhaadak80",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2918
+  },
+  {
+   "commits": 26,
+   "last_at": "2026-07-29T09:57:37+03:00",
+   "module": "m:src",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.543
+  },
+  {
+   "commits": 13,
+   "last_at": "2026-10-14T11:21:24Z",
+   "module": "m:src",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4503
+  },
+  {
+   "commits": 9,
+   "last_at": "2026-10-06T22:08:25Z",
+   "module": "m:src",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3911
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-05T06:45:03-04:00",
+   "module": "m:src",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2183
+  },
+  {
+   "commits": 5,
+   "last_at": "2026-04-19T11:42:52+03:00",
+   "module": "m:src",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2071
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-07-09T14:57:47+03:00",
+   "module": "m:src/algorithms",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.553
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-05T20:31:36+02:00",
+   "module": "m:src/algorithms",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4311
+  },
+  {
+   "commits": 12,
+   "last_at": "2026-06-02T17:13:53+03:00",
+   "module": "m:src/arithmetic",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6741
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-07-05T20:31:36+02:00",
+   "module": "m:src/arithmetic",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3191
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:src/arithmetic",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2991
+  },
+  {
+   "commits": 6,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/ast",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5951
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-29T00:20:02-05:00",
+   "module": "m:src/ast",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3542
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-08T15:24:30+03:00",
+   "module": "m:src/bolt",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6713
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/bulk_insert",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5951
+  },
+  {
+   "commits": 12,
+   "last_at": "2026-10-14T11:56:05Z",
+   "module": "m:src/commands",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4709
+  },
+  {
+   "commits": 16,
+   "last_at": "2026-07-29T09:57:37+03:00",
+   "module": "m:src/commands",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4598
+  },
+  {
+   "commits": 11,
+   "last_at": "2026-10-11T18:05:32Z",
+   "module": "m:src/commands",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4523
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-07-05T06:45:03-04:00",
+   "module": "m:src/commands",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2549
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-07-08T15:24:30+03:00",
+   "module": "m:src/configuration",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5522
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/constraint",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6427
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-04-11T21:29:00+03:00",
+   "module": "m:src/cron",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6154
+  },
+  {
+   "commits": 5,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/datatypes",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5634
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-05T20:31:36+02:00",
+   "module": "m:src/datatypes",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3518
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/effects",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.738
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-07-29T09:57:37+03:00",
+   "module": "m:src/errors",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6195
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-29T00:20:02-05:00",
+   "module": "m:src/errors",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4154
+  },
+  {
+   "commits": 21,
+   "last_at": "2026-07-08T15:24:30+03:00",
+   "module": "m:src/execution_plan",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6237
+  },
+  {
+   "commits": 6,
+   "last_at": "2026-07-27T09:23:26-05:00",
+   "module": "m:src/execution_plan",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3324
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-04-26T16:17:23+03:00",
+   "module": "m:src/execution_plan",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2085
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-01-12T11:43:27+02:00",
+   "module": "m:src/execution_plan",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.1599
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-05-11T21:34:46+03:00",
+   "module": "m:src/filter_tree",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6324
+  },
+  {
+   "commits": 23,
+   "last_at": "2026-07-29T09:57:37+03:00",
+   "module": "m:src/graph",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6807
+  },
+  {
+   "commits": 7,
+   "last_at": "2026-07-05T20:31:36+02:00",
+   "module": "m:src/graph",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3359
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:src/graph",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2762
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-04-10T15:19:24+03:00",
+   "module": "m:src/graph",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.1793
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/index",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5951
+  },
+  {
+   "commits": 11,
+   "last_at": "2026-07-09T14:57:47+03:00",
+   "module": "m:src/procedures",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6094
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-07-05T20:31:36+02:00",
+   "module": "m:src/procedures",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3434
+  },
+  {
+   "commits": 2,
+   "last_at": "2025-12-24T08:12:29+02:00",
+   "module": "m:src/procedures",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.1668
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-07-08T15:24:30+03:00",
+   "module": "m:src/resultset",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6033
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:src/resultset",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.4191
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-05-28T12:36:32+03:00",
+   "module": "m:src/schema",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5951
+  },
+  {
+   "commits": 10,
+   "last_at": "2026-07-29T09:57:37+03:00",
+   "module": "m:src/serializers",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.536
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-10-15T07:59:26Z",
+   "module": "m:src/serializers",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3828
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-09-09T21:03:26+03:00",
+   "module": "m:src/serializers",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3788
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-05-07T11:29:11+03:00",
+   "module": "m:src/serializers",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.251
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-04-05T13:12:36-05:00",
+   "module": "m:src/serializers",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2009
+  },
+  {
+   "commits": 8,
+   "last_at": "2026-05-28T16:09:51+03:00",
+   "module": "m:src/udf",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.7381
+  },
+  {
+   "commits": 7,
+   "last_at": "2026-05-31T10:40:31+03:00",
+   "module": "m:src/util",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.553
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-07-05T06:45:03-04:00",
+   "module": "m:src/util",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3576
+  },
+  {
+   "commits": 8,
+   "last_at": "2026-10-14T10:50:18Z",
+   "module": "m:tests",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6416
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:tests",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3936
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-07-08T15:24:30+03:00",
+   "module": "m:tests",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2844
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:tests/benchmarks",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5722
+  },
+  {
+   "commits": 53,
+   "last_at": "2026-10-15T11:21:06Z",
+   "module": "m:tests/flow",
+   "person": "p:avi-avni",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5164
+  },
+  {
+   "commits": 28,
+   "last_at": "2026-10-07T08:15:16Z",
+   "module": "m:tests/flow",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3987
+  },
+  {
+   "commits": 44,
+   "last_at": "2026-07-09T17:45:10+03:00",
+   "module": "m:tests/flow",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3876
+  },
+  {
+   "commits": 21,
+   "last_at": "2026-10-08T07:06:06Z",
+   "module": "m:tests/flow",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3693
+  },
+  {
+   "commits": 11,
+   "last_at": "2026-07-29T00:20:02-05:00",
+   "module": "m:tests/flow",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2592
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:tests/fuzz",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6912
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:tests/memcheck",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.6912
+  },
+  {
+   "commits": 4,
+   "last_at": "2026-07-08T15:24:30+03:00",
+   "module": "m:tests/tck",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.7665
+  },
+  {
+   "commits": 9,
+   "last_at": "2026-06-24T15:08:14+03:00",
+   "module": "m:tests/unit",
+   "person": "p:swilly22",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.5232
+  },
+  {
+   "commits": 5,
+   "last_at": "2026-07-29T12:58:54-05:00",
+   "module": "m:tests/unit",
+   "person": "p:gomezgab",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.3997
+  },
+  {
+   "commits": 2,
+   "last_at": "2026-08-02T21:12:11+03:00",
+   "module": "m:tests/unit",
+   "person": "p:dvirdukhan",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2902
+  },
+  {
+   "commits": 3,
+   "last_at": "2026-04-10T15:19:24+03:00",
+   "module": "m:tests/unit",
+   "person": "p:gkorland",
+   "reviews": 0,
+   "source": "traced",
+   "weight": 0.2513
+  }
+ ],
+ "meta": {
+  "formula": "0.50*commit_share + 0.30*review_share + 0.20*recency",
+  "generator": "busfactor.ingest",
+  "head_commit": "0f45a8685aa8d542f026b4f5f6bcaa0fbb43c1c9",
+  "pulls_available": true,
+  "repo_url": "https://github.com/FalkorDB/FalkorDB",
+  "reviews_available": false,
+  "since": "2025-10-15T13:51:48Z",
+  "snapshot_sha256": "2c13be800eb1851ae1c4c80268b15f402698fb262b596760759774d9de6267c2",
+  "thresholds": {
+   "knows_threshold": 0.05,
+   "max_decisions": 80,
+   "max_docs": 150,
+   "max_knows_per_module": 10,
+   "max_modules": 80,
+   "max_people": 200,
+   "max_prs": 400,
+   "min_contrib_commits": 2,
+   "min_module_commits": 3,
+   "module_depth": 2
+  },
+  "window_days": 365
+ },
+ "modules": [
+  {
+   "commits_window": 9,
+   "criticality": null,
+   "first_seen": "2026-08-02T21:12:11+03:00",
+   "id": "m:graph",
+   "last_seen": "2026-10-15T05:04:52Z",
+   "name": "graph",
+   "path": "graph"
+  },
+  {
+   "commits_window": 96,
+   "criticality": null,
+   "first_seen": "2026-08-02T21:12:11+03:00",
+   "id": "m:graph/src",
+   "last_seen": "2026-10-15T13:51:48Z",
+   "name": "graph/src",
+   "path": "graph/src"
+  },
+  {
+   "commits_window": 56,
+   "criticality": null,
+   "first_seen": "2025-10-22T14:41:23+03:00",
+   "id": "m:src",
+   "last_seen": "2026-10-14T11:21:24Z",
+   "name": "src",
+   "path": "src"
+  },
+  {
+   "commits_window": 6,
+   "criticality": null,
+   "first_seen": "2026-03-21T10:04:39-05:00",
+   "id": "m:src/algorithms",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/algorithms",
+   "path": "src/algorithms"
+  },
+  {
+   "commits_window": 17,
+   "criticality": null,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "id": "m:src/arithmetic",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/arithmetic",
+   "path": "src/arithmetic"
+  },
+  {
+   "commits_window": 10,
+   "criticality": null,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "id": "m:src/ast",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/ast",
+   "path": "src/ast"
+  },
+  {
+   "commits_window": 3,
+   "criticality": null,
+   "first_seen": "2026-03-30T22:27:04+03:00",
+   "id": "m:src/bolt",
+   "last_seen": "2026-07-08T15:24:30+03:00",
+   "name": "src/bolt",
+   "path": "src/bolt"
+  },
+  {
+   "commits_window": 5,
+   "criticality": null,
+   "first_seen": "2025-12-08T13:19:27+02:00",
+   "id": "m:src/bulk_insert",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/bulk_insert",
+   "path": "src/bulk_insert"
+  },
+  {
+   "commits_window": 46,
+   "criticality": null,
+   "first_seen": "2025-11-24T09:32:19+02:00",
+   "id": "m:src/commands",
+   "last_seen": "2026-10-14T11:56:05Z",
+   "name": "src/commands",
+   "path": "src/commands"
+  },
+  {
+   "commits_window": 6,
+   "criticality": null,
+   "first_seen": "2026-01-12T09:51:52+02:00",
+   "id": "m:src/configuration",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/configuration",
+   "path": "src/configuration"
+  },
+  {
+   "commits_window": 3,
+   "criticality": null,
+   "first_seen": "2025-12-08T13:19:27+02:00",
+   "id": "m:src/constraint",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/constraint",
+   "path": "src/constraint"
+  },
+  {
+   "commits_window": 6,
+   "criticality": null,
+   "first_seen": "2025-11-11T07:17:10+02:00",
+   "id": "m:src/cron",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/cron",
+   "path": "src/cron"
+  },
+  {
+   "commits_window": 9,
+   "criticality": null,
+   "first_seen": "2025-12-11T18:13:57+02:00",
+   "id": "m:src/datatypes",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/datatypes",
+   "path": "src/datatypes"
+  },
+  {
+   "commits_window": 5,
+   "criticality": null,
+   "first_seen": "2025-12-08T13:19:27+02:00",
+   "id": "m:src/effects",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/effects",
+   "path": "src/effects"
+  },
+  {
+   "commits_window": 7,
+   "criticality": null,
+   "first_seen": "2025-11-04T19:30:25+02:00",
+   "id": "m:src/errors",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/errors",
+   "path": "src/errors"
+  },
+  {
+   "commits_window": 35,
+   "criticality": null,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "id": "m:src/execution_plan",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/execution_plan",
+   "path": "src/execution_plan"
+  },
+  {
+   "commits_window": 3,
+   "criticality": null,
+   "first_seen": "2026-03-30T22:27:04+03:00",
+   "id": "m:src/filter_tree",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/filter_tree",
+   "path": "src/filter_tree"
+  },
+  {
+   "commits_window": 35,
+   "criticality": null,
+   "first_seen": "2025-10-18T05:19:37-05:00",
+   "id": "m:src/graph",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/graph",
+   "path": "src/graph"
+  },
+  {
+   "commits_window": 5,
+   "criticality": null,
+   "first_seen": "2025-12-08T13:19:27+02:00",
+   "id": "m:src/index",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/index",
+   "path": "src/index"
+  },
+  {
+   "commits_window": 19,
+   "criticality": null,
+   "first_seen": "2025-11-09T15:28:42+02:00",
+   "id": "m:src/procedures",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/procedures",
+   "path": "src/procedures"
+  },
+  {
+   "commits_window": 7,
+   "criticality": null,
+   "first_seen": "2025-12-08T13:19:27+02:00",
+   "id": "m:src/resultset",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/resultset",
+   "path": "src/resultset"
+  },
+  {
+   "commits_window": 5,
+   "criticality": null,
+   "first_seen": "2026-01-26T16:19:18+02:00",
+   "id": "m:src/schema",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/schema",
+   "path": "src/schema"
+  },
+  {
+   "commits_window": 22,
+   "criticality": null,
+   "first_seen": "2025-10-18T05:19:37-05:00",
+   "id": "m:src/serializers",
+   "last_seen": "2026-10-15T07:59:26Z",
+   "name": "src/serializers",
+   "path": "src/serializers"
+  },
+  {
+   "commits_window": 10,
+   "criticality": null,
+   "first_seen": "2025-12-23T13:48:52+02:00",
+   "id": "m:src/udf",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/udf",
+   "path": "src/udf"
+  },
+  {
+   "commits_window": 13,
+   "criticality": null,
+   "first_seen": "2025-12-02T11:03:24+02:00",
+   "id": "m:src/util",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "src/util",
+   "path": "src/util"
+  },
+  {
+   "commits_window": 16,
+   "criticality": null,
+   "first_seen": "2025-12-08T10:43:50+02:00",
+   "id": "m:tests",
+   "last_seen": "2026-10-14T10:50:18Z",
+   "name": "tests",
+   "path": "tests"
+  },
+  {
+   "commits_window": 4,
+   "criticality": null,
+   "first_seen": "2026-02-09T10:45:58+02:00",
+   "id": "m:tests/benchmarks",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "tests/benchmarks",
+   "path": "tests/benchmarks"
+  },
+  {
+   "commits_window": 164,
+   "criticality": null,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "id": "m:tests/flow",
+   "last_seen": "2026-10-15T11:21:06Z",
+   "name": "tests/flow",
+   "path": "tests/flow"
+  },
+  {
+   "commits_window": 3,
+   "criticality": null,
+   "first_seen": "2025-12-08T10:43:50+02:00",
+   "id": "m:tests/fuzz",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "tests/fuzz",
+   "path": "tests/fuzz"
+  },
+  {
+   "commits_window": 3,
+   "criticality": null,
+   "first_seen": "2025-12-23T13:48:52+02:00",
+   "id": "m:tests/memcheck",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "tests/memcheck",
+   "path": "tests/memcheck"
+  },
+  {
+   "commits_window": 5,
+   "criticality": null,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "id": "m:tests/tck",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "tests/tck",
+   "path": "tests/tck"
+  },
+  {
+   "commits_window": 19,
+   "criticality": null,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "id": "m:tests/unit",
+   "last_seen": "2026-08-02T21:12:11+03:00",
+   "name": "tests/unit",
+   "path": "tests/unit"
+  }
+ ],
+ "owns": [
+  {
+   "module": "m:graph",
+   "person": "p:avi-avni",
+   "share": 0.5556,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:graph/src",
+   "person": "p:avi-avni",
+   "share": 0.7188,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src",
+   "person": "p:swilly22",
+   "share": 0.4643,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/algorithms",
+   "person": "p:swilly22",
+   "share": 0.5,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "person": "p:swilly22",
+   "share": 0.7059,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/ast",
+   "person": "p:swilly22",
+   "share": 0.6,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/bolt",
+   "person": "p:swilly22",
+   "share": 0.6667,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/bulk_insert",
+   "person": "p:swilly22",
+   "share": 0.6,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/commands",
+   "person": "p:avi-avni",
+   "share": 0.2609,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/configuration",
+   "person": "p:swilly22",
+   "share": 0.5,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/constraint",
+   "person": "p:swilly22",
+   "share": 0.6667,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/cron",
+   "person": "p:swilly22",
+   "share": 0.6667,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/datatypes",
+   "person": "p:swilly22",
+   "share": 0.5556,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/effects",
+   "person": "p:swilly22",
+   "share": 0.8,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/errors",
+   "person": "p:swilly22",
+   "share": 0.5714,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "person": "p:swilly22",
+   "share": 0.6,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/filter_tree",
+   "person": "p:swilly22",
+   "share": 0.6667,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/graph",
+   "person": "p:swilly22",
+   "share": 0.6571,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/index",
+   "person": "p:swilly22",
+   "share": 0.6,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/procedures",
+   "person": "p:swilly22",
+   "share": 0.5789,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/resultset",
+   "person": "p:swilly22",
+   "share": 0.5714,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/schema",
+   "person": "p:swilly22",
+   "share": 0.6,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/serializers",
+   "person": "p:swilly22",
+   "share": 0.4545,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/udf",
+   "person": "p:swilly22",
+   "share": 0.8,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:src/util",
+   "person": "p:swilly22",
+   "share": 0.5385,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests",
+   "person": "p:avi-avni",
+   "share": 0.5,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests/benchmarks",
+   "person": "p:dvirdukhan",
+   "share": 0.5,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests/flow",
+   "person": "p:avi-avni",
+   "share": 0.3232,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests/fuzz",
+   "person": "p:dvirdukhan",
+   "share": 0.6667,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests/memcheck",
+   "person": "p:dvirdukhan",
+   "share": 0.6667,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests/tck",
+   "person": "p:swilly22",
+   "share": 0.8,
+   "source": "top-contributor"
+  },
+  {
+   "module": "m:tests/unit",
+   "person": "p:swilly22",
+   "share": 0.4737,
+   "source": "top-contributor"
+  }
+ ],
+ "people": [
+  {
+   "commits": 1,
+   "first_seen": "2026-09-22T07:49:14Z",
+   "handle": "olifarhaan",
+   "id": "p:alifarhan231087",
+   "last_seen": "2026-09-22T08:07:11Z",
+   "name": "Ali Farhan",
+   "prs": 1,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 2,
+   "first_seen": "2026-10-07T08:07:52Z",
+   "handle": "aniruddhaadak80",
+   "id": "p:aniruddhaadak80",
+   "last_seen": "2026-10-07T10:44:01Z",
+   "name": "ANIRUDDHA ADAK",
+   "prs": 2,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 96,
+   "first_seen": "2025-11-02T16:06:04+02:00",
+   "handle": "aviavni",
+   "id": "p:avi-avni",
+   "last_seen": "2026-10-15T14:10:44Z",
+   "name": "Avi Avni",
+   "prs": 98,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 1,
+   "first_seen": "2026-04-19T14:19:44+03:00",
+   "handle": "barakb",
+   "id": "p:barak-bar",
+   "last_seen": "2026-05-11T15:49:55Z",
+   "name": "Barak Bar Orion",
+   "prs": 2,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 2,
+   "first_seen": "2025-11-24T20:36:52+02:00",
+   "handle": "danshalev7",
+   "id": "p:danshalev7",
+   "last_seen": "2025-12-12T23:56:23+02:00",
+   "name": "Dandan7",
+   "prs": 2,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 22,
+   "first_seen": "2025-10-19T14:43:35+03:00",
+   "handle": "dudizimber",
+   "id": "p:dudizimber",
+   "last_seen": "2026-09-16T11:34:17Z",
+   "name": "Dudi",
+   "prs": 26,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 38,
+   "first_seen": "2026-02-05T20:49:17+02:00",
+   "handle": "dvirdukhan",
+   "id": "p:dvirdukhan",
+   "last_seen": "2026-10-11T18:36:58Z",
+   "name": "Dvir Dukhan",
+   "prs": 54,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 52,
+   "first_seen": "2025-12-15T11:20:56+02:00",
+   "handle": "gkorland",
+   "id": "p:gkorland",
+   "last_seen": "2026-10-07T09:34:02Z",
+   "name": "Guy Korland",
+   "prs": 56,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 21,
+   "first_seen": "2025-10-18T05:19:37-05:00",
+   "handle": "gomezgab",
+   "id": "p:gomezgab",
+   "last_seen": "2026-09-15T09:42:15Z",
+   "name": "Gabriel Gomez",
+   "prs": 24,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 1,
+   "first_seen": "2026-10-07T09:55:59Z",
+   "handle": "juliuskent11",
+   "id": "p:juliuskentbalagot",
+   "last_seen": "2026-10-07T10:25:51Z",
+   "name": "Julius Kent Balagot",
+   "prs": 1,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 1,
+   "first_seen": "2026-10-07T08:05:17Z",
+   "handle": "onlyysaurabh",
+   "id": "p:onlyysaurabh",
+   "last_seen": "2026-10-07T08:38:43Z",
+   "name": "Saurabh Yadav",
+   "prs": 1,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 67,
+   "first_seen": "2025-10-16T15:00:59+03:00",
+   "handle": "swilly22",
+   "id": "p:swilly22",
+   "last_seen": "2026-10-15T13:59:56Z",
+   "name": "Roi Lipman",
+   "prs": 110,
+   "reviews": 0,
+   "status": "active"
+  },
+  {
+   "commits": 1,
+   "first_seen": "2026-09-23T10:32:59Z",
+   "handle": "yzxcj797",
+   "id": "p:yzxcj797",
+   "last_seen": "2026-09-23T11:20:11Z",
+   "name": "yzxcj797",
+   "prs": 1,
+   "reviews": 0,
+   "status": "active"
+  }
+ ],
+ "prs": [
+  {
+   "author_login": "swilly22",
+   "id": "pr:1302",
+   "merged_at": "2025-10-16T12:00:59Z",
+   "number": 1302,
+   "title": "sort expression",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1302"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:1290",
+   "merged_at": "2025-10-18T10:19:37Z",
+   "number": 1290,
+   "title": "Delta Matrix C source code",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1290"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1314",
+   "merged_at": "2025-10-22T11:41:24Z",
+   "number": 1314,
+   "title": "Memory usage cmd reg",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1314"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1329",
+   "merged_at": "2025-11-02T13:27:29Z",
+   "number": 1329,
+   "title": "optional conditional traverse",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1329"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:1328",
+   "merged_at": "2025-11-02T14:06:04Z",
+   "number": 1328,
+   "title": "fix profile report bad times",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1328"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1319",
+   "merged_at": "2025-11-04T17:30:25Z",
+   "number": 1319,
+   "title": "Sub query",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1319"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1357",
+   "merged_at": "2025-11-09T08:30:14Z",
+   "number": 1357,
+   "title": "fix infinity loop in cp filter optimization",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1357"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1359",
+   "merged_at": "2025-11-09T13:28:42Z",
+   "number": 1359,
+   "title": "db.meta.stats",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1359"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:1366",
+   "merged_at": "2025-11-10T17:52:44Z",
+   "number": 1366,
+   "title": "reset match stream after processing postponed records",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1366"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1368",
+   "merged_at": "2025-11-11T05:17:10Z",
+   "number": 1368,
+   "title": "disable telemetry TTL",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1368"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:1374",
+   "merged_at": "2025-11-11T18:07:38Z",
+   "number": 1374,
+   "title": "vecsim score by distance function",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1374"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1381",
+   "merged_at": "2025-11-18T11:12:42Z",
+   "number": 1381,
+   "title": "add hashjoin to join multiple stream def",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1381"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1388",
+   "merged_at": "2025-11-24T07:32:19Z",
+   "number": 1388,
+   "title": "fix div by zero",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1388"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1406",
+   "merged_at": "2025-12-01T18:47:20Z",
+   "number": 1406,
+   "title": "specify for each function if it is deterministic or not",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1406"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1399",
+   "merged_at": "2025-12-02T09:03:24Z",
+   "number": 1399,
+   "title": "replicate telemetry changes, truncate long strings",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1399"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1416",
+   "merged_at": "2025-12-08T08:43:50Z",
+   "number": 1416,
+   "title": "Alpine build adjust",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1416"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1379",
+   "merged_at": "2025-12-08T11:19:27Z",
+   "number": 1379,
+   "title": "Reduce attribute-set memory consumption",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1379"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1429",
+   "merged_at": "2025-12-11T15:53:52Z",
+   "number": 1429,
+   "title": "shrink datablock deleted index array",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1429"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1427",
+   "merged_at": "2025-12-11T16:13:58Z",
+   "number": 1427,
+   "title": "array & map defrag functions",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1427"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1442",
+   "merged_at": "2025-12-14T09:37:57Z",
+   "number": 1442,
+   "title": "skip graph.copy in memory sanitizer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1442"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1432",
+   "merged_at": "2025-12-14T12:07:17Z",
+   "number": 1432,
+   "title": "disable asserts when running under memory sanitizer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1432"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1447",
+   "merged_at": "2025-12-15T09:18:16Z",
+   "number": 1447,
+   "title": "Fix flaky effects test",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1447"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1461",
+   "merged_at": "2025-12-17T07:45:08Z",
+   "number": 1461,
+   "title": "recreate global lock on child fork, fixes #1462, fixes #1454",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1461"
+  },
+  {
+   "author_login": "copilot",
+   "id": "pr:1473",
+   "merged_at": "2025-12-21T11:43:48Z",
+   "number": 1473,
+   "title": "Migrate RHEL builds from GCP external runners to GitHub-hosted runners",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1473"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1266",
+   "merged_at": "2025-12-23T11:48:52Z",
+   "number": 1266,
+   "title": "Low level api",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1266"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:1493",
+   "merged_at": "2025-12-24T06:12:29Z",
+   "number": 1493,
+   "title": "Fix yield_reducible assignment to use 'reducible'",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1493"
+  },
+  {
+   "author_login": "dudizimber",
+   "id": "pr:1490",
+   "merged_at": "2025-12-24T10:24:38Z",
+   "number": 1490,
+   "title": "feat: add RAMP package creation and upload steps for multiple OS versions",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1490"
+  },
+  {
+   "author_login": "dudizimber",
+   "id": "pr:1460",
+   "merged_at": "2026-01-12T07:51:52Z",
+   "number": 1460,
+   "title": "Make temporary folder configurable for graph copy operations",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1460"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1521",
+   "merged_at": "2026-01-12T09:01:58Z",
+   "number": 1521,
+   "title": "1459 make copy graph temp folder configurable",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1521"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:1519",
+   "merged_at": "2026-01-12T09:43:27Z",
+   "number": 1519,
+   "title": "improve performance of bitmap range",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1519"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1522",
+   "merged_at": "2026-01-12T11:21:51Z",
+   "number": 1522,
+   "title": "invalid free when processing order by expressions",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1522"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1523",
+   "merged_at": "2026-01-12T12:51:32Z",
+   "number": 1523,
+   "title": "change access sequance",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1523"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1530",
+   "merged_at": "2026-01-15T16:24:10Z",
+   "number": 1530,
+   "title": "fix retrieval of incoming edges",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1530"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1539",
+   "merged_at": "2026-01-21T14:40:12Z",
+   "number": 1539,
+   "title": "increase js stack size and add falkor.log",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1539"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1555",
+   "merged_at": "2026-01-26T14:19:18Z",
+   "number": 1555,
+   "title": "resize label matrices upon label update",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1555"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1558",
+   "merged_at": "2026-01-29T15:09:44Z",
+   "number": 1558,
+   "title": "Introduce graph object to UDFs",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1558"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1551",
+   "merged_at": "2026-01-30T14:52:04Z",
+   "number": 1551,
+   "title": "Batch adj clearing",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1551"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1560",
+   "merged_at": "2026-02-01T11:20:26Z",
+   "number": 1560,
+   "title": "process_is_child isn't guard",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1560"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1568",
+   "merged_at": "2026-02-03T08:12:11Z",
+   "number": 1568,
+   "title": "strict matrix sync policy change",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1568"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:1563",
+   "merged_at": "2026-02-09T08:45:58Z",
+   "number": 1563,
+   "title": "Remove readies build system",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1563"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:1598",
+   "merged_at": "2026-02-10T17:04:50Z",
+   "number": 1598,
+   "title": "use latest rltest",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1598"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:1590",
+   "merged_at": "2026-02-15T07:34:13Z",
+   "number": 1590,
+   "title": "Fix reply when properties are null",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1590"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1604",
+   "merged_at": "2026-02-18T08:15:31Z",
+   "number": 1604,
+   "title": "do not clear an un marged matrix",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1604"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1612",
+   "merged_at": "2026-02-21T19:44:53Z",
+   "number": 1612,
+   "title": "fix: GRAPH.COPY fails when other graphs exist in database",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1612"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1625",
+   "merged_at": "2026-02-23T09:42:52Z",
+   "number": 1625,
+   "title": "Multiple cypher comments",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1625"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1630",
+   "merged_at": "2026-02-25T13:47:21Z",
+   "number": 1630,
+   "title": "introduce stack,heap size quickjs configs in addition to configurable\u2026",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1630"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1641",
+   "merged_at": "2026-03-01T08:45:04Z",
+   "number": 1641,
+   "title": "remove multiple calls to gil lock",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1641"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:1664",
+   "merged_at": "2026-03-02T20:27:17Z",
+   "number": 1664,
+   "title": "make graph copy test retry on fork failure",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1664"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1667",
+   "merged_at": "2026-03-07T20:09:26Z",
+   "number": 1667,
+   "title": "delta matrix sync",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1667"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1690",
+   "merged_at": "2026-03-11T18:14:00Z",
+   "number": 1690,
+   "title": "only trigger reconf if config value changed",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1690"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1687",
+   "merged_at": "2026-03-11T22:00:08Z",
+   "number": 1687,
+   "title": "Use proper double and unsigned int comparison",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1687"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:1714",
+   "merged_at": "2026-03-21T15:04:39Z",
+   "number": 1714,
+   "title": "disable hyper hash",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1714"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1718",
+   "merged_at": "2026-03-21T16:21:27Z",
+   "number": 1718,
+   "title": "refactor cron locking",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1718"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1736",
+   "merged_at": "2026-03-25T06:57:38Z",
+   "number": 1736,
+   "title": "resolve missing rel-types in traverse edge context",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1736"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1743",
+   "merged_at": "2026-03-26T16:50:02Z",
+   "number": 1743,
+   "title": "Potential fixes for 3 code quality findings",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1743"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1747",
+   "merged_at": "2026-03-28T15:50:37Z",
+   "number": 1747,
+   "title": "UDF graph.getNodeById",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1747"
+  },
+  {
+   "author_login": "copilot",
+   "id": "pr:1732",
+   "merged_at": "2026-03-29T10:14:25Z",
+   "number": 1732,
+   "title": "feat(deps): replace Dependabot gitsubmodule tracking with tag-only update workflow",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1732"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1769",
+   "merged_at": "2026-03-30T19:27:04Z",
+   "number": 1769,
+   "title": "renamed array_* to arr_*",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1769"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1793",
+   "merged_at": "2026-04-05T10:33:53Z",
+   "number": 1793,
+   "title": "test(cache): add concurrent stress test for LRU cache (#1782)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1793"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:1795",
+   "merged_at": "2026-04-05T18:12:36Z",
+   "number": 1795,
+   "title": "Record the type of all writes in BufferedRedisModuleIO",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1795"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1818",
+   "merged_at": "2026-04-06T13:11:10Z",
+   "number": 1818,
+   "title": "remove vkey logging",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1818"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1376",
+   "merged_at": "2026-04-06T15:40:15Z",
+   "number": 1376,
+   "title": "updated required redis version to 8, updated redismoduleapi header",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1376"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1815",
+   "merged_at": "2026-04-06T15:57:51Z",
+   "number": 1815,
+   "title": "rollback schema creation for failing queries",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1815"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1819",
+   "merged_at": "2026-04-06T16:37:55Z",
+   "number": 1819,
+   "title": "disable yield",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1819"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1703",
+   "merged_at": "2026-04-09T13:16:35Z",
+   "number": 1703,
+   "title": "fix: multiple bugs in Bolt protocol implementation",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1703"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1829",
+   "merged_at": "2026-04-09T19:37:52Z",
+   "number": 1829,
+   "title": "fix(attributeset): fix use-after-free in batch attribute removal",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1829"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1834",
+   "merged_at": "2026-04-10T10:03:28Z",
+   "number": 1834,
+   "title": "fix(query): protect writer match phase with READ lock against defrag race",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1834"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1809",
+   "merged_at": "2026-04-10T11:50:03Z",
+   "number": 1809,
+   "title": "test(serializer): add boundary tests for v19 buffered serializer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1809"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1816",
+   "merged_at": "2026-04-10T12:19:24Z",
+   "number": 1816,
+   "title": "fix(comparator): use safe three-way pattern for uint64_t qsort comparators",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1816"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1843",
+   "merged_at": "2026-04-10T15:10:00Z",
+   "number": 1843,
+   "title": "fix(serializer): add missing return after free on corrupted RDB buffer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1843"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1851",
+   "merged_at": "2026-04-11T18:29:00Z",
+   "number": 1851,
+   "title": "hold gil thoughout queries streaming",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1851"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1877",
+   "merged_at": "2026-04-19T08:42:53Z",
+   "number": 1877,
+   "title": "fix(query_ctx): restrict RedisModule_Yield to AOF loading only",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1877"
+  },
+  {
+   "author_login": "barakb",
+   "id": "pr:1874",
+   "merged_at": "2026-04-19T11:19:45Z",
+   "number": 1874,
+   "title": "Revert PR #1007: remove graph.ACL and graph.PASSWORD commands",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1874"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1903",
+   "merged_at": "2026-04-23T11:42:08Z",
+   "number": 1903,
+   "title": "test(edge-index-scan): regression for NULL deref on chained OPTIONAL MATCH",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1903"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1912",
+   "merged_at": "2026-04-26T13:17:23Z",
+   "number": 1912,
+   "title": "fix(optimizer): handle missing operand in label-swap optimizations (fixes #753)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1912"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1935",
+   "merged_at": "2026-04-27T21:09:42Z",
+   "number": 1935,
+   "title": "do not mark anonymous aliases of a search path",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1935"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1961",
+   "merged_at": "2026-04-29T13:27:29Z",
+   "number": 1961,
+   "title": "decouple QGEdge from EdgeTraverseCtx",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1961"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1965",
+   "merged_at": "2026-04-30T05:54:35Z",
+   "number": 1965,
+   "title": "fix(value): fix SIValue hash for point and local datetime types",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1965"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1963",
+   "merged_at": "2026-04-30T09:27:37Z",
+   "number": 1963,
+   "title": "fix(optional-traverse): initialize reduction vectors in Init using   LIMIT-adjusted record_cap",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1963"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1973",
+   "merged_at": "2026-05-07T07:27:00Z",
+   "number": 1973,
+   "title": "fix(serializer): replace VLA with heap allocation in RDB entity decoders",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1973"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:1972",
+   "merged_at": "2026-05-07T08:29:12Z",
+   "number": 1972,
+   "title": "fix(serializer): add runtime bounds checks in BufferSerializerIOv2_ReadBuffer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1972"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:1694",
+   "merged_at": "2026-05-11T07:05:58Z",
+   "number": 1694,
+   "title": "Harmonic centrality",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1694"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2013",
+   "merged_at": "2026-05-11T18:34:46Z",
+   "number": 2013,
+   "title": "collect refered aliases within function private context",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2013"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1713",
+   "merged_at": "2026-05-12T05:46:44Z",
+   "number": 1713,
+   "title": "Max flow",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1713"
+  },
+  {
+   "author_login": "dudizimber",
+   "id": "pr:2026",
+   "merged_at": "2026-05-13T12:17:32Z",
+   "number": 2026,
+   "title": "fix(workflows): update runner configuration to support multiple machine zones",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2026"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2036",
+   "merged_at": "2026-05-13T19:22:01Z",
+   "number": 2036,
+   "title": "handle empty relationship types and use atomic bool better",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2036"
+  },
+  {
+   "author_login": "dudizimber",
+   "id": "pr:2060",
+   "merged_at": "2026-05-24T08:20:38Z",
+   "number": 2060,
+   "title": "fix(docker): replace apt-get upgrade with dist-upgrade in Dockerfiles",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2060"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:1978",
+   "merged_at": "2026-05-28T09:36:33Z",
+   "number": 1978,
+   "title": "Batch label update",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/1978"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2076",
+   "merged_at": "2026-05-28T13:09:51Z",
+   "number": 2076,
+   "title": "avoid creating udf context if there are no udf libs",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2076"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2080",
+   "merged_at": "2026-05-31T07:40:31Z",
+   "number": 2080,
+   "title": "switch to gperf perfect hashing for built-in functions repository",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2080"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2042",
+   "merged_at": "2026-05-31T16:09:07Z",
+   "number": 2042,
+   "title": "Skip redundant OPTIONAL MATCH on already-bound variables",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2042"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2084",
+   "merged_at": "2026-06-01T09:57:47Z",
+   "number": 2084,
+   "title": "Improve var len traverse",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2084"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2088",
+   "merged_at": "2026-06-02T14:13:53Z",
+   "number": 2088,
+   "title": "specify exported matrix orientation",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2088"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2067",
+   "merged_at": "2026-06-02T18:09:32Z",
+   "number": 2067,
+   "title": "test(flow): increase code coverage with tests",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2067"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2104",
+   "merged_at": "2026-06-05T12:06:48Z",
+   "number": 2104,
+   "title": "stop bulk deletion from silently failing",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2104"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2101",
+   "merged_at": "2026-06-08T04:33:57Z",
+   "number": 2101,
+   "title": "ci: RediSearch 8.6 build infrastructure (toolchain images + workflows)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2101"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2092",
+   "merged_at": "2026-06-08T19:29:12Z",
+   "number": 2092,
+   "title": "Memory accuracy",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2092"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2121",
+   "merged_at": "2026-06-10T06:28:41Z",
+   "number": 2121,
+   "title": "Guard datablock iterator seek",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2121"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2117",
+   "merged_at": "2026-06-10T08:11:46Z",
+   "number": 2117,
+   "title": "fix floating point vector compare",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2117"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2119",
+   "merged_at": "2026-06-10T09:45:46Z",
+   "number": 2119,
+   "title": "abort cron timeout when failing to queue write query",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2119"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2135",
+   "merged_at": "2026-06-16T23:49:34Z",
+   "number": 2135,
+   "title": "Fix typo in memory usage metrics",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2135"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2145",
+   "merged_at": "2026-06-22T20:23:44Z",
+   "number": 2145,
+   "title": "abort and free unioned subqueries",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2145"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2147",
+   "merged_at": "2026-06-24T06:05:11Z",
+   "number": 2147,
+   "title": "Fix optimizer rewrite",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2147"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2086",
+   "merged_at": "2026-06-24T12:08:14Z",
+   "number": 2086,
+   "title": "Expose Graph API",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2086"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2108",
+   "merged_at": "2026-07-05T10:45:04Z",
+   "number": 2108,
+   "title": "Enforce a maximum legth on identifiers",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2108"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2156",
+   "merged_at": "2026-07-05T18:31:36Z",
+   "number": 2156,
+   "title": "Variable Length Traversal semantics",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2156"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2163",
+   "merged_at": "2026-07-08T11:27:28Z",
+   "number": 2163,
+   "title": "Improve algo.SPpaths single shortest path performance",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2163"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2170",
+   "merged_at": "2026-07-08T12:24:31Z",
+   "number": 2170,
+   "title": "remove bolt support",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2170"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2173",
+   "merged_at": "2026-07-09T11:57:48Z",
+   "number": 2173,
+   "title": "optimize dijkstra",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2173"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2175",
+   "merged_at": "2026-07-09T14:45:10Z",
+   "number": 2175,
+   "title": "Defrag locking",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2175"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2191",
+   "merged_at": "2026-07-12T15:47:45Z",
+   "number": 2191,
+   "title": "fix(defrag): don't stall or orphan writes under active defrag",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2191"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2197",
+   "merged_at": "2026-07-13T18:26:40Z",
+   "number": 2197,
+   "title": "Fix vector-indexed nodes disappearing from KNN after update/delete",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2197"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2232",
+   "merged_at": "2026-07-27T14:23:26Z",
+   "number": 2232,
+   "title": "Delete detect deleted entity",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2232"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2242",
+   "merged_at": "2026-07-29T05:20:02Z",
+   "number": 2242,
+   "title": "Remove support for multiple property assignments in inline property maps",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2242"
+  },
+  {
+   "author_login": "swilly22",
+   "id": "pr:2230",
+   "merged_at": "2026-07-29T06:57:38Z",
+   "number": 2230,
+   "title": "Queue on stub wait",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2230"
+  },
+  {
+   "author_login": "gomezgab",
+   "id": "pr:2250",
+   "merged_at": "2026-07-29T17:58:55Z",
+   "number": 2250,
+   "title": "Bump Graphblas and load PreJIT",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2250"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2279",
+   "merged_at": "2026-08-02T18:12:12Z",
+   "number": 2279,
+   "title": "Migrate the default development branch to the Rust engine",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2279"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2344",
+   "merged_at": "2026-08-05T08:45:15Z",
+   "number": 2344,
+   "title": "fix(bulk): index rows appended by GRAPH.BULK into an existing graph",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2344"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2102",
+   "merged_at": "2026-08-05T10:00:28Z",
+   "number": 2102,
+   "title": "feat: RediSearch 8.6 LLAPI migration \u2014 code (stacked on #2101)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2102"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2366",
+   "merged_at": "2026-08-06T12:01:21Z",
+   "number": 2366,
+   "title": "Match GRAPH.QUERY arguments case-insensitively",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2366"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2365",
+   "merged_at": "2026-08-06T15:00:29Z",
+   "number": 2365,
+   "title": "Stream cartesian-product branches instead of materializing their product",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2365"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2378",
+   "merged_at": "2026-08-07T13:16:52Z",
+   "number": 2378,
+   "title": "perf: make node deletion O(deleted) instead of O(graph)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2378"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2349",
+   "merged_at": "2026-08-10T06:10:11Z",
+   "number": 2349,
+   "title": "Adaptive fold policy: bound MVCC delta growth on every write path",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2349"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2377",
+   "merged_at": "2026-08-10T09:04:36Z",
+   "number": 2377,
+   "title": "perf: reclaim entity ids with one ordered walk, not a rank lookup per id",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2377"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2428",
+   "merged_at": "2026-08-10T12:53:29Z",
+   "number": 2428,
+   "title": "perf: skip the edge-id lookup when nothing reads the edge (1.99x)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2428"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2416",
+   "merged_at": "2026-08-10T13:14:40Z",
+   "number": 2416,
+   "title": "perf: keep edge-property aggregates on the vectorized path (2.3x)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2416"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2420",
+   "merged_at": "2026-08-11T06:44:53Z",
+   "number": 2420,
+   "title": "fix(bulk): replicate GRAPH.BULK from the background writer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2420"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2431",
+   "merged_at": "2026-08-11T09:20:52Z",
+   "number": 2431,
+   "title": "perf: make the multi-edge demote path linear in the batch (26x)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2431"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2444",
+   "merged_at": "2026-08-11T09:39:52Z",
+   "number": 2444,
+   "title": "fix(bulk): bound GRAPH.BULK declared counts and make id reservation fallible",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2444"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2445",
+   "merged_at": "2026-08-11T12:50:53Z",
+   "number": 2445,
+   "title": "fix(dispatch): widen the cannot-block predicate to C's five flags",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2445"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2439",
+   "merged_at": "2026-08-11T13:46:05Z",
+   "number": 2439,
+   "title": "refactor: derive the multi-edge pair count instead of maintaining it",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2439"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2442",
+   "merged_at": "2026-08-12T12:13:11Z",
+   "number": 2442,
+   "title": "fix(parser): quadratic parameter parsing (5.8x) and unbounded-nesting server abort",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2442"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2447",
+   "merged_at": "2026-08-12T13:40:17Z",
+   "number": 2447,
+   "title": "fix: don't mistake a multi-arg constructor call for the rewritten struct form",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2447"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2451",
+   "merged_at": "2026-08-12T14:00:55Z",
+   "number": 2451,
+   "title": "perf(parser): read parameters straight into values, not an expression tree (6.5x)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2451"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2450",
+   "merged_at": "2026-08-14T06:41:30Z",
+   "number": 2450,
+   "title": "fix: re-check pause and role before a write commits, not just at admission",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2450"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2459",
+   "merged_at": "2026-08-14T07:01:29Z",
+   "number": 2459,
+   "title": "fix: one attribute dictionary per graph, and an RDB the C engine can load",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2459"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2491",
+   "merged_at": "2026-08-16T15:10:42Z",
+   "number": 2491,
+   "title": "fix(planner): order a reversed traversal chain from its new anchor (78x), and run the most selective hop first",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2491"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2493",
+   "merged_at": "2026-08-17T11:43:53Z",
+   "number": 2493,
+   "title": "fix: C-parity for GRAPH.INFO \u2014 the telemetry write path (1.46x \u2192 1.06x of C), CMD_INFO, bare calls, and the run-time config surface",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2493"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2523",
+   "merged_at": "2026-08-17T12:03:15Z",
+   "number": 2523,
+   "title": "Upgrade GraphBLAS to 10.5.0, and keep the iso builds iso",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2523"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2565",
+   "merged_at": "2026-08-23T16:25:04Z",
+   "number": 2565,
+   "title": "fix: compute the edge-count identity in checked arithmetic",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2565"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2579",
+   "merged_at": "2026-08-23T20:03:09Z",
+   "number": 2579,
+   "title": "fix(#2578): split the compound key across blocks, and stop packing endpoints",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2579"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2494",
+   "merged_at": "2026-08-24T08:01:14Z",
+   "number": 2494,
+   "title": "perf(runtime): answer a label predicate from the label matrix (1.77x)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2494"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2554",
+   "merged_at": "2026-08-24T08:50:40Z",
+   "number": 2554,
+   "title": "fix(telemetry): keep the flusher ahead of the load, stop hanging shutdown, and honour MAX_INFO_QUERIES 0",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2554"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2562",
+   "merged_at": "2026-08-24T09:30:48Z",
+   "number": 2562,
+   "title": "fix(planner): anchor a variable-length traverse on an endpoint bound below the scan",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2562"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2571",
+   "merged_at": "2026-08-24T09:48:14Z",
+   "number": 2571,
+   "title": "fix(#2430): skip a delta layer a single-row read cannot touch",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2571"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2572",
+   "merged_at": "2026-08-24T10:26:37Z",
+   "number": 2572,
+   "title": "perf(tensor): answer degree without materialising edge ids",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2572"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2624",
+   "merged_at": "2026-08-25T09:17:16Z",
+   "number": 2624,
+   "title": "fix(#2582): make the filter comparison kernels answer what the evaluator answers",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2624"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2622",
+   "merged_at": "2026-08-25T09:56:48Z",
+   "number": 2622,
+   "title": "fix: nested index scans could freeze the whole server; track RediSearch as a deps/ submodule",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2622"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2628",
+   "merged_at": "2026-08-26T09:12:21Z",
+   "number": 2628,
+   "title": "perf(runtime): evaluate whole expression trees column at a time",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2628"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2636",
+   "merged_at": "2026-08-27T06:17:24Z",
+   "number": 2636,
+   "title": "fix: handle a NUL byte the way C does \u2014 names and queries end at the first one",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2636"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2640",
+   "merged_at": "2026-08-27T12:57:13Z",
+   "number": 2640,
+   "title": "fix: DELETE of an edge created in the same query on a recycled id",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2640"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2641",
+   "merged_at": "2026-08-30T07:54:22Z",
+   "number": 2641,
+   "title": "perf: find reclaimable ids by rank instead of walking to them",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2641"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2642",
+   "merged_at": "2026-08-30T09:09:05Z",
+   "number": 2642,
+   "title": "perf: snapshot a deleted node's edges from its own adjacency, not a full scan",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2642"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2674",
+   "merged_at": "2026-08-31T20:53:30Z",
+   "number": 2674,
+   "title": "perf: reuse one iterator pair per type when cascading deleted nodes' edges",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2674"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2678",
+   "merged_at": "2026-09-01T07:03:17Z",
+   "number": 2678,
+   "title": "perf: drop all_nodes_matrix, the graph no longer needs a matrix of live nodes",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2678"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2685",
+   "merged_at": "2026-09-02T11:03:48Z",
+   "number": 2685,
+   "title": "perf: answer n:Label as a column instead of a value per row",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2685"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2686",
+   "merged_at": "2026-09-03T08:55:04Z",
+   "number": 2686,
+   "title": "perf: lend LAGraph the adjacency matrix instead of duplicating it",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2686"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2690",
+   "merged_at": "2026-09-03T10:16:49Z",
+   "number": 2690,
+   "title": "perf: keep a hash-join build slot inline instead of a Vec per key",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2690"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2691",
+   "merged_at": "2026-09-06T14:28:57Z",
+   "number": 2691,
+   "title": "perf: page the edge-endpoint index so a write copies a page, not the tier",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2691"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2754",
+   "merged_at": "2026-09-09T18:03:27Z",
+   "number": 2754,
+   "title": "feat(effects): the v3 wire codec",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2754"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2693",
+   "merged_at": "2026-09-09T19:52:22Z",
+   "number": 2693,
+   "title": "perf: keep the columnar aggregate path when a key or argument is computed",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2693"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2712",
+   "merged_at": "2026-09-09T20:18:54Z",
+   "number": 2712,
+   "title": "perf: call a scalar function once per batch when all its arguments are constant",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2712"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2787",
+   "merged_at": "2026-09-10T07:34:02Z",
+   "number": 2787,
+   "title": "fix(constraint): composite UNIQUE is vacuously satisfied when any property is NULL",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2787"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2789",
+   "merged_at": "2026-09-10T11:50:32Z",
+   "number": 2789,
+   "title": "Fix Value Hash Join matching join keys that contain NULL",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2789"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2570",
+   "merged_at": "2026-09-10T17:41:28Z",
+   "number": 2570,
+   "title": "feat(effects)!: emit, apply, and effects as the only replication mechanism",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2570"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2757",
+   "merged_at": "2026-09-14T08:22:22Z",
+   "number": 2757,
+   "title": "perf: size a scan's first batch to the downstream LIMIT",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2757"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2824",
+   "merged_at": "2026-09-14T10:14:40Z",
+   "number": 2824,
+   "title": "chore(deps): combined dependabot bumps (lru, rquickjs, zstd, smallvec, codeql-action, amazonlinux, bench-deps)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2824"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2788",
+   "merged_at": "2026-09-14T17:50:08Z",
+   "number": 2788,
+   "title": "fix: keep a label that is re-added in the same query that removes it",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2788"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2833",
+   "merged_at": "2026-09-15T10:39:11Z",
+   "number": 2833,
+   "title": "fix: identify virtual keys the way the C engine does",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2833"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2785",
+   "merged_at": "2026-09-15T11:09:21Z",
+   "number": 2785,
+   "title": "fix(graph): clear adjacency when an edge dies with both endpoints",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2785"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2304",
+   "merged_at": "2026-09-15T19:21:36Z",
+   "number": 2304,
+   "title": "test(validation): cover self-referential CREATE nested in a comprehension (#415)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2304"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2765",
+   "merged_at": "2026-09-16T07:27:22Z",
+   "number": 2765,
+   "title": "test(slowlog): match the displacing query to the shape it must outrank",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2765"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2797",
+   "merged_at": "2026-09-16T08:13:36Z",
+   "number": 2797,
+   "title": "fix(graph): allocate ids against the set the caller holds, not a count of it",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2797"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2708",
+   "merged_at": "2026-09-16T12:44:48Z",
+   "number": 2708,
+   "title": "perf(aggregate): stop allocating a grouping key per input row",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2708"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2305",
+   "merged_at": "2026-09-16T13:29:58Z",
+   "number": 2305,
+   "title": "test(order-by): cover ordering variable length paths by non-projected length (#303)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2305"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2306",
+   "merged_at": "2026-09-16T13:54:32Z",
+   "number": 2306,
+   "title": "test(rdb): cover RESTORE of a graph dump under a different key (#2048)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2306"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2454",
+   "merged_at": "2026-09-16T14:14:33Z",
+   "number": 2454,
+   "title": "test(path-filter): cover a pattern predicate XORed with a constant operand (#2252)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2454"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2455",
+   "merged_at": "2026-09-16T14:50:40Z",
+   "number": 2455,
+   "title": "test(with): cover re-MATCHing multiple variables carried through WITH (#1949)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2455"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2847",
+   "merged_at": "2026-09-17T06:41:48Z",
+   "number": 2847,
+   "title": "fix(effects/v3): end a run when a segment reads against it",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2847"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2456",
+   "merged_at": "2026-09-17T07:49:30Z",
+   "number": 2456,
+   "title": "test(delete): cover deleting the same edge variable twice (#1018)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2456"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2718",
+   "merged_at": "2026-09-17T09:30:39Z",
+   "number": 2718,
+   "title": "ci: make PR CI fork-safe and gate main on a merge queue",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2718"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2460",
+   "merged_at": "2026-09-17T11:14:48Z",
+   "number": 2460,
+   "title": "test(index): cover a negative radius on a point index (#291)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2460"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2461",
+   "merged_at": "2026-09-17T11:57:07Z",
+   "number": 2461,
+   "title": "test(merge): cover MERGE referencing an entity deleted in the same query (#651)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2461"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2462",
+   "merged_at": "2026-09-17T13:15:55Z",
+   "number": 2462,
+   "title": "test(validation): cover a repeated relationship variable (#1982)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2462"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2468",
+   "merged_at": "2026-09-17T20:34:31Z",
+   "number": 2468,
+   "title": "test: writes inside a subquery apply to every input row",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2468"
+  },
+  {
+   "author_login": "olifarhaan",
+   "id": "pr:2396",
+   "merged_at": "2026-09-22T08:07:11Z",
+   "number": 2396,
+   "title": "fix(eval): stop a simple CASE matching null against null",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2396"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2704",
+   "merged_at": "2026-09-22T17:30:25Z",
+   "number": 2704,
+   "title": "test(effects): one harness, one file per question",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2704"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2867",
+   "merged_at": "2026-09-23T10:41:01Z",
+   "number": 2867,
+   "title": "feat(effects): let v3 index records name several schema entities",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2867"
+  },
+  {
+   "author_login": "yzxcj797",
+   "id": "pr:2606",
+   "merged_at": "2026-09-23T11:20:11Z",
+   "number": 2606,
+   "title": "fix: element-wise Vectorf32 equality in compare_value",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2606"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2874",
+   "merged_at": "2026-09-24T08:48:07Z",
+   "number": 2874,
+   "title": "fix: pattern comprehensions everywhere \u2014 no crashes, nested plans for loop variables (#2308)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2874"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2921",
+   "merged_at": "2026-09-24T19:16:59Z",
+   "number": 2921,
+   "title": "fix(info): stop INFO reporting RediSearch's version as graph_version; Redis 8.10.2",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2921"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2944",
+   "merged_at": "2026-09-27T08:02:07Z",
+   "number": 2944,
+   "title": "test(slowlog): populate the slowlog serially",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2944"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3163",
+   "merged_at": "2026-10-04T12:04:55Z",
+   "number": 3163,
+   "title": "ci: move the toolchain to LLVM 23",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3163"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2846",
+   "merged_at": "2026-10-04T15:24:46Z",
+   "number": 2846,
+   "title": "refactor(graph): make IdSpace the id allocation authority",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2846"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3161",
+   "merged_at": "2026-10-04T16:20:33Z",
+   "number": 3161,
+   "title": "fix(rdb): save virtual keys as graphmeta so C keeps graphs in GRAPH.LIST",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3161"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2916",
+   "merged_at": "2026-10-04T16:47:20Z",
+   "number": 2916,
+   "title": "fix: refuse effect records the v3 reader would reject at encode time",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2916"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3094",
+   "merged_at": "2026-10-04T18:15:48Z",
+   "number": 3094,
+   "title": "fix: validate index OPTIONS like C (vector dimension/similarityFunction required, case-insensitive metric, unknown fulltext keys rejected)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3094"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3060",
+   "merged_at": "2026-10-04T19:31:51Z",
+   "number": 3060,
+   "title": "fix: parser accepts invalid / rejects valid syntax (NOT NOT, SET [n), f(1,), MATCH MATCH, LOAD CSV WITH, IS NULL IN)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3060"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3053",
+   "merged_at": "2026-10-04T20:44:01Z",
+   "number": 3053,
+   "title": "fix: GRAPH.MEMORY accepts SAMPLES 0; GRAPH.CONSTRAINT parses entity type and count as C",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3053"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2911",
+   "merged_at": "2026-10-04T22:55:25Z",
+   "number": 2911,
+   "title": "fix: refuse GRAPH.EFFECT ids no matrix can hold before sizing to them",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2911"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3087",
+   "merged_at": "2026-10-05T06:31:21Z",
+   "number": 3087,
+   "title": "fix: a wrong-dimension vector no longer drops the entity from every index on its label",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3087"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3088",
+   "merged_at": "2026-10-05T09:04:15Z",
+   "number": 3088,
+   "title": "fix: clamp k in vector KNN queries instead of allocating k entries",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3088"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2989",
+   "merged_at": "2026-10-05T10:32:18Z",
+   "number": 2989,
+   "title": "fix: toInteger of an integer string below i64::MIN is null, not i64::MIN",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2989"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2469",
+   "merged_at": "2026-10-05T11:28:32Z",
+   "number": 2469,
+   "title": "test(optional-match): cover cartesian product cardinality in OPTIONAL MATCH",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2469"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2990",
+   "merged_at": "2026-10-05T12:49:39Z",
+   "number": 2990,
+   "title": "fix: reject coalesce() with zero arguments like C",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2990"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3010",
+   "merged_at": "2026-10-05T13:30:48Z",
+   "number": 3010,
+   "title": "fix: one C-compatible flag parser for QUERY/RO_QUERY/PROFILE/EXPLAIN",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3010"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2695",
+   "merged_at": "2026-10-05T14:11:41Z",
+   "number": 2695,
+   "title": "build: replace graphblas.sh/redisearch.sh with a native-deps crate",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2695"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2952",
+   "merged_at": "2026-10-05T17:51:10Z",
+   "number": 2952,
+   "title": "fix: clamp list.remove's span end instead of overflowing on a huge count",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2952"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3021",
+   "merged_at": "2026-10-05T18:09:43Z",
+   "number": 3021,
+   "title": "fix: GRAPH.CONFIG validates values, arity and names as C does",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3021"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2471",
+   "merged_at": "2026-10-05T18:28:36Z",
+   "number": 2471,
+   "title": "test(var-len): cover fixed-length path multiplicity",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2471"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2845",
+   "merged_at": "2026-10-06T05:11:47Z",
+   "number": 2845,
+   "title": "fix: give every CALL {} body its entry projection as a record boundary",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2845"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3072",
+   "merged_at": "2026-10-06T13:41:17Z",
+   "number": 3072,
+   "title": "fix: an exclusive string range with equal bounds selects nothing",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3072"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3074",
+   "merged_at": "2026-10-06T16:44:54Z",
+   "number": 3074,
+   "title": "fix: UDF results keep -0.0, constructor-keyed maps and non-finite vecf32",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3074"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3076",
+   "merged_at": "2026-10-06T20:13:02Z",
+   "number": 3076,
+   "title": "fix: don't index temporals in the range index's numeric field",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3076"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2487",
+   "merged_at": "2026-10-06T20:49:30Z",
+   "number": 2487,
+   "title": "test(functions): cover crash-inducing arguments to range() and exists()",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2487"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3079",
+   "merged_at": "2026-10-06T21:29:07Z",
+   "number": 3079,
+   "title": "fix: define the graph global in the UDF validation context",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3079"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2390",
+   "merged_at": "2026-10-06T22:25:41Z",
+   "number": 2390,
+   "title": "fix(planner): plan an inline property map once, instead of twice",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2390"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2278",
+   "merged_at": "2026-10-07T01:52:40Z",
+   "number": 2278,
+   "title": "feat(cow_btree): point lookups, memory accounting, tuple cursor + narrowable doc width",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2278"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2488",
+   "merged_at": "2026-10-07T02:52:35Z",
+   "number": 2488,
+   "title": "test(reduce): cover nested reduce with shadowed iterator names",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2488"
+  },
+  {
+   "author_login": "onlyysaurabh",
+   "id": "pr:3132",
+   "merged_at": "2026-10-07T08:38:43Z",
+   "number": 3132,
+   "title": "fix(runtime): allow startNode() and endNode() to accept null (#2723)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3132"
+  },
+  {
+   "author_login": "aniruddhaadak80",
+   "id": "pr:3125",
+   "merged_at": "2026-10-07T09:10:47Z",
+   "number": 3125,
+   "title": "fix(temporal): reject non-digits in compact date and time strings",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3125"
+  },
+  {
+   "author_login": "gkorland",
+   "id": "pr:2489",
+   "merged_at": "2026-10-07T09:34:02Z",
+   "number": 2489,
+   "title": "test(all-shortest-paths): cover aggregating WITH * over unresolved endpoints",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2489"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3081",
+   "merged_at": "2026-10-07T10:08:12Z",
+   "number": 3081,
+   "title": "fix: range index scans include \u00b1inf for an open bound and emit undirected edges both ways",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3081"
+  },
+  {
+   "author_login": "juliuskent11",
+   "id": "pr:2829",
+   "merged_at": "2026-10-07T10:25:51Z",
+   "number": 2829,
+   "title": "fix(planner): materialize named paths created by CREATE (#1279)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2829"
+  },
+  {
+   "author_login": "aniruddhaadak80",
+   "id": "pr:3127",
+   "merged_at": "2026-10-07T10:44:01Z",
+   "number": 3127,
+   "title": "fix(functions): name received types in the engine's vocabulary in entity.rs",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3127"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2907",
+   "merged_at": "2026-10-07T11:01:56Z",
+   "number": 2907,
+   "title": "fix: sign() of a Float returns an Integer",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2907"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2908",
+   "merged_at": "2026-10-07T11:16:43Z",
+   "number": 2908,
+   "title": "fix: end block comments at */ and stop swallowing a lone /",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2908"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3022",
+   "merged_at": "2026-10-07T13:23:31Z",
+   "number": 3022,
+   "title": "fix: refuse GRAPH.EFFECT records that act on entities that are not live",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3022"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2920",
+   "merged_at": "2026-10-07T14:26:08Z",
+   "number": 2920,
+   "title": "fix: start a decoded IdList's run after its last segment",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2920"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:3181",
+   "merged_at": "2026-10-08T07:24:56Z",
+   "number": 3181,
+   "title": "build(docker): run redis-server as the falkordb user",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3181"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2910",
+   "merged_at": "2026-10-08T19:43:38Z",
+   "number": 2910,
+   "title": "fix: lex CRLF, 0e5, any spelling of 2^63 and strict \\u escapes like C",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2910"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:2350",
+   "merged_at": "2026-10-09T08:43:02Z",
+   "number": 2350,
+   "title": "feat(index): native numeric index \u2014 CoW columns, folded-roots MVCC, read/write paths",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2350"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2912",
+   "merged_at": "2026-10-11T09:58:40Z",
+   "number": 2912,
+   "title": "fix: give ORDER BY a real total order so sorting never panics (#2891)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2912"
+  },
+  {
+   "author_login": "dvirdukhan",
+   "id": "pr:3307",
+   "merged_at": "2026-10-11T18:36:58Z",
+   "number": 3307,
+   "title": "perf(index): apply native-index writes once per unit of work",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3307"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2917",
+   "merged_at": "2026-10-11T19:05:00Z",
+   "number": 2917,
+   "title": "fix: match C for map <>, NaN grouping and min/max over NaN (#2913)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2917"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3000",
+   "merged_at": "2026-10-12T06:46:19Z",
+   "number": 3000,
+   "title": "fix: honour the per-query TIMEOUT for writes once TIMEOUT_MAX/TIMEOUT_DEFAULT is set",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3000"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3234",
+   "merged_at": "2026-10-12T08:16:19Z",
+   "number": 3234,
+   "title": "fix: slow log no longer panics on a multi-byte character at byte 2048",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3234"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3113",
+   "merged_at": "2026-10-12T08:34:58Z",
+   "number": 3113,
+   "title": "fix: charge 1 per relationship in algo.SPpaths/SSpaths without costProp (#3109)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3113"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3262",
+   "merged_at": "2026-10-12T08:53:13Z",
+   "number": 3262,
+   "title": "fix: give graphs loaded from an RDB the configured CACHE_SIZE",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3262"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3104",
+   "merged_at": "2026-10-12T09:11:21Z",
+   "number": 3104,
+   "title": "fix: stop exponential backtracking on nested [(...)] lists in the parser",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3104"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3014",
+   "merged_at": "2026-10-13T13:09:21Z",
+   "number": 3014,
+   "title": "fix: never hang when >1024 queries are queued; MAX_QUEUED_QUERIES bounds every queued query",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3014"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3290",
+   "merged_at": "2026-10-13T13:27:27Z",
+   "number": 3290,
+   "title": "fix: an inline write no longer fails while a queued write is matching",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3290"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3102",
+   "merged_at": "2026-10-14T11:37:10Z",
+   "number": 3102,
+   "title": "fix: plan a self-loop hop after the hop that binds its node",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3102"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3328",
+   "merged_at": "2026-10-14T11:54:56Z",
+   "number": 3328,
+   "title": "fix: parse module-load arguments like C (case-insensitive, validated, refused on bad input)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3328"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3339",
+   "merged_at": "2026-10-14T12:14:14Z",
+   "number": 3339,
+   "title": "fix: bound value nesting on RDB/RESTORE decode, property writes and bulk insert",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3339"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3336",
+   "merged_at": "2026-10-15T05:23:37Z",
+   "number": 3336,
+   "title": "fix: bound the nesting depth of UDF value conversion",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3336"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:2897",
+   "merged_at": "2026-10-15T07:23:44Z",
+   "number": 2897,
+   "title": "fix: CowBTree insert_batch keeps (u64::MAX, u64::MAX); require BRANCH_MAX >= 4",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/2897"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3285",
+   "merged_at": "2026-10-15T07:41:38Z",
+   "number": 3285,
+   "title": "fix: CowBTree rejects DOC_BYTES widths it cannot read back",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3285"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3252",
+   "merged_at": "2026-10-15T08:17:47Z",
+   "number": 3252,
+   "title": "fix: reload an index on an attribute named `range:x` under that name",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3252"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3335",
+   "merged_at": "2026-10-15T09:08:55Z",
+   "number": 3335,
+   "title": "fix: a parenthesised WHERE uses the index and NodeByIdSeek again",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3335"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3334",
+   "merged_at": "2026-10-15T11:04:23Z",
+   "number": 3334,
+   "title": "fix: enforce unique constraints by index lookup, not a label scan per entity (#3330)",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3334"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3277",
+   "merged_at": "2026-10-15T11:56:18Z",
+   "number": 3277,
+   "title": "fix: a deleted edge no longer keeps its type after a constraint registers a new type",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3277"
+  },
+  {
+   "author_login": "aviavni",
+   "id": "pr:3063",
+   "merged_at": "2026-10-15T14:10:44Z",
+   "number": 3063,
+   "title": "fix: bulk-imported attribute spans never overflow Slot::len",
+   "url": "https://github.com/FalkorDB/FalkorDB/pull/3063"
+  }
+ ],
+ "reviewed": [],
+ "touches": [
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1302"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:1302"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1302"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1302"
+  },
+  {
+   "module": "m:tests/tck",
+   "pr": "pr:1302"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1302"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1290"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1290"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1290"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1290"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1290"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1314"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1314"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1329"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1329"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1328"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:1319"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:1319"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1319"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1319"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1319"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1357"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1357"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1359"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1359"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1366"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1366"
+  },
+  {
+   "module": "m:src/cron",
+   "pr": "pr:1368"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1368"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1374"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1374"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1381"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1381"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1388"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1388"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1388"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1406"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1406"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1406"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1406"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:src/cron",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1399"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:1416"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1416"
+  },
+  {
+   "module": "m:tests/fuzz",
+   "pr": "pr:1416"
+  },
+  {
+   "module": "m:tests/tck",
+   "pr": "pr:1416"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/bulk_insert",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/constraint",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/effects",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/index",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1379"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1429"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1429"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1427"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1427"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:1427"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1427"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1427"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1442"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1432"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1432"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1432"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1447"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1461"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:tests/memcheck",
+   "pr": "pr:1266"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1493"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:1490"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1460"
+  },
+  {
+   "module": "m:src/configuration",
+   "pr": "pr:1460"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1460"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1460"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1460"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1521"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1519"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1519"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1522"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1522"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1523"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1523"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1530"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1530"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1539"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1539"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1539"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1555"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1555"
+  },
+  {
+   "module": "m:src/schema",
+   "pr": "pr:1555"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1555"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1558"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1558"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1551"
+  },
+  {
+   "module": "m:src/effects",
+   "pr": "pr:1551"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1551"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1551"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1551"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1551"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1560"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1560"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1568"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1568"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1568"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1568"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1568"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests/benchmarks",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests/fuzz",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests/memcheck",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1563"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:1598"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1590"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:1590"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1590"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1604"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1604"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1612"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1612"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1625"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1630"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1630"
+  },
+  {
+   "module": "m:src/configuration",
+   "pr": "pr:1630"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1630"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1630"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1641"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1641"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1664"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1667"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1667"
+  },
+  {
+   "module": "m:src/configuration",
+   "pr": "pr:1690"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1690"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1687"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:1687"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1687"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1687"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1714"
+  },
+  {
+   "module": "m:src/algorithms",
+   "pr": "pr:1714"
+  },
+  {
+   "module": "m:src/configuration",
+   "pr": "pr:1714"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1714"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1714"
+  },
+  {
+   "module": "m:src/cron",
+   "pr": "pr:1718"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1736"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1736"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1736"
+  },
+  {
+   "module": "m:src/cron",
+   "pr": "pr:1743"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1747"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1747"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/algorithms",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/bolt",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/bulk_insert",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/effects",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/filter_tree",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/index",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/schema",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1769"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1793"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1795"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1795"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1795"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1818"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1818"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1376"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1815"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1815"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1815"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1819"
+  },
+  {
+   "module": "m:src/bolt",
+   "pr": "pr:1703"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:1703"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:1703"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1703"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1829"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1829"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1834"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1834"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1834"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1834"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1809"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1816"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1816"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1816"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1843"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1851"
+  },
+  {
+   "module": "m:src/cron",
+   "pr": "pr:1851"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1877"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1874"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1874"
+  },
+  {
+   "module": "m:tests/benchmarks",
+   "pr": "pr:1874"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1874"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1903"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1903"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1912"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1912"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1935"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:1935"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1935"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1935"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1935"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1961"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1965"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1965"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1963"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1963"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1973"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1972"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1694"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1694"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:2013"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2013"
+  },
+  {
+   "module": "m:src/filter_tree",
+   "pr": "pr:2013"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2013"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:1713"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1713"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1713"
+  },
+  {
+   "module": "m:tests/benchmarks",
+   "pr": "pr:2026"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2036"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2036"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/bulk_insert",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/constraint",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/effects",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/index",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/schema",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:tests/tck",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:1978"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:2076"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2080"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:2080"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2080"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:2080"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2080"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2080"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2042"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2042"
+  },
+  {
+   "module": "m:src/algorithms",
+   "pr": "pr:2084"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2084"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2084"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2084"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:2088"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2088"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2088"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2088"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2088"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:2067"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2067"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2104"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2104"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2101"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2092"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2092"
+  },
+  {
+   "module": "m:src/index",
+   "pr": "pr:2092"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:2092"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2092"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:2121"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:2117"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2117"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2119"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2119"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2135"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2145"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2145"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2147"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2147"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2086"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2086"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2086"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2086"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2086"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/bulk_insert",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/schema",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2108"
+  },
+  {
+   "module": "m:src/algorithms",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2156"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2163"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2163"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2163"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/bolt",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/configuration",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:tests/tck",
+   "pr": "pr:2170"
+  },
+  {
+   "module": "m:src/algorithms",
+   "pr": "pr:2173"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2173"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2173"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2175"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2175"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2175"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2175"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2191"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2191"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2191"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2191"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2197"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2232"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2232"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:2242"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:2242"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2242"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2230"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2230"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:2230"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2230"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2230"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2250"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/algorithms",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/arithmetic",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/ast",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/bulk_insert",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/configuration",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/constraint",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/cron",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/datatypes",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/effects",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/errors",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/execution_plan",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/filter_tree",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/graph",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/index",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/procedures",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/resultset",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/schema",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/udf",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:src/util",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests/benchmarks",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests/fuzz",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests/memcheck",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests/tck",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:tests/unit",
+   "pr": "pr:2279"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2344"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2344"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2344"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2366"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2366"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2365"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2365"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2378"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2349"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2349"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2349"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2349"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2377"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2428"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2416"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2420"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2420"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2420"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2431"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2444"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2444"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2444"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2445"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2445"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2445"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2439"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2442"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2447"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2447"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2451"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2451"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2451"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2450"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2450"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2450"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2459"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2459"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2459"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2459"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2491"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2491"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2493"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2493"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2493"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2523"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2565"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2579"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2494"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2494"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2554"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2554"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2554"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2562"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2562"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2571"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2572"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2624"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2624"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2622"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2628"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2628"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2636"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2636"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2636"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2640"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2640"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2641"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2642"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2642"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2674"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2674"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2678"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2678"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2678"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2685"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2685"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2686"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2690"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2690"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2691"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2754"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2754"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2754"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2693"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2693"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2712"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2712"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2787"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2787"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2789"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2789"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2570"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2570"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2570"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2570"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2757"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2824"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2788"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2788"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2833"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:2833"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2833"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2785"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2785"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2304"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2765"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2797"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2797"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2797"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2708"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2305"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2306"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2454"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2455"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2847"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2456"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2718"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2460"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2461"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2462"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2468"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2396"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2396"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2704"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2704"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2867"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2867"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2606"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2606"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2874"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2874"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2921"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2921"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2944"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:3163"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2846"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2846"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:2846"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3161"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3161"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2916"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3094"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3094"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3060"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:3060"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3053"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3053"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2911"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2911"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3087"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3087"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3088"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3088"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2989"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2989"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2469"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2990"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2990"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3010"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3010"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2695"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2695"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2695"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2952"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3021"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3021"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3021"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2471"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2845"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2845"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3072"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3072"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3074"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3074"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3076"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3076"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2487"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3079"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3079"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2390"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:2390"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2390"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2278"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2488"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3132"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3132"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3125"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2489"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3081"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3081"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2829"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2829"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3127"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3127"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2907"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2907"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2908"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2908"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3022"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2920"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3181"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2910"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:2910"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:2350"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2350"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2912"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2912"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3307"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3307"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2917"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:2917"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3000"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3000"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3234"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3234"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3113"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3113"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3262"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3262"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3104"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3014"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3014"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3014"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3290"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3290"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3290"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:3290"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3290"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3102"
+  },
+  {
+   "module": "m:tests",
+   "pr": "pr:3102"
+  },
+  {
+   "module": "m:src",
+   "pr": "pr:3328"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3328"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3328"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3339"
+  },
+  {
+   "module": "m:src/commands",
+   "pr": "pr:3339"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3339"
+  },
+  {
+   "module": "m:graph",
+   "pr": "pr:3336"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3336"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3336"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:2897"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3285"
+  },
+  {
+   "module": "m:src/serializers",
+   "pr": "pr:3252"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3252"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3335"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3335"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3334"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3334"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3277"
+  },
+  {
+   "module": "m:tests/flow",
+   "pr": "pr:3277"
+  },
+  {
+   "module": "m:graph/src",
+   "pr": "pr:3063"
+  }
+ ],
+ "wrote": [
+  {
+   "doc": "d:docs/profiling.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:docs/query_visualizer.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:docs/write-authorization.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:CLAUDE.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:CLAUDE.md",
+   "person": "p:avi-avni"
+  },
+  {
+   "doc": "d:README.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:README.md",
+   "person": "p:avi-avni"
+  },
+  {
+   "doc": "d:README.md",
+   "person": "p:danshalev7"
+  },
+  {
+   "doc": "d:.claude/skills/bench/SKILL.md",
+   "person": "p:avi-avni"
+  },
+  {
+   "doc": "d:.claude/skills/build/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.claude/skills/build/SKILL.md",
+   "person": "p:avi-avni"
+  },
+  {
+   "doc": "d:.claude/skills/coverage/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.claude/skills/debug/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.claude/skills/fuzz/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.claude/skills/lint/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.claude/skills/profile/SKILL.md",
+   "person": "p:avi-avni"
+  },
+  {
+   "doc": "d:.claude/skills/profile/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.claude/skills/test/SKILL.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.devcontainer/README.md",
+   "person": "p:dvirdukhan"
+  },
+  {
+   "doc": "d:.devcontainer/README.md",
+   "person": "p:avi-avni"
+  },
+  {
+   "doc": "d:bench/README.md",
+   "person": "p:avi-avni"
+  }
+ ]
+}

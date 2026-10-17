@@ -1,0 +1,217 @@
+"""Deterministic snapshot extraction from a git clone.
+
+Design rules:
+  * No LLM touches ingestion — extraction is regex plus arithmetic (I2).
+  * Same clone at the same commit with the same window => byte-identical
+    snapshot (I5). Every threshold is a named constant in build.py.
+
+This module holds the git primitives; assembly happens in build.py.
+"""
+
+from __future__ import annotations
+
+import re
+import subprocess
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+
+SEP = "\x1f"
+REC = "@@@"
+
+# Which trees count as "modules" and which are plumbing.
+MODULE_DEPTH = 2
+EXCLUDE_PREFIXES = (
+    "deps/",
+    "docs/",
+    "build/",
+    "native-deps/",
+    "fuzz/",
+    "bench/",
+    ".github/",
+    ".cargo/",
+    ".claude/",
+    ".devcontainer/",
+    ".vscode/",
+)
+
+BOT_RE = re.compile(r"(\[bot\]|dependabot|renovate|[-_]bot\b|[-_]robot\b|copilot)", re.I)
+PR_IN_SUBJECT = re.compile(r"\(#(\d+)\)\s*$")
+MERGE_PR_RE = re.compile(r"^Merge pull request #(\d+)\b")
+
+
+@dataclass
+class Commit:
+    sha: str
+    author_name: str
+    author_email: str
+    date: str  # ISO 8601 with offset, straight from git
+    subject: str
+    files: list[str] = field(default_factory=list)
+    modules: list[str] = field(default_factory=list)
+    pr: int | None = None
+
+    @property
+    def dt(self) -> datetime:
+        return datetime.fromisoformat(self.date)
+
+
+def _git(repo: Path, *args: str) -> str:
+    proc = subprocess.run(
+        ["git", "-C", str(repo), "-c", "core.quotepath=false", *args],
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"git {' '.join(args)} failed in {repo}:\n{proc.stderr.strip()}")
+    return proc.stdout
+
+
+def head_info(repo: Path) -> tuple[str, datetime]:
+    """(commit sha, commit date in UTC) of HEAD — the snapshot's anchor."""
+    sha = _git(repo, "rev-parse", "HEAD").strip()
+    date_s = _git(repo, "show", "-s", "--format=%aI", sha).strip()
+    return sha, datetime.fromisoformat(date_s).astimezone(timezone.utc)
+
+
+def owner_repo(repo: Path) -> tuple[str, str]:
+    """Parse owner/name from the origin remote."""
+    url = _git(repo, "remote", "get-url", "origin").strip()
+    m = re.search(r"github\.com[:/]([^/]+)/([^/.]+)", url)
+    if not m:
+        raise RuntimeError(f"cannot parse owner/repo from remote: {url}")
+    return m.group(1), m.group(2)
+
+
+def module_of(path: str) -> str | None:
+    """Map a file path to its module. Root files and excluded trees → None."""
+    if not path:
+        return None
+    if any(path.startswith(p) for p in EXCLUDE_PREFIXES):
+        return None
+    parts = path.split("/")
+    if len(parts) < 2:
+        return None
+    if len(parts) >= 3:
+        return "/".join(parts[:MODULE_DEPTH])
+    return parts[0]
+
+
+def read_commits(repo: Path, since_iso: str) -> list[Commit]:
+    """Windowed non-merge commits with the files they touched."""
+    fmt = f"{REC}%H{SEP}%an{SEP}%ae{SEP}%aI{SEP}%s"
+    raw = _git(
+        repo,
+        "log",
+        "--no-merges",
+        f"--since={since_iso}",
+        f"--pretty=format:{fmt}",
+        "--name-only",
+    )
+    commits: list[Commit] = []
+    for block in raw.split(REC):
+        block = block.strip("\n")
+        if not block:
+            continue
+        lines = block.splitlines()
+        sha, name, email, date_s, subject = lines[0].split(SEP)
+        files = [ln for ln in (l.strip() for l in lines[1:]) if ln]
+        commits.append(
+            Commit(
+                sha=sha,
+                author_name=name,
+                author_email=email,
+                date=date_s,
+                subject=subject,
+                files=files,
+            )
+        )
+    return commits
+
+
+def merge_pr_map(repo: Path, since_iso: str) -> dict[str, int]:
+    """sha -> PR number for merge commits ("Merge pull request #N")."""
+    out: dict[str, int] = {}
+    raw = _git(repo, "log", "--merges", f"--since={since_iso}", "--pretty=format:%H\x1f%s")
+    for line in raw.splitlines():
+        if SEP not in line:
+            continue
+        sha, subject = line.split(SEP, 1)
+        m = MERGE_PR_RE.match(subject)
+        if m:
+            out[sha] = int(m.group(1))
+    return out
+
+
+def tracked_files(repo: Path) -> list[str]:
+    return [
+        ln.strip()
+        for ln in _git(repo, "ls-tree", "-r", "--name-only", "HEAD").splitlines()
+        if ln.strip()
+    ]
+
+
+def doc_title(repo: Path, path: str) -> str:
+    """First `# heading` of a markdown file; falls back to the file stem."""
+    try:
+        content = _git(repo, "show", f"HEAD:{path}")
+    except RuntimeError:
+        return Path(path).stem
+    for line in content.splitlines():
+        line = line.strip()
+        if line.startswith("# "):
+            return line[2:].strip()[:120]
+    return Path(path).stem
+
+
+@dataclass
+class CodeownersRule:
+    pattern: str
+    users: list[str]  # individual handles (teams are skipped — they aren't people)
+
+
+def parse_codeowners(repo: Path) -> list[CodeownersRule]:
+    for candidate in ("CODEOWNERS", ".github/CODEOWNERS", "docs/CODEOWNERS"):
+        path = repo / candidate
+        text = ""
+        try:
+            text = _git(repo, "show", f"HEAD:{candidate}")
+        except RuntimeError:
+            text = path.read_text() if path.exists() else ""
+        if not text:
+            continue
+        rules: list[CodeownersRule] = []
+        for raw_line in text.splitlines():
+            line = raw_line.split("#", 1)[0].strip()
+            if not line:
+                continue
+            tokens = line.split()
+            if len(tokens) < 2:
+                continue
+            users = [
+                t[1:].lower()
+                for t in tokens[1:]
+                if t.startswith("@") and "/" not in t  # skip orgs/teams
+            ]
+            if users:
+                rules.append(CodeownersRule(pattern=tokens[0], users=users))
+        if rules:
+            return rules
+    return []
+
+
+def codeowners_match(rules: list[CodeownersRule], module: str) -> list[str]:
+    """Users whose patterns cover this module (simple prefix + glob matching)."""
+    import fnmatch
+
+    out: list[str] = []
+    for rule in rules:
+        pat = rule.pattern.strip().lstrip("/").rstrip("/")
+        hit = False
+        if "*" in pat:
+            hit = fnmatch.fnmatch(module, pat) or fnmatch.fnmatch(module + "/", pat + "/")
+        else:
+            hit = module == pat or module.startswith(pat + "/")
+        if hit:
+            out.extend(u for u in rule.users if u not in out)
+    return out

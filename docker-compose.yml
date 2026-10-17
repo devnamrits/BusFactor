@@ -1,0 +1,57 @@
+# BusFactor — one-command stack.
+#
+#   docker compose up -d        # falkordb + api + web
+#
+# The API auto-loads data/snapshot.json into FalkorDB on first start,
+# so a fresh clone becomes a working demo with no extra steps.
+
+name: busfactor
+
+services:
+  falkordb:
+    image: falkordb/falkordb:latest
+    container_name: busfactor-falkordb
+    ports:
+      - "6379:6379"
+    volumes:
+      - falkordb-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep -q PONG"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  api:
+    build:
+      context: .
+      dockerfile: agent/Dockerfile
+    container_name: busfactor-api
+    ports:
+      - "8000:8000"
+    environment:
+      FALKORDB_HOST: falkordb
+      FALKORDB_PORT: "6379"
+      AUTO_INGEST: "1"
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      ACTIONS_REPO: ${ACTIONS_REPO:-}
+    depends_on:
+      falkordb:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    container_name: busfactor-web
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_PROXY_TARGET: http://api:8000
+    depends_on:
+      - api
+
+volumes:
+  falkordb-data:

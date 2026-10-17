@@ -9,7 +9,6 @@
 ![FalkorDB](https://img.shields.io/badge/graph-FalkorDB-e6174b?style=flat-square)
 ![Python + FastAPI](https://img.shields.io/badge/agent-Python%20%2B%20FastAPI-3572A5?style=flat-square)
 ![React](https://img.shields.io/badge/console-React%20%2B%20force--graph-61DAFB?style=flat-square)
-![Hackathon](https://img.shields.io/badge/WeMakeDevs-Graph%20Hacks-8A2BE2?style=flat-square)
 
 </div>
 
@@ -74,7 +73,7 @@ Aviation has simulators. Surgery has drills. Infrastructure has game days. Knowl
 | **Handover plan** | Successor pairs + rationale ("they already review your PRs", "they wrote the RFC") | `algo.SPpaths` over weighted `KNOWS` (cost = 1 − weight) + review-channel overlap + doc authorship | Diagnosis must end in a plan (P4) |
 | **Heal loop** | "Re-simulate after plan" → shatter reverses, counters move | Projected `KNOWS {source:'plan'}` edges in a fresh clone; algorithms re-run; metrics recomputed and diffed | Proof, not promise: re-run the disaster with the fix in place (P4) |
 | **Memory** | Past simulations with dates and trend ("weakest node moved from X to Y"); recalled at session start | `Sim`/`Finding`/`Question` nodes written back; `CITED`/`TRIGGERED` edges; traversal-based recall | Institutional memory of risk; memory = more nodes, not vectors |
-| **Actions** *(Track 1)* | "Open handover issue" → a real GitHub issue + runbook PR draft appears | Plan steps + evidence paths → GitHub payload (scoped token, preview by default) | Closes the loop from diagnosis to action — agents that *act* |
+| **Actions** | "Open handover issue" → a real GitHub issue + runbook PR draft appears | Plan steps + evidence paths → GitHub payload (scoped token, preview by default) | Closes the loop from diagnosis to action — agents that *act* |
 | **MCP server** | Use BusFactor from Claude Code / Cursor | The same 8-tool catalogue exposed over MCP — one implementation, two surfaces | Meet developers where they work; FalkorDB-native pattern |
 
 **The loop:** Ingest → Ask → Drill (shatter) → Proof (click) → Plan → Act (issue/PR) → Heal (re-simulate, verify) → Remember (next session starts smarter).
@@ -414,7 +413,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 Style: persons coral · modules slate · docs teal · decisions violet · findings red; radius ← cached criticality; departed = dashed ghost; projected edges gold. Shatter = eased data swap + island halos; heal = gold fade-in + animated counters. Positions cached per world client-side (not in graph); render budget ≤ 5k nodes.
 
-**Actions (Track 1).** `POST /api/actions` renders the exact payload first (preview mode, the default); live mode requires explicit operator opt-in and a token scoped to a single operator-owned repo — **never a third-party repo** (I8). The payload: an issue with the plan checklist, evidence paths, and a linked `docs/runbooks/<module>.md` PR draft. This is the agent acting on connected data, not just reading it.
+**Actions.** `POST /api/actions` renders the exact payload first (preview mode, the default); live mode requires explicit operator opt-in and a token scoped to a single operator-owned repo — **never a third-party repo** (I8). The payload: an issue with the plan checklist, evidence paths, and a linked `docs/runbooks/<module>.md` PR draft. This is the agent acting on connected data, not just reading it.
 
 **MCP server.** `agent/busfactor/mcp_server.py` exposes the same 8 tools via `FastMCP` (stdio), so BusFactor is usable from Claude Code / Cursor — the exact "context for AI agents" pattern:
 
@@ -438,4 +437,4 @@ Read-only tools by default; `simulate`/`plan` allowed; `heal`/`actions` require 
 
 ---
 
-<div align="center"><sub>WeMakeDevs × FalkorDB · <b>BusFactor</b> — lose anyone on Friday; ship on Monday.</sub></div>
+<div align="center"><sub><b>BusFactor</b> — lose anyone on Friday; ship on Monday.</sub></div>
