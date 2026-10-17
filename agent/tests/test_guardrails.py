@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 
 import pytest
@@ -9,6 +10,7 @@ from redis.exceptions import ResponseError
 
 from busfactor.db import _EmptyResult, _is_missing_graph
 from busfactor.ingest.git import read_commits
+from busfactor.repos import _interrupted, _pid_alive
 
 
 def test_missing_graph_detected():
@@ -48,3 +50,14 @@ def test_read_commits_streams_normally(tmp_path):
     commits = read_commits(repo, "2000-01-01T00:00:00Z", max_commits=10)
     assert [c.subject for c in commits] == ["commit 1", "commit 0"]  # newest first
     assert all(c.files == ["m.py"] for c in commits)
+
+
+def test_dead_worker_reads_as_interrupted():
+    assert _pid_alive(os.getpid())
+    assert not _pid_alive(None)
+    assert not _pid_alive(2**31 - 1)
+    assert _interrupted("building", None)  # pending with no recorded worker
+    assert _interrupted("loading", 2**31 - 1)
+    assert not _interrupted("building", os.getpid())
+    assert not _interrupted("ready", None)
+    assert not _interrupted("error", 2**31 - 1)

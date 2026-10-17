@@ -15,6 +15,7 @@ import time
 
 from . import db, memory, repos
 from .agent import ask
+from .config import settings
 from .sim import engine, make_plan
 from .sim.people import get_person, list_people
 from .tools.base import clean_ref, people_hint
@@ -30,7 +31,7 @@ def _graph(args) -> str:
 
 def cmd_index(args) -> int:
     try:
-        job = repos.connect(args.source, args.window_days)
+        job = repos.connect(args.source, args.window_days, settings.github_token or None)
     except (ValueError, RuntimeError) as e:
         print(f"error: {e}")
         return 1

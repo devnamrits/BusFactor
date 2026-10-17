@@ -266,6 +266,19 @@ button:focus-visible {
   white-space: nowrap;
 }
 
+.tabicon {
+  flex: none;
+  opacity: 0.75;
+}
+
+/* answer provenance — who computed what, in one quiet line */
+.prov {
+  margin: 6px 0 0;
+  font: 10px var(--mono);
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
 /* provenance strip — where this graph came from, one hairline of facts */
 .metabar {
   display: flex;
@@ -340,6 +353,33 @@ button:focus-visible {
   color: var(--bad);
 }
 
+.jre {
+  margin-left: auto;
+  visibility: hidden;
+  border: none;
+  background: none;
+  padding: 0;
+  font: 10px var(--mono);
+  letter-spacing: 0.3px;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.jobrow:hover .jre {
+  visibility: visible;
+}
+
+.jform {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 7px;
+}
+
+.jform input[type='number'] {
+  width: 74px;
+}
+
 .ingest-strip {
   display: flex;
   align-items: center;
@@ -369,6 +409,10 @@ button:focus-visible {
 
 .istate.ready {
   color: var(--ok);
+}
+
+.istate.interrupted {
+  color: var(--bad);
 }
 
 .isource {
@@ -557,6 +601,10 @@ main {
 
 .tab {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 9px 0;
   font: 11px var(--sans);
   letter-spacing: 0.8px;

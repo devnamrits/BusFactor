@@ -1,9 +1,9 @@
 """Optional GitHub enrichment: merged PR titles/authors, and reviews with a token.
 
-Everything is cached under data/raw/ — snapshot builds are deterministic and
-re-runs never re-hit the network. Tokenless runs still work: the public API
-allows a few unauthenticated calls per hour, enough for the PR index (title,
-author, merge date). Review data requires a token; without one the snapshot
+Everything is cached per repo under data/snapshots/raw/<slug>/ — snapshot builds
+are deterministic and re-runs never re-hit the network. Tokenless runs still work:
+the public API allows a few unauthenticated calls per hour, enough for the PR index
+(title, author, merge date). Review data requires a token; without one the snapshot
 notes `reviews_available: false` and the weight formula renormalizes.
 """
 

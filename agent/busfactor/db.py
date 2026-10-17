@@ -42,6 +42,10 @@ def client() -> FalkorDB:
         kwargs: dict[str, Any] = {
             "host": settings.falkordb_host,
             "port": settings.falkordb_port,
+            # a wedged socket must fail loudly instead of freezing a worker forever
+            "socket_timeout": 30,
+            "socket_connect_timeout": 5,
+            "max_connections": 8,
         }
         if settings.falkordb_username:
             kwargs["username"] = settings.falkordb_username

@@ -22,6 +22,52 @@ const TABS = [
   ['repos', 'Repos'],
 ]
 
+const TAB_ICONS = {
+  ask: <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />,
+  scenario: (
+    <>
+      <line x1="6" y1="3" x2="6" y2="15" />
+      <circle cx="18" cy="6" r="3" />
+      <circle cx="6" cy="18" r="3" />
+      <path d="M18 9a9 9 0 0 1-9 9" />
+    </>
+  ),
+  findings: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+  memory: (
+    <>
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+    </>
+  ),
+  repos: (
+    <>
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
+    </>
+  ),
+}
+
+function TabIcon({ id }) {
+  return (
+    <svg
+      className="tabicon"
+      viewBox="0 0 24 24"
+      width="13"
+      height="13"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {TAB_ICONS[id]}
+    </svg>
+  )
+}
+
 export default function App() {
   const [theme, toggleTheme] = useTheme()
 
@@ -149,6 +195,13 @@ export default function App() {
     return guard('switch', () => loadRepo(slug))
   }
 
+  // re-index straight from the Repos tab — optionally with a different window
+  const indexRepo = (url, days) =>
+    guard('index', async () => {
+      await api.connect(url, days)
+      await refreshRepos()
+    })
+
   const selectWorld = (w) => guard('world', () => loadWorld(w))
 
   const runAsk = (question) => {
@@ -228,8 +281,6 @@ export default function App() {
     setFocus({ id: node.id, nonce: Date.now() })
   }
 
-  const saveConfig = async (values) => setConfig(await api.saveConfig(values))
-
   const suggestions = useMemo(() => {
     const out = ['Who can we least afford to lose?', 'Where is knowledge stranded?']
     if (people[0]?.name) out.push(`What does ${people[0].name} carry?`)
@@ -297,7 +348,8 @@ export default function App() {
                 className={`tab ${tab === id ? 'on' : ''}`}
                 onClick={() => setTab(id)}
               >
-                {label}
+                <TabIcon id={id} />
+                <span>{label}</span>
                 {id === 'findings' && findings.length > 0 && <em>{findings.length}</em>}
               </button>
             ))}
@@ -326,10 +378,16 @@ export default function App() {
             )}
             {tab === 'findings' && <FindingsPanel findings={findings} />}
             {tab === 'memory' && (
-              <MemoryPanel repo={repo} memory={memory} config={config} onSaveConfig={saveConfig} />
+              <MemoryPanel repo={repo} memory={memory} config={config} />
             )}
             {tab === 'repos' && (
-              <ReposPanel repos={repos} active={repoSlug} busy={busy} onSelect={selectRepo} />
+              <ReposPanel
+                repos={repos}
+                active={repoSlug}
+                busy={busy}
+                onSelect={selectRepo}
+                onIndex={indexRepo}
+              />
             )}
           </div>
         </aside>

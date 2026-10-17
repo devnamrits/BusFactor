@@ -146,7 +146,7 @@ def build_snapshot(
 ) -> dict:
     repo = Path(repo).resolve()
     out_path = Path(out_path)
-    cache_dir = Path(cache_dir) if cache_dir else out_path.parent / "raw"
+    cache_dir = Path(cache_dir) if cache_dir else out_path.parent / "raw" / out_path.stem
 
     owner, name = gitm.owner_repo(repo)
     head, head_dt = gitm.head_info(repo)

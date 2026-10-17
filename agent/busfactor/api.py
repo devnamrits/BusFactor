@@ -143,7 +143,7 @@ def repos_list() -> dict:
 @app.post("/api/repos")
 def repos_connect(body: ConnectBody) -> dict:
     try:
-        return repos.connect(body.source, body.window_days)
+        return repos.connect(body.source, body.window_days, settings.github_token or None)
     except (ValueError, RuntimeError) as e:
         raise HTTPException(400, str(e)) from e
 

@@ -125,6 +125,15 @@ function AnswerCard({ r, onCite }) {
         )}
       </div>
       <p className="answertext">{r.answer}</p>
+      {answered && (
+        <p className="prov">
+          {r.outcome === 'answered_from_memory'
+            ? 'Replayed from this repo’s answer memory — first computed from the graph.'
+            : r.routing?.engine === 'llm'
+              ? 'The graph computed this answer; the LLM only picked which read to run.'
+              : 'The graph computed this answer, deterministically.'}
+        </p>
+      )}
       {r.citations?.length > 0 && (
         <div className="cites">
           {r.citations.slice(0, 12).map((c, i) =>
@@ -191,8 +200,18 @@ export function ScenarioPanel({ drill, plan, heal, people, busy, onDrill, onPlan
             <Delta label="stranded components" from={drill.before?.islands} to={drill.after?.islands} />
             <Delta label="zero-knower modules" from={drill.before?.zero_modules} to={drill.after?.zero_modules} />
             <Delta label="orphaned decisions" from={drill.before?.orphaned_decisions} to={drill.after?.orphaned_decisions} />
-            <Delta label="bus factor" from={drill.before?.bus_factor} to={drill.after?.bus_factor} invert />
+            <Delta
+              label="bus factor"
+              from={drill.before?.bus_factor}
+              to={drill.after?.bus_factor}
+              invert
+              title="the fewest active knowers any single module has — 1 means one departure strands knowledge. Higher is better."
+            />
           </div>
+          <p className="hint">
+            bus factor = the fewest active knowers any module has; a drill lowers it —
+            raising it is what healing is for.
+          </p>
           <p className="hint">
             world <code>{drill.world}</code> · {drill.seconds}s
           </p>
@@ -286,13 +305,13 @@ export function ScenarioPanel({ drill, plan, heal, people, busy, onDrill, onPlan
   )
 }
 
-function Delta({ label, from, to, invert }) {
+function Delta({ label, from, to, invert, title }) {
   if (from === undefined || to === undefined) return null
   const rose = to > from
   const better = invert ? rose : !rose && to !== from
   const worse = invert ? !rose && to !== from : rose
   return (
-    <div className={`delta ${better ? 'better' : ''} ${worse ? 'worse' : ''}`}>
+    <div className={`delta ${better ? 'better' : ''} ${worse ? 'worse' : ''}`} title={title}>
       <span className="dl">{label}</span>
       <span className="dv">
         <em>{from}</em> <span className="arrow">→</span> <b>{to}</b>
@@ -370,20 +389,10 @@ function FindingItem({ f }) {
   )
 }
 
-export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
-  const [windowDays, setWindowDays] = useState('')
-  const [saved, setSaved] = useState(false)
+export function MemoryPanel({ repo, memory, config }) {
   const stats = memory?.stats || {}
   const recent = memory?.recent || []
   const ingest = config?.ingest || {}
-
-  const save = async () => {
-    const value = parseInt(windowDays || ingest.window_days, 10)
-    await onSaveConfig({ window_days: value })
-    setWindowDays('')
-    setSaved(true)
-    setTimeout(() => setSaved(false), 1500)
-  }
 
   return (
     <>
@@ -435,24 +444,11 @@ export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
             {repo?.meta?.window_days ?? '–'} days
           </span>
         </div>
-        <div className="settingrow">
-          <span className="k">default for new repos</span>
-          <span className="v">{ingest.window_days ?? '–'} days</span>
-        </div>
-        <div className="row">
-          <input
-            type="number"
-            min="30"
-            max="36500"
-            value={windowDays}
-            placeholder={String(ingest.window_days ?? 3650)}
-            onChange={(e) => setWindowDays(e.target.value)}
-          />
-          <button className="btn" onClick={save}>
-            {saved ? 'saved' : 'set window'}
-          </button>
-        </div>
-        <p className="hint">Default for the next repo you index — the index form can override it per repo.</p>
+        <p className="hint">
+          The history window is chosen per repo when you index it (the &ldquo;days&rdquo;
+          box in the index form) — leave it empty to use the default of{' '}
+          {ingest.window_days ?? 3650} days.
+        </p>
         <div className="settingrow">
           <span className="k">coverage floor (K)</span>
           <span className="v">{config?.coverage_floor ?? '–'}</span>
@@ -474,7 +470,19 @@ export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
   )
 }
 
-export function ReposPanel({ repos, active, busy, onSelect }) {
+export function ReposPanel({ repos, active, busy, onSelect, onIndex }) {
+  const [open, setOpen] = useState(null) // slug whose re-index form is expanded
+  const [days, setDays] = useState('')
+
+  const submit = (e, url) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const d = parseInt(days, 10)
+    onIndex(url, Number.isFinite(d) ? d : undefined)
+    setOpen(null)
+    setDays('')
+  }
+
   return (
     <section className="panel">
       <h3>Repos &amp; indexing jobs</h3>
@@ -492,7 +500,19 @@ export function ReposPanel({ repos, active, busy, onSelect }) {
               <div className="jline1">
                 <span className={`istate ${r.status}`}>{r.status}</span>
                 <b className="jname">{r.name || r.slug}</b>
-                {r.slug !== active && !busy && <span className="jswitch">switch</span>}
+                {r.url && (
+                  <button
+                    className="jre"
+                    title="re-index this repo — optionally with a different history window"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setOpen(open === r.slug ? null : r.slug)
+                      setDays('')
+                    }}
+                  >
+                    ↻ re-index
+                  </button>
+                )}
               </div>
               <div className={`jline2 ${r.status === 'error' ? 'jerr' : ''}`}>
                 {ready
@@ -501,12 +521,37 @@ export function ReposPanel({ repos, active, busy, onSelect }) {
                     }`
                   : r.message || r.status}
               </div>
+              {open === r.slug && (
+                <form
+                  className="jform"
+                  onSubmit={(e) => submit(e, r.url)}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    type="number"
+                    min="30"
+                    max="36500"
+                    value={days}
+                    placeholder={String(r.meta?.window_days || 3650)}
+                    onChange={(e) => setDays(e.target.value)}
+                    title="days of history to mine (30–36500) — empty = current default"
+                  />
+                  <span className="winsuffix">days</span>
+                  <button className="btn primary" type="submit" disabled={!!busy}>
+                    {busy ? '…' : 're-index'}
+                  </button>
+                  <button className="btn ghost" type="button" onClick={() => setOpen(null)}>
+                    cancel
+                  </button>
+                </form>
+              )}
             </li>
           )
         })}
       </ul>
       <p className="hint">
-        Indexing runs in the background — this list refreshes every 2s while a job is active.
+        Click a row to switch repos · ↻ re-indexes one, optionally with a different
+        history window · this list refreshes every 2s while a job is active.
       </p>
     </section>
   )
@@ -522,6 +567,7 @@ export function Filmstrip({ repo, overview, timeline, world, onWorld }) {
       kind: 'truth',
       label: repo.slug,
       metric: summary ? `${summary.modules} modules · bf ${summary.bus_factor}` : '',
+      title: `bus factor ${summary?.bus_factor ?? '?'} — the fewest active knowers any module has (higher is better)`,
     },
     ...sims.map((s) => ({
       world: s.world,

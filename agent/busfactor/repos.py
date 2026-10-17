@@ -13,8 +13,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
+import sys
 import threading
+import traceback
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -45,7 +48,27 @@ def check_window(days: int) -> int:
             f"window_days must be between {WINDOW_MIN_DAYS} and {WINDOW_MAX_DAYS}"
         )
     return int(days)
+
+
 _JOB_LOCK = threading.Lock()
+
+_PENDING_STATUSES = ("queued", "cloning", "building", "loading")
+
+
+def _pid_alive(pid: object) -> bool:
+    """True when a worker PID recorded in the registry still exists."""
+    try:
+        os.kill(int(pid), 0)
+    except PermissionError:
+        return True  # exists, just owned by someone else
+    except (TypeError, ValueError, ProcessLookupError, OverflowError):
+        return False
+    return True
+
+
+def _interrupted(status: str, worker_pid: object) -> bool:
+    """A pending job whose worker process is gone can never finish — say so."""
+    return status in _PENDING_STATUSES and not _pid_alive(worker_pid)
 
 
 def graph_for(slug: str) -> str:
@@ -157,12 +180,16 @@ def list_repos() -> list[dict]:
         REGISTRY_GRAPH,
         "MATCH (r:Repo) RETURN r.slug, r.name, r.url, r.graph, r.kind, r.status, "
         "r.message, r.created_at, r.updated_at, r.people, r.modules, r.commits, "
-        "r.snapshot_sha ORDER BY r.created_at",
+        "r.snapshot_sha, r.worker_pid ORDER BY r.created_at",
     ).result_set
     out = []
     for row in rows:
         (slug, name, url, graph, kind, status, message, created, updated, people,
-         modules, commits, sha) = row
+         modules, commits, sha, worker_pid) = row
+        if _interrupted(status, worker_pid):
+            # the worker died (API restart, crash) — never leave a ghost "building"
+            status = "interrupted"
+            message = "worker died before finishing — re-index this repo to retry"
         out.append({
             "slug": slug,
             "name": name,
@@ -260,6 +287,7 @@ def connect(source: str, window_days: int | None = None, token: str | None = Non
             "kind": "local" if local else "github",
             "status": "queued",
             "message": "",
+            "worker_pid": os.getpid(),
         },
     )
     cfg = get_settings()
@@ -286,6 +314,10 @@ def _ingest_job(slug: str, source: str, window_days: int, token: str | None) -> 
     from .ingest.git import clone_or_fetch
     from .ingest.loader import load_snapshot
 
+    def progress(msg: str) -> None:
+        """Live phase detail — the registry is the job's status feed."""
+        _upsert(slug, {"message": (msg or "").strip()[:400]})
+
     with _JOB_LOCK:
         try:
             local = source.startswith(("/", "~", ".")) or "://" not in source
@@ -295,14 +327,22 @@ def _ingest_job(slug: str, source: str, window_days: int, token: str | None) -> 
             else:
                 repo_path = settings.source_dir / slug
                 set_status(slug, "cloning", f"fetching {source}")
-                clone_or_fetch(source, repo_path, log=lambda m: _upsert(slug, {"message": m.strip()}))
+                clone_or_fetch(source, repo_path, log=progress)
 
             set_status(slug, "building", f"extracting {window_days}d of history")
             snap_path = settings.snapshots_dir / f"{slug}.json"
-            build_snapshot(repo_path, snap_path, window_days=window_days, token=token)
+            # pulls cache is per repo — a shared dir would serve one repo's PRs to another
+            build_snapshot(
+                repo_path,
+                snap_path,
+                window_days=window_days,
+                token=token,
+                cache_dir=settings.snapshots_dir / "raw" / slug,
+                log=progress,
+            )
 
             set_status(slug, "loading", "loading graph")
-            load_snapshot(snap_path, graph_name=graph_for(slug), force=True)
+            load_snapshot(snap_path, graph_name=graph_for(slug), force=True, log=progress)
 
             body = json.loads(snap_path.read_text(encoding="utf-8"))
             sha = hashlib.sha256(snap_path.read_bytes()).hexdigest()[:12]
@@ -320,4 +360,9 @@ def _ingest_job(slug: str, source: str, window_days: int, token: str | None) -> 
                 done["name"] = display
             _upsert(slug, done)
         except Exception as e:  # surface the reason, never a silent half-state
-            set_status(slug, "error", f"{type(e).__name__}: {e}")
+            print(traceback.format_exc(), file=sys.stderr, flush=True)
+            try:
+                set_status(slug, "error", f"{type(e).__name__}: {e}")
+            except Exception:
+                # the DB may be the thing that is down — the traceback above still tells
+                print(f"ingest {slug}: could not record error status", file=sys.stderr, flush=True)
