@@ -64,6 +64,9 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh, defa
             <option key={r.slug} value={r.slug}>
               {r.name}
               {r.meta?.window_days ? ` — ${r.meta.window_days}d` : ''}
+              {typeof r.bus_factor === 'number' && r.status === 'ready'
+                ? ` · bf ${r.bus_factor}`
+                : ''}
               {r.status === 'ready' ? '' : ` (${r.status})`}
             </option>
           ))}
@@ -111,6 +114,17 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh, defa
             </a>
           ) : (
             <span title={activeRepo.url}>{activeRepo.name}</span>
+          )}
+          {typeof activeRepo.bus_factor === 'number' && (
+            <>
+              <span className="sep">·</span>
+              <span
+                className="badge accent"
+                title="bus factor — the fewest active knowers any module has; higher is better"
+              >
+                bus factor {activeRepo.bus_factor}
+              </span>
+            </>
           )}
           <span className="sep">·</span>
           <span>{activeRepo.kind}</span>

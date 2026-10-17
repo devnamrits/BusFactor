@@ -137,7 +137,15 @@ def health(repo: str = "main") -> dict:
 
 @app.get("/api/repos")
 def repos_list() -> dict:
-    return {"repos": repos.list_repos(), "settings": repos.get_settings()}
+    out = repos.list_repos()
+    for r in out:
+        r["bus_factor"] = None
+        if r.get("status") == "ready" and r.get("graph"):
+            try:
+                r["bus_factor"] = metrics.bus_factor(r["graph"])
+            except Exception:
+                r["bus_factor"] = None
+    return {"repos": out, "settings": repos.get_settings()}
 
 
 @app.post("/api/repos")

@@ -516,11 +516,23 @@ export function ReposPanel({ repos, active, busy, onSelect, onIndex }) {
                 )}
               </div>
               <div className={`jline2 ${r.status === 'error' ? 'jerr' : ''}`}>
-                {ready
-                  ? `${counts.people} people · ${counts.modules} modules · ${counts.decisions} decisions${
+                {ready ? (
+                  <>
+                    {typeof r.bus_factor === 'number' && (
+                      <span
+                        className="badge accent"
+                        title="bus factor — the fewest active knowers any module has; higher is better"
+                      >
+                        bf {r.bus_factor}
+                      </span>
+                    )}
+                    {`${counts.people} people · ${counts.modules} modules · ${counts.decisions} decisions${
                       r.meta?.window_days ? ` · ${r.meta.window_days}d window` : ''
-                    }`
-                  : r.message || r.status}
+                    }`}
+                  </>
+                ) : (
+                  r.message || r.status
+                )}
               </div>
               {open === r.slug && (
                 <form

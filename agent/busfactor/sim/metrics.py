@@ -35,6 +35,21 @@ def coverage(world: str) -> dict[str, dict]:
     return out
 
 
+def bus_factor(world: str) -> int:
+    """The same number snapshot() reports, as one cheap query.
+
+    Modules nobody knows don't cap the bus factor (strandedness is counted
+    elsewhere); an empty graph reads 0.
+    """
+    counts: dict[str, int] = {}
+    for (mid,) in _rows(
+        world,
+        "MATCH (p:Person {status:'active'})-[:KNOWS|OWNS]->(m:Module) RETURN m.id",
+    ):
+        counts[mid] = counts.get(mid, 0) + 1
+    return min(counts.values()) if counts else 0
+
+
 def islands(world: str) -> list[dict]:
     """Components of G_k with >=1 Module and no active Person — stranded knowledge."""
     rows = _rows(
