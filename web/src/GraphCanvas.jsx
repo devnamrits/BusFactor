@@ -44,7 +44,7 @@ function radius(node) {
   return 3
 }
 
-export default function GraphCanvas({ data, selectedId, theme, onSelect }) {
+export default function GraphCanvas({ data, selectedId, focus, theme, onSelect }) {
   const wrap = useRef(null)
   const fg = useRef(null)
   const [size, setSize] = useState({ w: 900, h: 600 })
@@ -96,6 +96,18 @@ export default function GraphCanvas({ data, selectedId, theme, onSelect }) {
     const t = setTimeout(() => fg.current?.zoomToFit(600, 64), 400)
     return () => clearTimeout(t)
   }, [data?.world])
+
+  // fly to a cited node (citation chips in the Ask panel)
+  useEffect(() => {
+    if (!focus?.id) return
+    const n = gdata.nodes.find((x) => x.id === focus.id)
+    const f = fg.current
+    if (n && f && n.x != null) {
+      f.centerAt(n.x, n.y, 500)
+      f.zoom(2.4, 500)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus?.nonce])
 
   useEffect(() => {
     const f = fg.current

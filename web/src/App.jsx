@@ -42,6 +42,7 @@ export default function App() {
   const [plan, setPlan] = useState(null)
   const [heal, setHeal] = useState(null)
   const [selected, setSelected] = useState(null)
+  const [focus, setFocus] = useState(null)
 
   const repo = useMemo(
     () =>
@@ -207,6 +208,15 @@ export default function App() {
     return runAsk(q)
   }
 
+  // a citation chip is a promise: click it and the map proves the claim
+  const focusCite = (c) => {
+    const nodes = graph?.nodes || []
+    const node = nodes.find((n) => n.id === c.id) || nodes.find((n) => n.name === c.label)
+    if (!node) return
+    setSelected(node)
+    setFocus({ id: node.id, nonce: Date.now() })
+  }
+
   const saveConfig = async (values) => setConfig(await api.saveConfig(values))
 
   const suggestions = useMemo(() => {
@@ -256,7 +266,13 @@ export default function App() {
 
       <main>
         <section className="canvas-wrap">
-          <GraphCanvas data={graph} theme={theme} selectedId={selected?.id} onSelect={setSelected} />
+          <GraphCanvas
+            data={graph}
+            theme={theme}
+            selectedId={selected?.id}
+            focus={focus}
+            onSelect={setSelected}
+          />
           <Legend />
           <SelectedCard node={selected} onAskAbout={askAboutNode} />
         </section>
@@ -281,6 +297,7 @@ export default function App() {
                 busy={busy === 'ask'}
                 suggestions={suggestions}
                 onAsk={runAsk}
+                onCite={focusCite}
               />
             )}
             {tab === 'scenario' && (

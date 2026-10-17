@@ -41,12 +41,15 @@ export function SelectedCard({ node, onAskAbout }) {
           ? 'departed in this world'
           : 'active'
         : node.label
+  // keep the button short — decision titles run long and must never blow out the card
   const action =
     node.label === 'Module'
       ? `who knows ${node.name}?`
       : node.label === 'Person'
         ? `what does ${node.name} carry?`
-        : `ask about ${node.name}`
+        : node.label === 'Decision'
+          ? 'recall this decision'
+          : `recall this ${(node.label || 'node').toLowerCase()}`
   return (
     <div className="selected">
       <div className="sel-head">
@@ -61,7 +64,7 @@ export function SelectedCard({ node, onAskAbout }) {
   )
 }
 
-export function AskPanel({ result, busy, suggestions, onAsk }) {
+export function AskPanel({ result, busy, suggestions, onAsk, onCite }) {
   const [q, setQ] = useState('')
   const submit = (e) => {
     e?.preventDefault()
@@ -91,12 +94,12 @@ export function AskPanel({ result, busy, suggestions, onAsk }) {
           </button>
         ))}
       </div>
-      {result && <AnswerCard r={result} />}
+      {result && <AnswerCard r={result} onCite={onCite} />}
     </section>
   )
 }
 
-function AnswerCard({ r }) {
+function AnswerCard({ r, onCite }) {
   const answered = r.outcome === 'answered_with_path' || r.outcome === 'answered_from_memory'
   return (
     <div className={`answer o-${r.outcome}`}>
@@ -123,11 +126,22 @@ function AnswerCard({ r }) {
       <p className="answertext">{r.answer}</p>
       {r.citations?.length > 0 && (
         <div className="cites">
-          {r.citations.slice(0, 12).map((c, i) => (
-            <span key={i} className={`cite k-${c.kind}`} title={c.detail || ''}>
-              {c.label}
-            </span>
-          ))}
+          {r.citations.slice(0, 12).map((c, i) =>
+            onCite ? (
+              <button
+                key={i}
+                className={`cite k-${c.kind}`}
+                title={`${c.detail || c.label} — click to show on the map`}
+                onClick={() => onCite(c)}
+              >
+                {c.label}
+              </button>
+            ) : (
+              <span key={i} className={`cite k-${c.kind}`} title={c.detail || ''}>
+                {c.label}
+              </span>
+            )
+          )}
         </div>
       )}
     </div>

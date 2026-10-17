@@ -63,6 +63,9 @@ def _check(case: dict, r: dict) -> tuple[bool, list[str]]:
 
 def run(repo: str = "main") -> int:
     cases = yaml.safe_load(QUESTIONS.read_text(encoding="utf-8"))
+    # the benchmark measures the deterministic contract — an LLM router in
+    # .env must not make `make bench` flaky or provider-dependent
+    settings.llm_base_url = ""
     _reset(repo)
     rows = []
     passed = 0
