@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
-  <!-- Shared IntelliJ run configurations — plain Shell Script type, no plugins required.
+  <!-- Shared IntelliJ run configurations.
 
        Start BusFactor (db + api)  THE one to run: starts FalkorDB, then the API,
                                    which also serves the built web UI.
                                    Open http://localhost:8000 when it's up.
+                                   Plain shell — needs no extra plugins.
+       API - debug (Python)        same API under the debugger: set breakpoints in
+                                   busfactor/ and press Debug. Needs JetBrains'
+                                   Python plugin + the agent/.venv interpreter.
        Web dev server (vite)       optional — live-reloading UI on :5173 (/api proxied)
        FalkorDB (db only)          optional — just the database container -->
   <configuration default="false" name="Start BusFactor (db + api)" type="ShConfigurationType" factoryName="Shell Script">
@@ -21,6 +25,31 @@
     <option name="EXECUTE_SCRIPT_FILE" value="false" />
     <envs />
     <method v="2" />
+  </configuration>
+  <configuration default="false" name="API - debug (Python)" type="PythonConfigurationType" factoryName="Python">
+    <module name="BusFactor" />
+    <option name="ENV_FILES" value="" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+    </envs>
+    <option name="SDK_HOME" value="$PROJECT_DIR$/agent/.venv/bin/python" />
+    <option name="SDK_NAME" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/agent" />
+    <option name="IS_MODULE_SDK" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/agent/run_api.py" />
+    <option name="PARAMETERS" value="" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="EMULATE_TERMINAL" value="false" />
+    <option name="MODULE_MODE" value="false" />
+    <option name="REDIRECT_INPUT" value="false" />
+    <option name="INPUT_FILE" value="" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="FalkorDB (db only)" run_configuration_type="ShConfigurationType" />
+    </method>
   </configuration>
   <configuration default="false" name="Web dev server (vite)" type="ShConfigurationType" factoryName="Shell Script">
     <option name="SCRIPT_TEXT" value="cd web &amp;&amp; npm run dev" />
