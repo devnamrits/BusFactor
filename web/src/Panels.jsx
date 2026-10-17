@@ -421,10 +421,22 @@ export function MemoryPanel({ repo, memory, config, onSaveConfig }) {
         <h3>Indexing & runtime</h3>
         <div className="settingrow">
           <span className="k">repo</span>
-          <span className="v">{repo?.slug}</span>
+          <span className="v">
+            {repo?.name || repo?.slug}
+            {repo?.name && repo?.slug ? ` (${repo.slug})` : ''}
+          </span>
         </div>
         <div className="settingrow">
-          <span className="k">history window</span>
+          <span className="k">indexed window</span>
+          <span
+            className="v"
+            title={repo?.meta?.since ? `since ${repo.meta.since.slice(0, 10)}` : ''}
+          >
+            {repo?.meta?.window_days ?? '–'} days
+          </span>
+        </div>
+        <div className="settingrow">
+          <span className="k">default for new repos</span>
           <span className="v">{ingest.window_days ?? '–'} days</span>
         </div>
         <div className="row">
