@@ -212,6 +212,12 @@ def run_heal(plan_id: str | None = None) -> dict:
     person = get_person(plan["target_person"])
     main_snap = metrics.snapshot("main")
 
+    # the drill's shatter is the reference point the heal must undo
+    d_rows = db.graph().ro_query(
+        "MATCH (s:Sim {id:$sid}) RETURN s.metrics_json", {"sid": plan["sim_id"]}
+    ).result_set
+    drill_metrics = json.loads(d_rows[0][0]) if d_rows and d_rows[0][0] else {}
+
     world = clone.new_world_id("heal")
     clone.clone_world("main", world)
     surgery.remove_person(world, person["id"])
@@ -286,6 +292,7 @@ def run_heal(plan_id: str | None = None) -> dict:
         "resolved": resolved,
         "remaining": remaining,
         "before": _summary(main_snap),
+        "drill": drill_metrics,
         "after": _summary(sim_snap),
         "seconds": round(time.time() - t0, 2),
     }

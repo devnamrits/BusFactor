@@ -145,7 +145,11 @@ def findings(main_snap: dict, sim_snap: dict, world: str, departed: dict) -> lis
                     "orphaned_decision", 2,
                     f"decision '{d['title']}' lost its last owner — the reasoning "
                     f"lives only in the PR now",
-                    {"title": d["title"], "deciders_before": before["deciders"]},
+                    {
+                        "decision_id": d["id"],
+                        "title": d["title"],
+                        "deciders_before": before["deciders"],
+                    },
                     slug=d["id"].replace(":", "-").replace("/", "-"), world=world,
                 )
             )

@@ -227,6 +227,7 @@ def make_plan(sim_id: str | None = None, include_resilience: bool = True) -> dic
 
     return {
         "plan_id": plan_id,
+        "label": f"handover plan for {dep['name']}'s modules",
         "target": dep,
         "sim_id": sim["id"],
         "steps": steps,

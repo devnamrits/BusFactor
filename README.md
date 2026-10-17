@@ -66,13 +66,13 @@ Aviation has simulators. Surgery has drills. Infrastructure has game days. Knowl
 | Feature | What the user sees | What the graph computes | Why it's like that |
 |---|---|---|---|
 | **Knowledge map** | Interactive graph of people ↔ modules ↔ docs ↔ decisions | Derived `KNOWS` edges, recency-weighted from commits, reviews, issue references, CODEOWNERS | Risk lives on edges (P1) — you must see the wires, not boxes |
-| **Load-bearing people** | Ranked list + evidence paths per name | Betweenness on G_k (bridges) + module PageRank rollup + sole-knower tallies | A ranked *prior* — the drill is the ground truth (P2) |
-| **What-if simulation** | Pick a person → "Run simulation" | `GRAPH.COPY` → `sim:<id>`; remove their `KNOWS`/`OWNS` edges; recompute components/centrality; diff vs main | You can't audit what you can't remove (P2) |
+| **Load-bearing people** | Ranked list + evidence paths per name | Sole-knower tallies + knowledge-mass rollup (`sum(KNOWS.weight)`); bridges surface as component splits during drills | A ranked *prior* — the drill is the ground truth (P2) |
+| **What-if simulation** | Pick a person → "Run simulation" | `GRAPH.COPY` → `sim:<id>`; remove their `KNOWS`/`OWNS` edges; recompute components/coverage; diff vs main | You can't audit what you can't remove (P2) |
 | **Knowledge islands** | "4 islands — 23 modules left with zero knowers" | WCC on G_k before vs after (isolates are size-1 components) | The shatter, made measurable and clickable |
 | **Decisions at risk** | "These 2 decisions lose their only owner" | Pattern match over `DECIDED_BY` + absence of a `RECORDS` doc | Rationale loss is silent and unrecoverable — worth its own signal |
-| **Handover plan** | Successor pairs + rationale ("they already review your PRs", "they wrote the RFC") | `algo.SPpaths` over weighted `KNOWS` (cost = 1 − weight) + review-channel overlap + doc authorship | Diagnosis must end in a plan (P4) |
+| **Handover plan** | Successor pairs + rationale ("they already carry the sibling modules", "they worked the same tree") | Sibling-tree mass over weighted `KNOWS` (cost = 1 − weight) + shared working history with the departing person | Diagnosis must end in a plan (P4) |
 | **Heal loop** | "Re-simulate after plan" → shatter reverses, counters move | Projected `KNOWS {source:'plan'}` edges in a fresh clone; algorithms re-run; metrics recomputed and diffed | Proof, not promise: re-run the disaster with the fix in place (P4) |
-| **Memory** | Past simulations with dates and trend ("weakest node moved from X to Y"); recalled at session start | `Sim`/`Finding`/`Question` nodes written back; `CITED`/`TRIGGERED` edges; traversal-based recall | Institutional memory of risk; memory = more nodes, not vectors |
+| **Memory** | Past simulations with dates and trend ("weakest node moved from X to Y"); recalled at session start | `Sim`/`Finding`/`Question` nodes written back; `CITED` edges; traversal + token-overlap recall | Institutional memory of risk; memory = more nodes, not vectors |
 | **Actions** | "Open handover issue" → a real GitHub issue + runbook PR draft appears | Plan steps + evidence paths → GitHub payload (scoped token, preview by default) | Closes the loop from diagnosis to action — agents that *act* |
 | **MCP server** | Use BusFactor from Claude Code / Cursor | The same 8-tool catalogue exposed over MCP — one implementation, two surfaces | Meet developers where they work; FalkorDB-native pattern |
 
@@ -166,7 +166,7 @@ erDiagram
         string id PK
         string name
         string path
-        float  criticality "cached PageRank"
+        float  criticality "cached knowledge mass (sum of KNOWS weights)"
     }
     SIM {
         string id PK
@@ -308,7 +308,7 @@ flowchart TD
 | Tool | Engine | Returns | Why |
 |---|---|---|---|
 | `who_knows(module, limit=5)` | `KNOWS`/`OWNS` + review channel (`REVIEWED`→`PR`→`TOUCHES`) | Ranked people with evidence paths per channel | The primitive question; proves answers are traceable |
-| `critical_people(limit=5)` | `algo.betweenness` on G_k + module PageRank + sole-knower tallies | Ranked persons + reason (bridge / breadth) | A fast prior — and it says so; ground truth comes from drilling |
+| `critical_people(limit=5)` | Knowledge mass (`sum(KNOWS.weight)`) + sole-knower tallies over coverage | Ranked persons + reason (sole knower / breadth) | A fast prior — and it says so; ground truth comes from drilling |
 | `knowledge_islands(world)` | `algo.WCC` on G_k | Components with modules but no active persons | The shatter, made measurable |
 | `module_risk(module)` | Aggregation over `KNOWS`/`REVIEWED`/`DECIDED_BY` | Coverage, reviewers, doc safeties, orphaned decisions | Module-level verdict, not vibes |
 | `simulate_departure(person)` | Sim engine (§7) | `sim_id`, findings, deltas | The differentiator — an action, not a report |
@@ -371,10 +371,9 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 |---|---|---|
 | **Multigraph** (graph per what-if) | Drill worlds, heal worlds, filmstrip | Every hypothetical is a fully isolated graph in one instance — the product *is* worlds |
 | **`GRAPH.COPY`** | Clone `main` → `sim:<id>` | Server-side atomic snapshot; copies indexes too; source stays queryable during copy |
-| **`algo.WCC`** (`nodeLabels`/`relationshipTypes` filters) | Knowledge islands | Linear-time components; filters run it on G_k directly |
-| **`algo.betweenness`** (`samplingSeed 42`) | Load-bearing people | Bridge detection on the knowledge view; seeded sampling = reproducible runs |
-| **`algo.pageRank('Module','KNOWS')`** | Module criticality | Incoming-edge influence = how many people depend on a module; sizes nodes, weights plans |
-| **`algo.SPpaths`** (`weightProp:'cost'`, `maxLen 4`) | Handover rationale | "Why this successor" as real shortest paths through strong knowledge edges |
+| **`algo.WCC`** (`nodeLabels`/`relationshipTypes` filters) | Knowledge islands + bridge detection | Linear-time components on G_k; a removal that raises the active-person component count is a measured bridge loss |
+| **Knowledge-mass rollup** (`MATCH (m:Module)<-[k:KNOWS]-(p) … sum(k.weight)`) | Module criticality | Weighted in-degree = depended-upon knowledge; sizes nodes, weights plans. *(PageRank was tried first and degenerates to a near-uniform score on this bipartite view — verified empirically — so the direct rollup is the honest measure.)* |
+| **Weighted `KNOWS` + set operations** | Handover rationale | Successor scoring = sibling-tree mass + shared history; an index-free O(E) fold over hundreds of edges, executed server-side |
 | **`RO_QUERY`** | Every read | No read path can mutate anything |
 | **Range indexes** | Entity resolution | Sub-ms lookups; verified via `GRAPH.EXPLAIN` |
 | **`GRAPH.LIST` / `GRAPH.DELETE`** | Worlds housekeeping | Prune sims (`make clean-sims`) |
@@ -386,14 +385,15 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 | Method | Path | World | Purpose |
 |---|---|---|---|
 | `GET` | `/api/graph?world=` | any | nodes + links + island groups for the canvas (`RO_QUERY`) |
-| `GET` | `/api/worlds` | main | sim timeline metadata |
-| `POST` | `/api/ask` | main | grounded Q&A; returns `steps[]` (SSE variant for streaming) |
-| `POST` | `/api/simulate` | main→clone | run a drill `{person}`; writes findings + Sim |
+| `GET` | `/api/timeline` | main | sim/plan timeline + worlds list (the filmstrip) |
+| `POST` | `/api/ask` | main | grounded Q&A through the 8-tool catalogue |
+| `POST` | `/api/drill` | main→clone | run a drill `{person}`; writes findings + Sim |
 | `POST` | `/api/plan` | main | plan for `{sim_id}`; writes Plan + Step nodes |
 | `POST` | `/api/heal` | main→clone | apply `{plan_id}`, re-run same drill; writes heal Sim + delta |
+| `GET` | `/api/findings?sim_id=` | main | findings with proofs for any run |
 | `POST` | `/api/actions` | — | `{plan_id, mode: preview/live, repo}` → GitHub issue + runbook PR draft |
 | `GET` | `/api/memory` | main | questions/sims timeline + trend |
-| `GET` | `/api/health` | — | db ping, graph stats, `GRAPH.COPY` capability probe |
+| `GET` | `/api/health` | — | db ping, graph stats, snapshot hash |
 
 **Console:**
 

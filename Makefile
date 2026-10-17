@@ -48,11 +48,11 @@ api: ## run the API locally (hot reload)
 web: ## run the console locally
 	cd web && npm run dev
 
-ask: ## ask a question from the CLI: make ask Q="who knows src/commands?"
-	cd agent && $(PY) -m busfactor.cli ask "$(Q)"
+ask: ## ask a question from the CLI: make ask Q="who knows src/udf?"
+	cd agent && $(PY) -m busfactor ask "$(Q)"
 
-demo: ## replay the full demo arc (scripted)
-	bash scripts/demo.sh
+demo: ## replay the full demo arc (rank → drill → plan → heal)
+	cd agent && $(PY) -m busfactor demo
 
 ## ---- quality ------------------------------------------------------------
 
@@ -65,8 +65,8 @@ fmt:
 bench: ## run the benchmark suite
 	cd agent && $(PY) -m busfactor.benchmark run
 
-clean-sims: ## delete all sim:* worlds
-	cd agent && $(PY) -m busfactor.cli clean-sims
+clean-sims: ## delete all sim:* worlds and run artifacts
+	cd agent && $(PY) -m busfactor clean
 
 mcp: ## run the MCP server on stdio
 	cd agent && $(PY) -m busfactor.mcp_server

@@ -25,6 +25,8 @@ data/dumps/
 # Data extraction workspaces (source clones + raw API caches — never ship)
 data/source/
 data/raw/
+web/node_modules/
+web/dist/
 
 # Internal tracker — never ships
 TRACKER.md
