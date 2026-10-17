@@ -12,7 +12,7 @@ const OUTCOME_LABEL = {
 
 const SIM_WORDS = {
   drill: 'departure drill',
-  heal: 'healed world',
+  heal: 'healed copy',
   truth: 'as it is',
 }
 
@@ -213,7 +213,8 @@ export function ScenarioPanel({ drill, plan, heal, people, busy, onDrill, onPlan
             raising it is what healing is for.
           </p>
           <p className="hint">
-            world <code>{drill.world}</code> · {drill.seconds}s
+            <code>{drill.world}</code> is a throwaway copy where this what-if ran —
+            the real graph is never touched · {drill.seconds}s
           </p>
         </div>
       )}
@@ -267,7 +268,7 @@ export function ScenarioPanel({ drill, plan, heal, people, busy, onDrill, onPlan
 
       {heal && (
         <div className="box healed">
-          <h4>Healed world {heal.world}</h4>
+          <h4 title={heal.world}>Healed copy</h4>
           <div className="deltas">
             <Delta
               label="stranded components"
@@ -332,7 +333,7 @@ function ActionsPreview({ plan }) {
         '',
         ...plan.steps.map((s) => `- [ ] \`${s.module_name}\` → **${s.teacher_name}** — ${s.note}`),
         '',
-        '_Done when the healed world shows 0 stranded components._',
+        '_Done when the healed copy shows 0 stranded components._',
       ].join('\n'),
     }),
     [plan]
@@ -357,7 +358,7 @@ export function FindingsPanel({ findings }) {
     return (
       <section className="panel">
         <h3>Findings</h3>
-        <p className="empty">No findings in this world. Run a drill to produce them.</p>
+        <p className="empty">No findings yet — run a departure drill to produce them.</p>
       </section>
     )
   }
@@ -579,7 +580,12 @@ export function Filmstrip({ repo, overview, timeline, world, onWorld }) {
   ]
   return (
     <footer className="filmstrip">
-      <span className="fs-label">worlds</span>
+      <span
+        className="fs-label"
+        title="each world is a throwaway copy of the graph where one what-if ran — click to preview it; your indexed snapshot is never touched"
+      >
+        worlds
+      </span>
       <div className="fs-track">
         {entries.map((e) => (
           <button

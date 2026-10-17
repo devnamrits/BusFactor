@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from ..config import settings
 from . import git as gitm
 from . import pulls as pullsm
 from .weights import know_weight
@@ -156,7 +157,9 @@ def build_snapshot(
 
     # ---- commits -----------------------------------------------------------
     commits = [
-        c for c in gitm.read_commits(repo, since_iso) if not gitm.BOT_RE.search(c.author_name)
+        c
+        for c in gitm.read_commits(repo, since_iso, max_commits=settings.max_commits)
+        if not gitm.BOT_RE.search(c.author_name)
     ]
     for c in commits:
         c.modules = sorted({m for f in c.files if (m := gitm.module_of(f))})

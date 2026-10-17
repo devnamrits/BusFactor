@@ -37,7 +37,7 @@ EXCLUDE_PREFIXES = (
 
 BOT_RE = re.compile(r"(\[bot\]|dependabot|renovate|[-_]bot\b|[-_]robot\b|copilot)", re.IGNORECASE)
 PR_IN_SUBJECT = re.compile(r"\(#(\d+)\)\s*$")
-MAX_COMMITS = 40_000  # window cap: beyond this, indexing a repo is someone's mistake
+MAX_COMMITS = 250_000  # sanity net for accidental mega-repos — env: BUSFACTOR_MAX_COMMITS
 MERGE_PR_RE = re.compile(r"^Merge pull request #(\d+)\b")
 
 

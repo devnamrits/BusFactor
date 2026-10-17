@@ -45,6 +45,8 @@ class Settings:
 
         # Product constants
         self.coverage_floor = int(os.getenv("COVERAGE_FLOOR", "2"))  # K in coverage_thin
+        # fail-fast net for absurd histories — raise it if you mean it
+        self.max_commits = int(os.getenv("BUSFACTOR_MAX_COMMITS", "250000"))
 
     @property
     def llm_enabled(self) -> bool:
