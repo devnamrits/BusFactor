@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import secrets
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from .. import db
 from . import metrics
@@ -22,7 +22,7 @@ RESILIENCE_MIN_SEVERITY = 2  # rank pre-existing fragility like a real finding
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _prefix(module_id: str) -> str:

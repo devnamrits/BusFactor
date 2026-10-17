@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 import secrets
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from . import db
 
@@ -37,7 +37,7 @@ STOP = {
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _tokens(text: str) -> list[str]:

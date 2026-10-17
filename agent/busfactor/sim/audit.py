@@ -8,14 +8,14 @@ everything a drill or heal learns is written next to them, never over them.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from .. import db
 from .metrics import summary
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def attach_evidence(repo: str, findings: list[dict], person_id: str) -> None:

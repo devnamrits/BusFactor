@@ -7,7 +7,7 @@ front door runs identical code (invariant I9).
 from __future__ import annotations
 
 from . import functions
-from .schemas import TOOL_SCHEMAS
+from .schemas import TOOL_SCHEMAS as TOOL_SCHEMAS  # deliberate re-export
 
 TOOLS = {
     "who_knows": functions.who_knows,

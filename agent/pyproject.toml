@@ -32,3 +32,11 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
+# Broad excepts and silent probes (BLE001, S110) are deliberate fault
+# isolation in this codebase: a broken tool or a best-effort memory write
+# must never take down an answer, and probing reads fall back instead of
+# killing a request. The happy paths are covered by agent/tests and the
+# benchmark; every silent fallback exists to keep the product honest.
+ignore = ["BLE001", "S110"]

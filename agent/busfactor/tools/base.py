@@ -46,8 +46,8 @@ def people_hint(repo: str) -> str:
 
 def clean_ref(ref: str) -> str:
     out = (ref or "").strip().strip("\"'?!. ").strip()
-    out = re.sub(r"^(the|our|a|an)\s+", "", out, flags=re.I)
-    return re.sub(r"\s+(module|modules|code|codebase|stuff|file|files)\s*$", "", out, flags=re.I)
+    out = re.sub(r"^(the|our|a|an)\s+", "", out, flags=re.IGNORECASE)
+    return re.sub(r"\s+(module|modules|code|codebase|stuff|file|files)\s*$", "", out, flags=re.IGNORECASE)
 
 
 def resolve_modules(ref: str, repo: str) -> list[dict]:
@@ -70,4 +70,4 @@ def resolve_modules(ref: str, repo: str) -> list[dict]:
     return partial
 
 
-__all__ = ["K", "f2", "cite", "ok", "err", "people_hint", "clean_ref", "resolve_modules"]
+__all__ = ["K", "cite", "clean_ref", "err", "f2", "ok", "people_hint", "resolve_modules"]

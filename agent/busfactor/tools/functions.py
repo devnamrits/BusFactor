@@ -14,12 +14,11 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from .. import db, memory
+from .. import memory
 from ..sim import engine, make_plan, metrics
 from ..sim.people import get_person
 from . import queries
 from .base import K, cite, clean_ref, err, f2, ok, people_hint, resolve_modules
-
 
 # ---------------------------------------------------------------------------
 # 1. who_knows

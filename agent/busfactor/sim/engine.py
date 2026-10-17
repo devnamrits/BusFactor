@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from .. import db
 from . import audit, clone, diff, metrics, surgery
@@ -21,7 +21,7 @@ from .plan import get_plan
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def run_drill(person_ref: str, label: str | None = None, repo: str = "main") -> dict:

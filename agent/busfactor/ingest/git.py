@@ -13,7 +13,7 @@ from __future__ import annotations
 import re
 import subprocess
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 SEP = "\x1f"
@@ -35,7 +35,7 @@ EXCLUDE_PREFIXES = (
     ".vscode/",
 )
 
-BOT_RE = re.compile(r"(\[bot\]|dependabot|renovate|[-_]bot\b|[-_]robot\b|copilot)", re.I)
+BOT_RE = re.compile(r"(\[bot\]|dependabot|renovate|[-_]bot\b|[-_]robot\b|copilot)", re.IGNORECASE)
 PR_IN_SUBJECT = re.compile(r"\(#(\d+)\)\s*$")
 MERGE_PR_RE = re.compile(r"^Merge pull request #(\d+)\b")
 
@@ -61,6 +61,7 @@ def _git(repo: Path, *args: str) -> str:
         ["git", "-C", str(repo), "-c", "core.quotepath=false", *args],
         capture_output=True,
         text=True,
+        check=False,  # failure is handled below with the real stderr message
     )
     if proc.returncode != 0:
         raise RuntimeError(f"git {' '.join(args)} failed in {repo}:\n{proc.stderr.strip()}")
@@ -71,7 +72,7 @@ def head_info(repo: Path) -> tuple[str, datetime]:
     """(commit sha, commit date in UTC) of HEAD — the snapshot's anchor."""
     sha = _git(repo, "rev-parse", "HEAD").strip()
     date_s = _git(repo, "show", "-s", "--format=%aI", sha).strip()
-    return sha, datetime.fromisoformat(date_s).astimezone(timezone.utc)
+    return sha, datetime.fromisoformat(date_s).astimezone(UTC)
 
 
 def owner_repo(repo: Path) -> tuple[str, str]:
@@ -194,6 +195,7 @@ def clone_or_fetch(url: str, dest: Path, log=print) -> Path:
         ["git", "clone", "--filter=blob:none", "--no-checkout", "--quiet", url, str(dest)],
         capture_output=True,
         text=True,
+        check=False,  # failure is handled below with the real stderr message
     )
     if proc.returncode != 0:
         raise RuntimeError(f"git clone failed for {url}:\n{proc.stderr.strip()}")

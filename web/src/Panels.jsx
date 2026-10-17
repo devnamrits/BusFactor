@@ -78,6 +78,7 @@ export function AskPanel({ result, busy, suggestions, onAsk, onCite }) {
       <h3>Ask the graph</h3>
       <form className="askform" onSubmit={submit}>
         <input
+          type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="who can we least afford to lose?"

@@ -62,6 +62,7 @@ export default function RepoBar({ repos, active, busy, onSelect, onRefresh }) {
         {opening ? (
           <form className="connect-form" onSubmit={connect}>
             <input
+              type="text"
               autoFocus
               value={source}
               onChange={(e) => setSource(e.target.value)}

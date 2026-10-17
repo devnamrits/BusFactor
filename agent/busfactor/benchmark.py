@@ -16,8 +16,7 @@ from __future__ import annotations
 import platform
 import sys
 import time
-from datetime import datetime, timezone
-from pathlib import Path
+from datetime import UTC, datetime
 
 import yaml
 
@@ -105,9 +104,11 @@ def run(repo: str = "main") -> int:
     lines = [
         "# Benchmark results",
         "",
-        f"_{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} · "
-        f"{platform.system()} {platform.machine()} · Python {platform.python_version()} · "
-        f"repo `{repo}` · snapshot `{sha}`_",
+        (
+            f"_{datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')} · "
+            f"{platform.system()} {platform.machine()} · Python {platform.python_version()} · "
+            f"repo `{repo}` · snapshot `{sha}`_"
+        ),
         "",
         f"**{passed}/{len(rows)} tickets passed.**",
         "",

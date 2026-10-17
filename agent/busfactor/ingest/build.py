@@ -14,7 +14,7 @@ import json
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from . import git as gitm
@@ -39,7 +39,7 @@ DECISION_RE = re.compile(
     r"(?i)\b(migrat\w*|switch\w*|replac\w*|introduc\w*|deprecat\w*|adopt\w*"
     r"|redesign\w*|rewrite\w*|rearchitect\w*|architectur\w*|decision|adr)\b"
 )
-NOREPLY_RE = re.compile(r"^(?:\d+\+)?([^@+]+)@users\.noreply\.github\.com$", re.I)
+NOREPLY_RE = re.compile(r"^(?:\d+\+)?([^@+]+)@users\.noreply\.github\.com$", re.IGNORECASE)
 
 
 def _slug(s: str) -> str:
@@ -52,7 +52,7 @@ def _handle_from_email(email: str) -> str | None:
 
 
 def _iso_to_dt(s: str) -> datetime:
-    return datetime.fromisoformat(s).astimezone(timezone.utc)
+    return datetime.fromisoformat(s).astimezone(UTC)
 
 
 def _min_iso(a: str, b: str) -> str:
