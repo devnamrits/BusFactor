@@ -6,7 +6,7 @@ from .. import db
 
 
 def list_people(repo: str = "main") -> list[dict]:
-    rows = db.graph(repo).ro_query(
+    rows = db.ro(repo, 
         "MATCH (p:Person) RETURN p.id, p.name, p.handle, p.status, p.commits, "
         "p.reviews, p.last_seen ORDER BY p.commits DESC, p.id"
     ).result_set

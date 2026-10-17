@@ -33,7 +33,7 @@ def delete_world(world: str) -> None:
 def prune_worlds(repo: str = "main", keep: int = MAX_WORLDS) -> list[str]:
     """Delete this repo's oldest worlds beyond `keep`. Sim audit nodes stay."""
     try:
-        rows = db.graph(repo).ro_query(
+        rows = db.ro(repo, 
             "MATCH (s:Sim) RETURN s.world, s.created_at ORDER BY s.created_at DESC"
         ).result_set
     except Exception:

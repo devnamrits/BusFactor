@@ -23,7 +23,7 @@ def attach_evidence(repo: str, findings: list[dict], person_id: str) -> None:
     mids = sorted({f["module_id"] for f in findings if f.get("module_id")})
     if not mids:
         return
-    rows = db.graph(repo).ro_query(
+    rows = db.ro(repo, 
         "MATCH (p:Person {id:$pid})-[:AUTHORED]->(pr:PR)-[:TOUCHES]->(m:Module) "
         "WHERE m.id IN $mids "
         "RETURN m.id, pr.number, pr.title, pr.merged_at "

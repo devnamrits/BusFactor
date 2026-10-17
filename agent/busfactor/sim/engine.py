@@ -70,7 +70,7 @@ def run_heal(plan_id: str | None = None, repo: str = "main") -> dict:
     main_snap = metrics.snapshot(repo)
 
     # the drill's shatter is the reference point the heal must undo
-    d_rows = db.graph(repo).ro_query(
+    d_rows = db.ro(repo, 
         "MATCH (s:Sim {id:$sid}) RETURN s.metrics_json", {"sid": plan["sim_id"]}
     ).result_set
     drill_metrics = json.loads(d_rows[0][0]) if d_rows and d_rows[0][0] else {}
@@ -92,14 +92,13 @@ def run_heal(plan_id: str | None = None, repo: str = "main") -> dict:
                 "now": _now(),
             },
         )
-    applied = int(
-        db.ro(world, "MATCH ()-[k:KNOWS {source:'plan'}]->() RETURN count(k)").result_set[0][0]
-    )
+    rows = db.ro(world, "MATCH ()-[k:KNOWS {source:'plan'}]->() RETURN count(k)").result_set
+    applied = int(rows[0][0]) if rows else 0
 
     sim_snap = metrics.snapshot(world)
     remaining = diff.findings(main_snap, sim_snap, world, person)
 
-    drill_rows = db.graph(repo).ro_query(
+    drill_rows = db.ro(repo, 
         "MATCH (s:Sim {id:$sid})-[:FOUND]->(f:Finding) "
         "RETURN f.id, f.kind, f.severity, f.claim, f.module_id ",
         {"sid": plan["sim_id"]},

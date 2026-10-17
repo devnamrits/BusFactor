@@ -37,6 +37,7 @@ EXCLUDE_PREFIXES = (
 
 BOT_RE = re.compile(r"(\[bot\]|dependabot|renovate|[-_]bot\b|[-_]robot\b|copilot)", re.IGNORECASE)
 PR_IN_SUBJECT = re.compile(r"\(#(\d+)\)\s*$")
+MAX_COMMITS = 40_000  # window cap: beyond this, indexing a repo is someone's mistake
 MERGE_PR_RE = re.compile(r"^Merge pull request #(\d+)\b")
 
 
@@ -98,25 +99,50 @@ def module_of(path: str) -> str | None:
     return parts[0]
 
 
-def read_commits(repo: Path, since_iso: str) -> list[Commit]:
-    """Windowed non-merge commits with the files they touched."""
-    fmt = f"{REC}%H{SEP}%an{SEP}%ae{SEP}%aI{SEP}%s"
-    raw = _git(
-        repo,
-        "log",
-        "--no-merges",
-        f"--since={since_iso}",
-        f"--pretty=format:{fmt}",
-        "--name-only",
+def read_commits(repo: Path, since_iso: str, max_commits: int = MAX_COMMITS) -> list[Commit]:
+    """Windowed non-merge commits with the files they touched.
+
+    Preflights the window size, then streams `git log` line-by-line: a
+    mega-repo window can emit hundreds of MB, which would otherwise be
+    buffered whole and take the API process down with it.
+    """
+    count = int(
+        _git(repo, "rev-list", "--count", "HEAD", "--no-merges", f"--since={since_iso}").strip()
+        or 0
     )
+    if count > max_commits:
+        raise ValueError(
+            f"history too large: {count:,} commits in this window (limit "
+            f"{max_commits:,}) — narrow the window (e.g. 365 days) or pick a smaller repo"
+        )
+
+    fmt = f"{REC}%H{SEP}%an{SEP}%ae{SEP}%aI{SEP}%s"
+    proc = subprocess.Popen(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "-c",
+            "core.quotepath=false",
+            "log",
+            "--no-merges",
+            f"--since={since_iso}",
+            f"--pretty=format:{fmt}",
+            "--name-only",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
     commits: list[Commit] = []
-    for block in raw.split(REC):
-        block = block.strip("\n")
-        if not block:
-            continue
-        lines = block.splitlines()
-        sha, name, email, date_s, subject = lines[0].split(SEP)
-        files = [ln for ln in (l.strip() for l in lines[1:]) if ln]
+    header: list[str] | None = None
+
+    def flush() -> None:
+        nonlocal header
+        if header is None:
+            return
+        sha, name, email, date_s, subject = header[0].split(SEP)
         commits.append(
             Commit(
                 sha=sha,
@@ -124,9 +150,29 @@ def read_commits(repo: Path, since_iso: str) -> list[Commit]:
                 author_email=email,
                 date=date_s,
                 subject=subject,
-                files=files,
+                files=header[1:],
             )
         )
+        header = None
+
+    for raw in proc.stdout:
+        line = raw.rstrip("\r\n")
+        if line.startswith(REC):
+            flush()
+            if len(commits) >= max_commits:  # belt and braces behind the preflight
+                proc.kill()
+                proc.communicate()
+                raise ValueError(
+                    f"history too large: more than {max_commits:,} commits — "
+                    "narrow the window (e.g. 365 days) or pick a smaller repo"
+                )
+            header = [line[len(REC):]]
+        elif header is not None and line.strip():
+            header.append(line.strip())
+    flush()
+    _, err = proc.communicate()
+    if proc.returncode != 0:
+        raise RuntimeError(f"git log failed in {repo}:\n{err.strip()}")
     return commits
 
 

@@ -32,12 +32,12 @@ def _prefix(module_id: str) -> str:
 
 def _get_sim(repo: str, sim_id: str | None) -> dict:
     if not sim_id or sim_id == "latest":
-        rows = db.graph(repo).ro_query(
+        rows = db.ro(repo, 
             "MATCH (s:Sim {kind:'drill'}) RETURN s.id, s.target_person, s.label, s.metrics_json "
             "ORDER BY s.created_at DESC LIMIT 1"
         ).result_set
     else:
-        rows = db.graph(repo).ro_query(
+        rows = db.ro(repo, 
             "MATCH (s:Sim {id:$id}) RETURN s.id, s.target_person, s.label, s.metrics_json",
             {"id": sim_id},
         ).result_set
@@ -53,7 +53,7 @@ def _get_sim(repo: str, sim_id: str | None) -> dict:
 
 
 def _targets_from_findings(repo: str, sim_id: str) -> dict[str, dict]:
-    rows = db.graph(repo).ro_query(
+    rows = db.ro(repo, 
         "MATCH (s:Sim {id:$sid})-[:FOUND]->(f:Finding) "
         "WHERE f.module_id IS NOT NULL AND f.module_id <> '' "
         "RETURN f.kind, f.severity, f.claim, f.module_id "
@@ -89,19 +89,19 @@ def _resilience_targets(repo: str, targets: dict[str, dict], dep: dict) -> dict[
 def get_plan(repo: str, plan_id: str | None) -> dict:
     """Load a plan + its ordered steps. The engine, API and MCP all share this."""
     if not plan_id or plan_id == "latest":
-        rows = db.graph(repo).ro_query(
+        rows = db.ro(repo, 
             "MATCH (pl:Plan) RETURN pl.id, pl.target_person, pl.sim_id, pl.label "
             "ORDER BY pl.created_at DESC LIMIT 1"
         ).result_set
     else:
-        rows = db.graph(repo).ro_query(
+        rows = db.ro(repo, 
             "MATCH (pl:Plan {id:$id}) RETURN pl.id, pl.target_person, pl.sim_id, pl.label",
             {"id": plan_id},
         ).result_set
     if not rows:
         raise ValueError("no plan found — run `plan` first")
     pid, target, sim_id, label = rows[0]
-    steps = db.graph(repo).ro_query(
+    steps = db.ro(repo, 
         "MATCH (pl:Plan {id:$id})-[:HAS_STEP]->(st:Step) "
         "RETURN st.id, st.kind, st.order, st.module_id, st.teacher_id, st.note, st.proof_json "
         "ORDER BY st.order",
@@ -138,7 +138,7 @@ def make_plan(
         targets = _resilience_targets(repo, targets, dep)
 
     # ---- candidate landscape (computed in Python; the graph is small) ------
-    edges = db.graph(repo).ro_query(
+    edges = db.ro(repo, 
         "MATCH (p:Person {status:'active'})-[k:KNOWS]->(m:Module) "
         "RETURN p.id, p.name, m.id, m.name, k.weight"
     ).result_set
