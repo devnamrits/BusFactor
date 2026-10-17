@@ -3,7 +3,9 @@
 # ---------------------------------------------------------------------------
 .DS_Store
 Thumbs.db
-.idea/
+# .idea stays local — except the shared IntelliJ run configuration
+/.idea/*
+!/.idea/BusFactor.run.xml
 .vscode/
 *.swp
 # JetBrains module/meta files that occasionally land outside .idea/
