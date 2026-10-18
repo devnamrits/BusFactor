@@ -46,7 +46,7 @@ export const api = {
   findings: (repo, simId) => get('/api/findings', { repo, sim_id: simId || 'latest' }),
   graph: (world, repo) => get('/api/graph', { world, repo }),
 
-  ask: (question, repo) => post('/api/ask', { question, repo }),
+  ask: (question, repo, world) => post('/api/ask', { question, repo, world }),
   drill: (person, repo) => post('/api/drill', { person, repo }),
   plan: (simId, repo, includeResilience = true) =>
     post('/api/plan', { sim_id: simId || null, repo, include_resilience: includeResilience }),

@@ -212,7 +212,7 @@ export default function App() {
     const text = (question || '').trim()
     if (!text) return
     return guard('ask', async () => {
-      const r = await api.ask(text, repoSlug)
+      const r = await api.ask(text, repoSlug, world)
       setAskResult(r)
       // point the map at the answer itself: glow every cited node
       // (person/module/doc/decision/pr) and fly to the first one
@@ -455,6 +455,7 @@ export default function App() {
                 result={askResult}
                 busy={busy === 'ask'}
                 suggestions={suggestions}
+                world={world}
                 onAsk={runAsk}
                 onCite={focusCite}
               />

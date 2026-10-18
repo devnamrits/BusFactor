@@ -62,6 +62,7 @@ _GRAPH_META = (
 class AskBody(BaseModel):
     question: str
     repo: str = "main"
+    world: str = ""  # graph name of the world the console is viewing, if any
 
 
 class DrillBody(BaseModel):
@@ -301,7 +302,14 @@ def mem(repo: str = "main") -> dict:
 def ask(body: AskBody) -> dict:
     if not body.question.strip():
         raise HTTPException(400, "empty question")
-    return agent_ask(body.question, _graph(body.repo))
+    graph = _graph(body.repo)
+    # answers follow the world being viewed: a drill/heal copy answers as
+    # itself; unknown or pruned worlds fall back to the repo graph
+    world = body.world.strip()
+    target = world if world and world != graph and world in db.list_graphs() else graph
+    res: dict = agent_ask(body.question, target, memory_repo=graph)
+    res["world"] = target
+    return res
 
 
 @app.post("/api/drill")

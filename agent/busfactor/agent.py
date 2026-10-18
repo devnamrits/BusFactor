@@ -12,9 +12,13 @@ from . import memory, planner, validator
 from .tools import TOOLS
 
 
-def ask(question: str, repo: str = "main") -> dict:
+def ask(question: str, repo: str = "main", memory_repo: str | None = None) -> dict:
+    """`repo` is the graph the question runs against (it may be a drill/heal
+    world); `memory_repo` defaults to it and is where the turn is remembered."""
     t0 = time.time()
     question = (question or "").strip()
+    mem = memory_repo or repo
+    world_tag = "" if repo == mem else repo
     if not question:
         return {
             "question": question,
@@ -34,7 +38,7 @@ def ask(question: str, repo: str = "main") -> dict:
 
     # Memory first: if we answered this before, reuse it — that's the point
     # of remembering. Anything else routes fresh.
-    prior = memory.match_question(repo, question)
+    prior = memory.match_question(repo, question, world=world_tag)
     if prior:
         routing = {
             "tool": "recall",
@@ -48,7 +52,7 @@ def ask(question: str, repo: str = "main") -> dict:
         canonical = memory.canonical_answer(prior["answer"])
         # cite what the original answer cited (not the wrapper question) —
         # otherwise the map has nothing to light up when a memory replays
-        cites = memory.cited_nodes(repo, prior["id"])
+        cites = memory.cited_nodes(mem, prior["id"])
         if not cites:
             cites = [{
                 "kind": "question",
@@ -68,7 +72,8 @@ def ask(question: str, repo: str = "main") -> dict:
         # Record the factual answer, not the framing — otherwise every repeat
         # nests one more "From memory" layer around the previous answer.
         qid = memory.record_question(
-            repo, question, canonical, res["outcome"], res["citations"], "recall"
+            mem, question, canonical, res["outcome"], res["citations"], "recall",
+            world=world_tag,
         )
         return _envelope(question, res, routing, v, qid, t0)
 
@@ -91,8 +96,8 @@ def ask(question: str, repo: str = "main") -> dict:
 
     v = validator.validate(res)
     qid = memory.record_question(
-        repo, question, res.get("answer", ""), res.get("outcome", ""),
-        res.get("citations", []), tool,
+        mem, question, res.get("answer", ""), res.get("outcome", ""),
+        res.get("citations", []), tool, world=world_tag,
     )
     return _envelope(question, res, routing, v, qid, t0)
 

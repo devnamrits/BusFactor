@@ -67,21 +67,27 @@ def canonical_answer(text: str) -> str:
 
 def record_question(
     repo: str, text: str, answer: str, outcome: str, citations: list[dict],
-    tool: str | None,
+    tool: str | None, world: str = "",
 ) -> str:
-    """Append a Question node + CITED edges. Best-effort, never breaks `ask`."""
+    """Append a Question node + CITED edges. Best-effort, never breaks `ask`.
+
+    `world` names the graph an answer was computed against when that was a
+    drill/heal copy rather than the repo itself — it keeps world answers from
+    replaying later as if they were snapshot answers.
+    """
     qid = f"q-{secrets.token_hex(3)}"
     try:
         db.rw(
             repo,
             "CREATE (q:Question {id:$id, text:$text, answer:$answer, "
-            "outcome:$outcome, tool:$tool, created_at:$now})",
+            "outcome:$outcome, tool:$tool, world:$world, created_at:$now})",
             {
                 "id": qid,
                 "text": text,
                 "answer": answer,
                 "outcome": outcome,
                 "tool": tool or "",
+                "world": world,
                 "now": _now(),
             },
         )
@@ -109,7 +115,7 @@ def recent(repo: str, limit: int = 12) -> list[dict]:
     rows = db.ro(
         repo,
         "MATCH (q:Question) RETURN q.id, q.text, q.answer, q.outcome, q.tool, "
-        "q.created_at ORDER BY q.created_at DESC LIMIT $limit",
+        "coalesce(q.world, ''), q.created_at ORDER BY q.created_at DESC LIMIT $limit",
         {"limit": limit},
     ).result_set
     return [
@@ -119,9 +125,10 @@ def recent(repo: str, limit: int = 12) -> list[dict]:
             "answer": answer,
             "outcome": outcome,
             "tool": tool,
+            "world": world,
             "created_at": at,
         }
-        for qid, text, answer, outcome, tool, at in rows
+        for qid, text, answer, outcome, tool, world, at in rows
     ]
 
 
@@ -176,15 +183,21 @@ def stats(repo: str) -> dict:
     }
 
 
-def match_question(repo: str, text: str, threshold: float = 0.75) -> dict | None:
+def match_question(
+    repo: str, text: str, threshold: float = 0.75, world: str = ""
+) -> dict | None:
     """A repeat question deserves the earlier answer — that's memory working.
 
     Token overlap, at least two meaningful tokens, most recent prior hit wins.
+    Only answers from the same world qualify — a drill/heal answer must never
+    replay as a snapshot answer, or vice versa.
     """
     toks = set(_tokens(text))
     if len(toks) < 2:
         return None
     for q in recent(repo, 50):
+        if (q.get("world") or "") != world:
+            continue
         if q["tool"] == "recall":
             # an answer that was itself a memory lookup must not be recycled —
             # stale recall hints would otherwise shadow the real tools forever

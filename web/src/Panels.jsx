@@ -67,7 +67,7 @@ export function SelectedCard({ node, onAskAbout }) {
   )
 }
 
-export function AskPanel({ result, busy, suggestions, onAsk, onCite }) {
+export function AskPanel({ result, busy, suggestions, onAsk, onCite, world }) {
   const [q, setQ] = useState('')
   const submit = (e) => {
     e?.preventDefault()
@@ -91,6 +91,11 @@ export function AskPanel({ result, busy, suggestions, onAsk, onCite }) {
           {busy ? 'running' : 'Ask'}
         </button>
       </form>
+      {world?.startsWith('sim:') && (
+        <p className="prov">
+          answering against {world.replace(/^sim:/, '')} — the world you are viewing
+        </p>
+      )}
       <div className="suggestions">
         {(suggestions || []).map((s) => (
           <button key={s} className="mini" onClick={() => onAsk(s)} disabled={busy}>
@@ -110,6 +115,11 @@ function AnswerCard({ r, onCite }) {
       <div className="badges">
         {r.tool && <span className="badge accent">{r.tool}</span>}
         <span className="badge">{OUTCOME_LABEL[r.outcome] || r.outcome}</span>
+        {r.world?.startsWith('sim:') && (
+          <span className="badge" title="answered against this drill/heal copy, not the snapshot">
+            on {r.world.replace(/^sim:/, '')}
+          </span>
+        )}
         {answered &&
           (r.validated ? (
             <span className="badge ok" title="every number is backed by tool data">

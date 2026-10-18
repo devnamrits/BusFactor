@@ -60,19 +60,29 @@ def who_knows(ref: str, repo: str = "main") -> dict:
                 data, cites,
             )
         top = knowers[0]
-        detail = f"{top['commits']} commits, {top['reviews']} reviews"
-        if top["prs"]:
-            detail += ", PRs " + ", ".join(f"#{n}" for n in top["prs"])
+        if top["commits"] == 0 and top["reviews"] == 0:
+            # only plan-projected edges lack commit/review evidence by design
+            detail = "projected successor (from the heal plan)"
+            head = (
+                f"{m['name']}: {top['name']} is the projected successor — the "
+                f"heal plan assigned them this module (weight {f2(top['weight'])}), "
+                f"no commits yet."
+            )
+        else:
+            detail = f"{top['commits']} commits, {top['reviews']} reviews"
+            if top["prs"]:
+                detail += ", PRs " + ", ".join(f"#{n}" for n in top["prs"])
+            head = (
+                f"{m['name']}: {top['name']} knows it best — weight {f2(top['weight'])}, "
+                f"{top['commits']} commits, {top['reviews']} reviews."
+            )
         cites.append(cite("person", top["id"], top["name"], detail))
         if len(knowers) > 1:
             second = knowers[1]
             tail = f"Next: {second['name']} (weight {f2(second['weight'])})."
         else:
             tail = "There is no second knower."
-        answer = (
-            f"{m['name']}: {top['name']} knows it best — weight {f2(top['weight'])}, "
-            f"{top['commits']} commits, {top['reviews']} reviews. {tail}"
-        )
+        answer = f"{head} {tail}"
         if len(knowers) == 1:
             answer += f" Coverage 1 — below the safety floor of {K}."
         return ok(tool, answer, data, cites)
@@ -174,22 +184,30 @@ def critical_people(repo: str = "main") -> dict:
         "bus_factor": snap["bus_factor"],
         "floor": K,
     }
-    cites = [
-        cite(
-            "person", top["id"], top["name"],
-            f"sole knower of {top['sole_count']} module(s), {top['commits']} commits",
+    if top["sole_count"]:
+        top_detail = (
+            f"sole knower of {top['sole_count']} module(s), {top['commits']} commits"
         )
-    ]
+        answer = (
+            f"{top['name']} is who you can least afford to lose: sole knower of "
+            f"{top['sole_count']} of {total_modules} modules "
+            f"(e.g. {', '.join(top['sole_modules'][:5])}), carrying "
+            f"{f2(top['mass'])} knowledge mass."
+        )
+    else:
+        # a healed world can rank a successor first: they hold the most mass
+        # but no module depends on them alone anymore
+        top_detail = f"carries the most knowledge mass ({f2(top['mass'])})"
+        answer = (
+            f"{top['name']} carries the most knowledge mass "
+            f"({f2(top['mass'])}) — no module depends on them alone, "
+            f"but they remain the heaviest single carrier."
+        )
+    cites = [cite("person", top["id"], top["name"], top_detail)]
     cites += [
         cite("module", mid, name)
         for mid, name in zip(top["sole_module_ids"][:6], top["sole_modules"][:6])
     ]
-    answer = (
-        f"{top['name']} is who you can least afford to lose: sole knower of "
-        f"{top['sole_count']} of {total_modules} modules "
-        f"(e.g. {', '.join(top['sole_modules'][:5])}), carrying "
-        f"{f2(top['mass'])} knowledge mass."
-    )
     if len(ranked) > 1:
         nxt = ranked[1]
         if nxt["sole_count"]:
@@ -690,10 +708,13 @@ def _overview(question: str, repo: str, tool: str) -> dict:
             f"questions and {stats['runs']} runs. Bus factor {bf}."
         )
         if top:
-            answer += (
-                f" Most depended-on: {top['name']} (sole knower of "
-                f"{top['sole_count']} module(s), mass {f2(top['mass'])})."
-            )
+            if top["sole_count"]:
+                answer += (
+                    f" Most depended-on: {top['name']} (sole knower of "
+                    f"{top['sole_count']} module(s), mass {f2(top['mass'])})."
+                )
+            else:
+                answer += f" Most depended-on: {top['name']} (mass {f2(top['mass'])})."
         answer += " Ask about any person, module, decision, doc or PR by name."
 
     return ok(tool, answer, data, cites)
