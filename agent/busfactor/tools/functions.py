@@ -97,14 +97,40 @@ def who_knows(ref: str, repo: str = "main") -> dict:
         }
         for mid, name, w, c, cw in rows
     ]
-    data = {"person": person, "modules": mods_x, "count": len(mods_x)}
+    data = {
+        "person": person, "modules": mods_x, "count": len(mods_x),
+        "docs": [], "docs_count": 0,
+    }
     cites = [cite("person", person["id"], person["name"], f"{person['commits']} commits")]
     if mods_x:
         cites += [cite("module", x["id"], x["name"]) for x in mods_x[:5]]
         top_names = ", ".join(f"{x['name']} ({f2(x['weight'])})" for x in mods_x[:5])
         answer = f"{person['name']} carries {len(mods_x)} modules — top: {top_names}."
     else:
+        # A person can be on the roster through docs or sub-threshold work
+        # (e.g. hundreds of commits under docs/) — say that plainly instead
+        # of leaving a bare "no module knowledge" that reads like a bug.
+        docs_w = [
+            {"id": did, "title": title or did}
+            for did, title in queries.run("person_docs", {"person": person["id"]}, world=repo)
+        ]
+        data["docs"] = docs_w
+        data["docs_count"] = len(docs_w)
         answer = f"{person['name']} has no recorded module knowledge."
+        if docs_w:
+            cites += [cite("doc", d["id"], d["title"]) for d in docs_w[:3]]
+            answer += (
+                f" What the graph does hold: {len(docs_w)} doc page(s) they wrote"
+                f" (e.g. “{docs_w[0]['title']}”). Docs and build trees are plumbing"
+                " in this index, not knowledge modules; scattered code touches stay"
+                " below the significance floor."
+            )
+        elif int(person.get("commits") or 0):
+            answer += (
+                f" {int(person['commits'])} commit(s) are on record, but none"
+                " register as module knowledge — docs/build trees are plumbing"
+                " in this index, and scattered touches stay below the floor."
+            )
     return ok(tool, answer, data, cites)
 
 

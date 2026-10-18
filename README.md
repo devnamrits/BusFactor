@@ -454,6 +454,8 @@ Read-only tools by default; `simulate`/`plan` allowed; `heal`/`actions` require 
 
 **Deployment.** `docker compose up`: `falkordb` :6379 (volume) · `api` :8000 · `web` :5173. Make targets: `up · down · ingest · ingest-live · index SRC= · repos · ask Q= · demo · bench · test · clean-sims · mcp`. Reproducibility contract: clean clone + `.env` + `make up && make ingest && make demo` reproduces the full arc locally. Live URL is optional — the local path is fully supported. The console builds once (`cd web && npm install && npm run build`) and the API serves it from `:8000`; `npm run dev` is only for frontend work.
 
+**AI-assistance disclosure.** Development of this project used AI coding assistants (OpenCode) for implementation, refactoring and documentation drafts; the architecture, data model and tool design were directed and verified against the running system, and every claim in this README was checked against live output. In the product itself, the LLM is confined to routing questions to the fixed tool catalogue (I2) and can be switched off without losing any capability.
+
 ## 11. Non-goals
 
 - **Not HR surveillance.** No performance scores, activity rankings, or "who works hardest". Findings are about *modules' exposure*, never a person's worth (no such fields exist in the schema).
