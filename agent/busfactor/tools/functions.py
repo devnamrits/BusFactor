@@ -244,7 +244,18 @@ def module_risk(ref: str, repo: str = "main") -> dict:
     tool = "module_risk"
     mods = resolve_modules(ref, repo)
     if not mods:
-        return err(tool, f"No module matches '{ref}'. Try e.g. src/udf or graph.")
+        try:
+            p = get_person(clean_ref(ref), repo)
+        except ValueError:
+            p = None
+        if p:
+            return err(
+                tool,
+                f"'{p['name']}' is a person here, not a module — ask 'what "
+                f"does {p['name']} carry?' or 'what if {p['name']} leaves?'.",
+            )
+        examples = ", ".join(m[1] for m in queries.run("modules_all", world=repo)[:2])
+        return err(tool, f"No module matches '{ref}'. Try e.g. {examples}.")
     m = mods[0]
     rows = queries.run("module_risk", {"module": m["id"]}, world=repo)
     mid, name, path, cw, crit, _knowers = (
@@ -484,15 +495,218 @@ def heal_and_verify(plan_id: str | None = None, repo: str = "main") -> dict:
 # ---------------------------------------------------------------------------
 
 
+_OVERVIEW_RE = re.compile(
+    r"(how many|number of|counts? of|overview|summary|what'?s in|what is in|"
+    r"what do you know|what can you (?:tell|answer|do)|"
+    r"tell me about (?:this|the)\s+(?:repo|graph|team|project)|"
+    r"list\s+(?:all\s+|the\s+)?(?:people|persons|team|modules|decisions|"
+    r"docs|documentation|prs|pull\s+requests|runs|questions|drills|sims|"
+    r"findings))",
+    re.IGNORECASE,
+)
+
+
+def _short_title(title: str) -> str:
+    s = (title or "").split("[")[0].strip().rstrip("—·").strip()
+    return s or (title or "(untitled)")
+
+
+def _dossier_person(top: dict, hits: list[dict], repo: str, tool: str) -> dict:
+    try:
+        person = get_person(top["label"], repo)
+    except ValueError:
+        return err(
+            tool,
+            f"I don't have a person matching “{top['label']}”. {people_hint(repo)}",
+        )
+    mods_x = [
+        {
+            "id": mid, "name": name, "weight": round(float(w or 0), 4),
+            "commits": int(c or 0),
+        }
+        for mid, name, w, c, _mw in queries.run(
+            "person_modules", {"person": person["id"]}, world=repo
+        )
+    ]
+    docs_w = [
+        {"id": did, "title": _short_title(t or did)}
+        for did, t in queries.run("person_docs", {"person": person["id"]}, world=repo)
+    ]
+    decs = [
+        {"id": did, "title": _short_title(t or did)}
+        for did, t in queries.run("person_decisions", {"person": person["id"]}, world=repo)
+    ]
+    data = {
+        "hits": hits, "top": top, "stats": memory.stats(repo), "person": person,
+        "modules": mods_x, "modules_count": len(mods_x),
+        "docs": docs_w, "docs_count": len(docs_w),
+        "decisions": decs, "decisions_count": len(decs),
+    }
+    cites = [cite("person", person["id"], person["name"], f"{person['commits']} commits")]
+    cites += [cite("module", m["id"], m["name"]) for m in mods_x[:3]]
+    cites += [cite("doc", d["id"], d["title"]) for d in docs_w[:3]]
+    cites += [cite("decision", d["id"], d["title"]) for d in decs[:3]]
+
+    bits = [f"{int(person['commits'] or 0)} commits"]
+    if mods_x:
+        bits.append(
+            f"carries {len(mods_x)} module(s) "
+            f"(top: {mods_x[0]['name']} {f2(mods_x[0]['weight'])})"
+        )
+    else:
+        bits.append("no recorded module knowledge")
+    if docs_w:
+        bits.append(f"wrote {len(docs_w)} doc page(s)")
+    if decs:
+        bits.append(f"decided {len(decs)} recorded decision(s)")
+    answer = (
+        f"{person['name']} — " + ", ".join(bits) + ". "
+        f"Ask: 'what if {person['name']} leaves?' or 'what does "
+        f"{person['name']} carry?'."
+    )
+    return ok(tool, answer, data, cites)
+
+
+def _dossier_module(top: dict, hits: list[dict], repo: str, tool: str) -> dict:
+    mid = top["id"]
+    rows = queries.run("module_risk", {"module": mid}, world=repo)
+    name = rows[0][1] if rows else top["label"]
+    knowers = [x for x in ((rows[0][5] or []) if rows else []) if x]
+    decs = [
+        {
+            "id": did, "title": _short_title(t or did),
+            "deciders": [x for x in (dec or []) if x],
+        }
+        for did, t, _ref, dec in queries.run(
+            "module_decisions", {"module": mid}, world=repo
+        )
+    ]
+    data = {
+        "hits": hits, "top": top, "stats": memory.stats(repo),
+        "knowers": knowers, "knowers_count": len(knowers),
+        "decisions": decs, "decisions_count": len(decs),
+    }
+    cites = [cite("module", mid, name)]
+    cites += [cite("decision", d["id"], d["title"]) for d in decs[:3]]
+    if knowers:
+        head = f"{name} — {len(knowers)} recorded knower(s): {', '.join(knowers[:4])}"
+    else:
+        head = f"{name} — no active knower right now"
+    if decs:
+        head += f" · {len(decs)} decision(s) reference it"
+    return ok(tool, head + f". Ask: 'who knows {name}?' or 'risk for {name}'.", data, cites)
+
+
+def _dossier_doc(top: dict, hits: list[dict], repo: str, tool: str) -> dict:
+    authors = [
+        {"id": pid, "name": name}
+        for pid, name in queries.run("doc_authors", {"doc": top["id"]}, world=repo)
+    ]
+    data = {
+        "hits": hits, "top": top, "stats": memory.stats(repo),
+        "authors": authors, "authors_count": len(authors),
+    }
+    title = _short_title(top["label"])
+    cites = [cite("doc", top["id"], title, top.get("detail", ""))]
+    cites += [cite("person", a["id"], a["name"]) for a in authors[:3]]
+    by = f" — written by {', '.join(a['name'] for a in authors)}" if authors else ""
+    return ok(tool, f"Doc “{title}”{by}.", data, cites)
+
+
+def _dossier_pr(top: dict, hits: list[dict], repo: str, tool: str) -> dict:
+    rows = queries.run("pr_detail", {"pr": top["id"]}, world=repo)
+    num, title, merged, authors, mods = (
+        rows[0] if rows else (None, "", "", [], [])
+    )
+    authors = [x for x in (authors or []) if x]
+    mods = [x for x in (mods or []) if x]
+    pr = {
+        "id": top["id"], "number": num, "title": title or "",
+        "merged_at": merged or "", "authors": authors, "modules": mods,
+    }
+    data = {"hits": hits, "top": top, "stats": memory.stats(repo), "pr": pr}
+    cites = [cite("pr", top["id"], f"PR #{num}", title or "")]
+    answer = f"PR #{num} “{title or '…'}”"
+    if authors:
+        answer += f" — authored by {', '.join(authors)}"
+    if mods:
+        answer += f"; touches {', '.join(mods)}"
+    return ok(tool, answer + ".", data, cites)
+
+
+def _overview(question: str, repo: str, tool: str) -> dict:
+    q = (question or "").lower()
+    stats = memory.stats(repo)
+    bf = metrics.bus_factor(repo)
+    crit = critical_people(repo=repo)
+    ranked = [r for r in (crit["data"].get("ranked") or []) if r.get("name")]
+    top = ranked[0] if ranked else None
+    counts = (
+        f"{stats['people']} people, {stats['modules']} modules, "
+        f"{stats['decisions']} decisions, {stats['docs']} docs, {stats['prs']} PRs"
+    )
+    data = {"stats": stats, "bus_factor": bf, "top": top}
+
+    if re.search(r"\bmodules?\b", q):
+        mods = [
+            {"name": n, "commits": int(c or 0)}
+            for n, c in queries.run("modules_top", world=repo)
+        ]
+        data["modules"] = mods
+        answer = (
+            f"This graph holds {counts}. Biggest modules by commit volume: "
+            f"{', '.join(m['name'] for m in mods[:5])}. Bus factor {bf}."
+        )
+    elif re.search(r"\b(people|persons|team|engineers)\b", q):
+        data["people"] = ranked[:6]
+        answer = (
+            f"This graph holds {counts}. Most depended-on: "
+            f"{', '.join(r['name'] for r in ranked[:5])}. Bus factor {bf}."
+        )
+    elif re.search(r"decid|decis", q):
+        decs = [
+            {"id": did, "title": _short_title(t or did)}
+            for did, t, *_rest in queries.run("decisions", world=repo)
+        ][:6]
+        data["decisions"] = decs
+        answer = (
+            f"This graph holds {counts}. Recent decisions: "
+            + "; ".join(d["title"] for d in decs[:3]) + f". Bus factor {bf}."
+        )
+    else:
+        answer = (
+            f"This graph holds {counts} — plus {stats['questions']} remembered "
+            f"questions and {stats['runs']} runs. Bus factor {bf}."
+        )
+        if top:
+            answer += (
+                f" Most depended-on: {top['name']} (sole knower of "
+                f"{top['sole_count']} module(s), mass {f2(top['mass'])})."
+            )
+        answer += " Ask about any person, module, decision, doc or PR by name."
+
+    cites = list((crit.get("citations") or [])[:4])
+    return ok(tool, answer, data, cites)
+
+
 def recall(question: str, repo: str = "main") -> dict:
     tool = "recall"
     hits = memory.search(repo, question)
+    # "how many / what's in / list …" questions are about the repo itself:
+    # answer them from counts even when a stray record token-matched some
+    # words — but never when the question names a person or module, because
+    # those deserve a dossier instead.
+    if _OVERVIEW_RE.search(question or "") and not any(
+        h["kind"] in ("person", "module") for h in hits
+    ):
+        return _overview(question, repo, tool)
     if not hits:
         return err(
             tool,
             "I can only answer from what is recorded in the graph — nothing "
             "matches that, and I won't guess. I know people, modules, decisions, "
-            "and every drill ever run. Try: 'who can we least afford to lose?', "
+            "docs, PRs and every drill ever run — ask about any of them, or ask "
+            "'what's in this repo?'. Try: 'who can we least afford to lose?', "
             "'who knows src/udf?', 'what if Roi Lipman leaves?'.",
             outcome="not_in_graph",
             data={"stats": memory.stats(repo)},
@@ -500,6 +714,17 @@ def recall(question: str, repo: str = "main") -> dict:
 
     top = hits[0]
     kind = top["kind"]
+
+    # a named entity deserves a live dossier, not a pointer
+    if kind == "person":
+        return _dossier_person(top, hits, repo, tool)
+    if kind == "module":
+        return _dossier_module(top, hits, repo, tool)
+    if kind == "doc":
+        return _dossier_doc(top, hits, repo, tool)
+    if kind == "pr":
+        return _dossier_pr(top, hits, repo, tool)
+
     cites: list[dict] = []
     if kind == "question":
         answer = (
@@ -520,18 +745,6 @@ def recall(question: str, repo: str = "main") -> dict:
     elif kind == "sim":
         answer = f"Run {top['id']}: {top['label']} ({top.get('detail', '')})."
         cites = [cite("sim", top["id"], top["label"], top.get("detail", ""))]
-    elif kind == "person":
-        answer = (
-            f"{top['label']} is in the graph. Ask: 'what if {top['label']} "
-            f"leaves?' or 'what does {top['label']} carry?'"
-        )
-        cites = [cite("person", top["id"], top["label"])]
-    elif kind == "module":
-        answer = (
-            f"{top['label']} is a module in the graph. Ask: 'who knows "
-            f"{top['label']}?' or 'risk for {top['label']}'."
-        )
-        cites = [cite("module", top["id"], top["label"])]
     else:
         answer = top.get("label") or "Found something."
 

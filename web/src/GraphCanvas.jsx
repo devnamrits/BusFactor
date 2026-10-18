@@ -9,6 +9,7 @@ const PALETTE = {
     Decision: '#a291f5',
     stranded: '#ef5350',
     departed: '#3b3e45',
+    thin: '#d9a036',
     planEdge: 'rgba(224,161,44,0.9)',
     label: 'rgba(233,230,224,0.75)',
     link: {
@@ -44,11 +45,12 @@ function radius(node) {
   return 3
 }
 
-export default function GraphCanvas({ data, selectedId, focus, theme, onSelect }) {
+export default function GraphCanvas({ data, selectedId, focus, theme, onSelect, highlightIds }) {
   const wrap = useRef(null)
   const fg = useRef(null)
   const [size, setSize] = useState({ w: 900, h: 600 })
   const palette = PALETTE[theme] || PALETTE.dark
+  const hlSet = useMemo(() => new Set(highlightIds || []), [highlightIds])
 
   useEffect(() => {
     const el = wrap.current
@@ -121,7 +123,6 @@ export default function GraphCanvas({ data, selectedId, focus, theme, onSelect }
     let fill = palette[node.label] || palette.Module
 
     if (node.label === 'Module' && node.severity === 3) fill = palette.stranded
-    else if (node.label === 'Module' && node.severity === 1) fill = palette.Doc
     if (node.label === 'Module' && node.stranded) fill = palette.stranded
     if (node.label === 'Person' && node.status === 'departed') fill = palette.departed
 
@@ -142,6 +143,30 @@ export default function GraphCanvas({ data, selectedId, focus, theme, onSelect }
       ctx.arc(node.x, node.y, r + 2.6 / scale, 0, 2 * Math.PI)
       ctx.stroke()
       ctx.setLineDash([])
+    } else if (node.label === 'Module' && node.severity === 1) {
+      // thin coverage: an amber ring over the slate fill — docs keep the
+      // solid ochre fill, so the two must not read as the same dot
+      ctx.strokeStyle = palette.thin
+      ctx.lineWidth = 1.3 / scale
+      ctx.beginPath()
+      ctx.arc(node.x, node.y, r + 2.6 / scale, 0, 2 * Math.PI)
+      ctx.stroke()
+    }
+
+    if (hlSet.has(node.id) && node.id !== selectedId) {
+      // cited by the latest answer (or found via search) — a soft glow
+      ctx.globalAlpha = 0.16
+      ctx.fillStyle = '#e2603c'
+      ctx.beginPath()
+      ctx.arc(node.x, node.y, r + 6 / scale, 0, 2 * Math.PI)
+      ctx.fill()
+      ctx.globalAlpha = 0.85
+      ctx.strokeStyle = '#e2603c'
+      ctx.lineWidth = 1.2 / scale
+      ctx.beginPath()
+      ctx.arc(node.x, node.y, r + 6 / scale, 0, 2 * Math.PI)
+      ctx.stroke()
+      ctx.globalAlpha = 1
     }
 
     if (node.id === selectedId) {

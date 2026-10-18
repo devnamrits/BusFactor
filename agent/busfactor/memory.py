@@ -136,6 +136,8 @@ def stats(repo: str) -> dict:
         "people": c("MATCH (p:Person) RETURN count(p)"),
         "modules": c("MATCH (m:Module) RETURN count(m)"),
         "decisions": c("MATCH (d:Decision) RETURN count(d)"),
+        "docs": c("MATCH (d:Doc) RETURN count(d)"),
+        "prs": c("MATCH (pr:PR) RETURN count(pr)"),
         "questions": c("MATCH (q:Question) RETURN count(q)"),
         "findings": c("MATCH (f:Finding) RETURN count(f)"),
         "runs": c("MATCH (s:Sim) RETURN count(s)"),
@@ -167,7 +169,7 @@ def match_question(repo: str, text: str, threshold: float = 0.75) -> dict | None
 def search(repo: str, question: str, limit: int = 6) -> list[dict]:
     """Score every remembered surface by token overlap — no embeddings needed
     at team scale, and the result is explainable: here is the overlap."""
-    tokens = _tokens(question)
+    tokens = [t for t in _tokens(question) if t not in ("pr", "prs", "repo", "repository")]
     if not tokens:
         return []
     hits: list[dict] = []
@@ -244,6 +246,38 @@ def search(repo: str, question: str, limit: int = 6) -> list[dict]:
             hits.append({
                 "kind": "module", "id": mid2, "label": name,
                 "score": 1.8 * score,
+            })
+
+    # docs and merged PRs. Broad words ("docs", "prs") would flood every
+    # search, so only content words of 4+ chars and PR numbers count here.
+    stop = {
+        "docs", "documentation", "prs", "pull", "requests", "merged",
+        "pages", "page",
+    }
+    strong = [t for t in tokens if len(t) >= 4 and t not in stop]
+    for did, title, path in db.ro(
+        repo, "MATCH (d:Doc) RETURN d.id, d.title, d.path"
+    ).result_set:
+        score = sum(
+            1 for t in strong if re.search(rf"\b{t}", (title or "").lower())
+        )
+        if score:
+            hits.append({
+                "kind": "doc", "id": did, "label": title or did,
+                "detail": path or "", "score": 1.6 * score,
+            })
+    for pid2, num, title, at in db.ro(
+        repo, "MATCH (pr:PR) RETURN pr.id, pr.number, pr.title, pr.merged_at"
+    ).result_set:
+        score = sum(
+            1 for t in strong
+            if t == str(num) or re.search(rf"\b{t}", (title or "").lower())
+        )
+        if score:
+            hits.append({
+                "kind": "pr", "id": pid2,
+                "label": f"PR #{num} — {title}" if title else f"PR #{num}",
+                "detail": at or "", "score": 1.2 * score,
             })
 
     hits.sort(key=lambda h: (-h["score"], h["kind"], h["id"]))

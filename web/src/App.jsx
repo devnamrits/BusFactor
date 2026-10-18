@@ -91,6 +91,8 @@ export default function App() {
   const [heal, setHeal] = useState(null)
   const [selected, setSelected] = useState(null)
   const [focus, setFocus] = useState(null)
+  const [citedIds, setCitedIds] = useState([])
+  const [searchIds, setSearchIds] = useState([])
 
   const repo = useMemo(
     () =>
@@ -210,6 +212,21 @@ export default function App() {
     return guard('ask', async () => {
       const r = await api.ask(text, repoSlug)
       setAskResult(r)
+      // point the map at the answer itself: glow every cited node
+      // (person/module/doc/decision/pr) and fly to the first one
+      const cited = [
+        ...new Set(
+          (r.citations || [])
+            .filter(
+              (c) =>
+                ['person', 'module', 'doc', 'decision', 'pr'].includes(c.kind) &&
+                c.id
+            )
+            .map((c) => c.id)
+        ),
+      ]
+      setCitedIds(cited)
+      if (cited.length) setFocus({ id: cited[0], nonce: Date.now() })
       await refreshMemory()
       const d = r.data || {}
       if (r.tool === 'simulate_departure' && d.world) {
@@ -281,6 +298,29 @@ export default function App() {
     setFocus({ id: node.id, nonce: Date.now() })
   }
 
+  // search the graph by name: every substring match glows, the best is flown to
+  const findOnGraph = (q) => {
+    const query = (q || '').trim().toLowerCase()
+    const nodes = graph?.nodes || []
+    if (!query || !nodes.length) return
+    const rankOf = (n) => {
+      const s = String(n.name || '').toLowerCase()
+      if (s === query) return 0
+      if (s.startsWith(query)) return 1
+      if (s.includes(query)) return 2
+      return -1
+    }
+    const found = nodes
+      .map((n) => ({ n, r: rankOf(n) }))
+      .filter((x) => x.r >= 0)
+      .sort((a, b) => a.r - b.r || (b.n.deg || 0) - (a.n.deg || 0))
+    setSearchIds(found.slice(0, 40).map((x) => x.n.id))
+    if (found[0]) {
+      setSelected(found[0].n)
+      setFocus({ id: found[0].n.id, nonce: Date.now() })
+    }
+  }
+
   const suggestions = useMemo(() => {
     const out = ['Who can we least afford to lose?', 'Where is knowledge stranded?']
     if (people[0]?.name) out.push(`What does ${people[0].name} carry?`)
@@ -310,6 +350,13 @@ export default function App() {
               memory {memory.stats.questions} · runs {memory.stats.runs}
             </span>
           )}
+          <input
+            className="gsearch"
+            placeholder="find on graph…"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') findOnGraph(e.currentTarget.value)
+            }}
+          />
           <button className="btn ghost" onClick={toggleTheme} title="switch theme">
             {theme === 'dark' ? 'light mode' : 'dark mode'}
           </button>
@@ -335,6 +382,7 @@ export default function App() {
             selectedId={selected?.id}
             focus={focus}
             onSelect={setSelected}
+            highlightIds={[...citedIds, ...searchIds]}
           />
           <Legend />
           <SelectedCard node={selected} onAskAbout={askAboutNode} />

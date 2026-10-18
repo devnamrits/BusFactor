@@ -324,7 +324,7 @@ flowchart TD
 | `simulate_departure(person)` | Sim engine (§7) | `sim_id`, findings, deltas | The differentiator — an action, not a report |
 | `handover_plan(person, sim_id)` | Successor scoring (sibling mass + shared history) + `algo.SPpaths` bridge path per step | Ordered steps with named teachers + proof | Diagnosis must end in a plan |
 | `heal_and_verify(plan_id)` | Sim engine (§7) | Before/after deltas, resolved findings | The proof, not the promise |
-| `recall(query)` | `Question`/`CITED`/`Sim` traversal | Prior questions, findings, outcomes | Memory = more nodes |
+| `recall(query)` | `Question`/`CITED`/`Sim` traversal + name search over people, modules, docs and PRs, plus repo-wide counts | Prior questions, findings and runs — or a live dossier for any named entity, and "what's in this repo" overviews | Memory = more nodes; the fallback that answers *anything* without guessing |
 
 **Core query templates** (production versions live in `agent/.../queries/*.cypher`; validated against FalkorDB's Cypher subset during implementation):
 
@@ -432,7 +432,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-Style: persons teal · modules slate · docs ochre · decisions violet · loss red; radius ← cached criticality; departed = dashed ghost; projected edges gold. Shatter = eased data swap + stranded halos; heal = gold fade-in + counters. Node positions are client-side only (never written to the graph); render budget ≤ 5k nodes. Dark and light themes, no build-time cost.
+Style: persons teal · modules slate · docs ochre · decisions violet · loss red; radius ← cached criticality; departed = dashed ghost; thin coverage = amber ring; projected edges gold; nodes cited by the last answer glow, and the header search flies to any node by name. A legend under the canvas maps every state. Shatter = eased data swap + stranded halos; heal = gold fade-in + counters. Node positions are client-side only (never written to the graph); render budget ≤ 5k nodes. Dark and light themes, no build-time cost.
 
 **Run it on your repo.** Three doors, one pipeline:
 

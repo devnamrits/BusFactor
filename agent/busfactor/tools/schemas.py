@@ -96,8 +96,10 @@ TOOL_SCHEMAS = [
     {
         "name": "recall",
         "description": (
-            "Search the system's memory: earlier questions, recorded "
-            "decisions, previous drills and their findings."
+            "Search memory and the graph: earlier questions and runs, "
+            "recorded decisions, docs and PRs by topic, a dossier for any "
+            "person or module named, and repo-wide counts ('how many…', "
+            "'what's in this repo')."
         ),
         "parameters": {
             "type": "object",

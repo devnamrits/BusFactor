@@ -19,12 +19,15 @@ const SIM_WORDS = {
 export function Legend() {
   return (
     <div className="legend">
-      <span><i className="sw person" /> person</span>
-      <span><i className="sw module" /> module</span>
-      <span><i className="sw doc" /> doc</span>
-      <span><i className="sw decision" /> decision</span>
-      <span><i className="sw bad" /> loss / stranded</span>
-      <span><i className="sw plan" /> planned handover</span>
+      <span title="active contributor"><i className="sw person" /> person</span>
+      <span title="dashed, faded — departed in this world"><i className="sw ghost" /> departed</span>
+      <span title="tracked code area"><i className="sw module" /> module</span>
+      <span title="amber ring — coverage down to one knower"><i className="sw thin" /> thin</span>
+      <span title="red — no knower left / stranded island"><i className="sw bad" /> blind / stranded</span>
+      <span title="documentation page"><i className="sw doc" /> doc</span>
+      <span title="recorded architecture decision"><i className="sw decision" /> decision</span>
+      <span title="gold edge — projected ownership from a plan"><i className="sw plan" /> planned handover</span>
+      <span title="glow — cited by the latest answer"><i className="sw hl" /> in answer</span>
     </div>
   )
 }

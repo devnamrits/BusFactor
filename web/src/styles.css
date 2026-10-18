@@ -506,7 +506,9 @@ main {
   left: 12px;
   bottom: 12px;
   display: flex;
-  gap: 13px;
+  flex-wrap: wrap;
+  gap: 6px 13px;
+  max-width: min(780px, calc(100% - 24px));
   font-size: 11px;
   color: var(--ink-dim);
   background: var(--bg-raised);
@@ -517,10 +519,12 @@ main {
 
 .sw {
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  box-sizing: border-box;
+  width: 9px;
+  height: 9px;
   margin-right: 5px;
-  border-radius: 1px;
+  border-radius: 2px;
+  vertical-align: -1px;
 }
 .sw.person {
   background: var(--person);
@@ -539,6 +543,37 @@ main {
 }
 .sw.plan {
   background: var(--plan);
+}
+.sw.ghost {
+  background: transparent;
+  border: 1px dashed var(--ink-dim);
+}
+.sw.thin {
+  background: var(--module);
+  border: 1.5px solid var(--doc);
+}
+.sw.hl {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 0 5px var(--accent);
+}
+
+.gsearch {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 9px;
+  width: 200px;
+}
+.gsearch:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.gsearch::placeholder {
+  color: var(--ink-dim);
 }
 
 .selected {
