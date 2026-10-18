@@ -45,12 +45,14 @@ data/dumps/
 
 # ---------------------------------------------------------------------------
 # Data workspaces — extracted or user-indexed, reproducible from source.
-# The pinned demo snapshot (data/snapshot.json) and the loader input are
-# committed on purpose; everything here is derived.
+# The pinned demo snapshots (data/snapshot.json, and the Elasticsearch one
+# under data/snapshots/) are committed on purpose; everything else here is
+# derived.
 # ---------------------------------------------------------------------------
 data/source/
 data/raw/
-data/snapshots/
+data/snapshots/*
+!data/snapshots/elastic-elasticsearch.json
 
 # ---------------------------------------------------------------------------
 # Internal — never ships

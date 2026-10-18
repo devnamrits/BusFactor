@@ -24,9 +24,10 @@ node_modules
 **/node_modules
 web/dist
 
-# local data & internal notes
+# local data & internal notes (the seeded demo snapshots are copied explicitly)
 data/source
 data/raw
-data/snapshots
+data/snapshots/raw
+data/snapshots/falkordb.json
 TRACKER.md
 results.md

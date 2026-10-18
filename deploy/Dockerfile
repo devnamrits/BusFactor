@@ -35,6 +35,7 @@ RUN python3 -m venv /app/venv \
     && /app/venv/bin/pip install --no-cache-dir --quiet -e /app/agent
 
 COPY data/snapshot.json /app/data/snapshot.json
+COPY data/snapshots/elastic-elasticsearch.json /app/data/snapshots/elastic-elasticsearch.json
 COPY --from=web /web/dist /app/web/dist
 COPY deploy/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
