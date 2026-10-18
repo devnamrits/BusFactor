@@ -151,6 +151,10 @@ def match_question(repo: str, text: str, threshold: float = 0.75) -> dict | None
     if len(toks) < 2:
         return None
     for q in recent(repo, 50):
+        if q["tool"] == "recall":
+            # an answer that was itself a memory lookup must not be recycled —
+            # stale recall hints would otherwise shadow the real tools forever
+            continue
         pt = set(_tokens(q["text"]))
         if not pt:
             continue

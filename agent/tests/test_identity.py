@@ -1,6 +1,6 @@
 """Same-name identity collapse + tolerant person resolution."""
 
-from busfactor.ingest.identity import collapse_same_name_people
+from busfactor.ingest.identity import _norm, collapse_same_name_people
 from busfactor.sim import people as people_mod
 
 
@@ -175,3 +175,43 @@ def test_person_lookup_prefers_exact_then_busiest(monkeypatch) -> None:
         pass
     else:
         raise AssertionError("expected ValueError for unknown person")
+
+
+def test_norm_folds_space_and_punctuation():
+    assert _norm("DvirDukhan") == _norm("Dvir Dukhan") == "dvirdukhan"
+    assert _norm("Joe  Gallo") == _norm("joe-gallo") == "joegallo"
+
+
+def test_collapse_folds_space_variant_names() -> None:
+    body = {
+        "meta": {},
+        "people": [
+            {
+                "id": "p:dvir",
+                "name": "DvirDukhan",
+                "handle": "",
+                "status": "active",
+                "commits": 138,
+                "reviews": 0,
+                "prs": 0,
+                "first_seen": "",
+                "last_seen": "",
+            },
+            {
+                "id": "p:dvirdukhan",
+                "name": "Dvir Dukhan",
+                "handle": "",
+                "status": "active",
+                "commits": 39,
+                "reviews": 0,
+                "prs": 54,
+                "first_seen": "",
+                "last_seen": "",
+            },
+        ],
+    }
+    remap = collapse_same_name_people(body, log=lambda *_: None)
+    assert remap == {"p:dvirdukhan": "p:dvir"}
+    assert [p["id"] for p in body["people"]] == ["p:dvir"]
+    assert body["people"][0]["commits"] == 177
+    assert body["people"][0]["prs"] == 54

@@ -6,19 +6,23 @@ McGinnis"). Snapshots key people by slugged author string, so such pairs
 survive as two Person nodes with an identical display name — which makes name
 lookups ambiguous ("I don't know X" while X is listed twice).
 
-`collapse_same_name_people` folds people whose display names match exactly
-(whitespace/case-insensitive) into the most active record, rewrites every
-person reference in the payload, and dedupes the edges the merge collided.
+`collapse_same_name_people` folds people whose display names match
+(case/space/punctuation-insensitive) into the most active record, rewrites
+every person reference in the payload, and dedupes the edges the merge
+collided.
 """
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable
 from datetime import datetime
 
 
 def _norm(name: str) -> str:
-    return " ".join((name or "").lower().split())
+    # case/space/punctuation-insensitive: "DvirDukhan" and "Dvir Dukhan" are
+    # one human; so are "joegallo" and "Joe Gallo".
+    return re.sub(r"[^a-z0-9]+", "", (name or "").casefold())
 
 
 def _activity(p: dict) -> int:

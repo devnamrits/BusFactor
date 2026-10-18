@@ -1,4 +1,4 @@
-"""The eight tools — plain Python over FalkorDB.
+"""The nine tools — plain Python over FalkorDB.
 
 Every tool returns the same envelope:
 
@@ -12,6 +12,7 @@ path as one answered over MCP (invariant I9). `repo` is the graph to read:
 
 from __future__ import annotations
 
+import re
 from collections import defaultdict
 
 from .. import memory
@@ -510,3 +511,142 @@ def recall(question: str, repo: str = "main") -> dict:
 
     data = {"hits": hits, "top": top, "stats": memory.stats(repo)}
     return ok(tool, answer, data, cites, outcome="answered_from_memory")
+
+
+# ---------------------------------------------------------------------------
+# 9. relations
+# ---------------------------------------------------------------------------
+
+_SPLIT_RE = re.compile(
+    r"\s*(?:,|;|&|\band\b|\bvs\.?|\bversus\b|\bb/w\b)\s*", re.IGNORECASE
+)
+_LEAD_RE = re.compile(
+    r"^(?:the\s+)?(?:relation(?:ship)?s?|connections?|links?)\s+"
+    r"(?:between|among|b/w)\s+",
+    re.IGNORECASE,
+)
+
+
+def _person_refs(ref: str) -> list[str]:
+    """Split a multi-name reference ("Dvir, Avi and Guy?") into name parts."""
+    out = _LEAD_RE.sub("", clean_ref(ref))
+    out = re.sub(r"^(?:between|among|b/w)\s+", "", out, flags=re.IGNORECASE)
+    return [p for p in (clean_ref(x) for x in _SPLIT_RE.split(out.strip())) if p]
+
+
+def relations(ref: str, repo: str = "main") -> dict:
+    tool = "relations"
+    resolved: list[dict] = []
+    unknown: list[str] = []
+    for name in _person_refs(ref):
+        try:
+            person = get_person(name, repo)
+        except ValueError:
+            unknown.append(name)
+            continue
+        if person["id"] not in {p["id"] for p in resolved}:
+            resolved.append(person)
+    resolved = resolved[:4]
+    if len(resolved) < 2:
+        detail = ""
+        if resolved:
+            detail += " Resolved: " + ", ".join(p["name"] for p in resolved) + "."
+        if unknown:
+            detail += " No such person: " + ", ".join(unknown) + "."
+        return err(
+            tool,
+            f"I need at least two known people to describe how they relate."
+            f"{detail} {people_hint(repo)}",
+        )
+
+    pairs: list[dict] = []
+    for i, a in enumerate(resolved):
+        for b in resolved[i + 1:]:
+            mods: dict[str, dict] = {}
+            for mid, mname, wa, wb in queries.run(
+                "shared_modules", {"a": a["id"], "b": b["id"]}, world=repo
+            ):
+                joint = round(min(float(wa or 0), float(wb or 0)), 4)
+                cur = mods.get(mid)
+                if cur is None or joint > cur["joint"]:
+                    mods[mid] = {"id": mid, "name": mname, "joint": joint}
+            mods_list = sorted(mods.values(), key=lambda m: (-m["joint"], m["name"]))
+            prs = [
+                {"number": int(n), "title": t or "", "merged_at": at or ""}
+                for n, t, at in queries.run(
+                    "shared_prs", {"a": a["id"], "b": b["id"]}, world=repo
+                )
+            ]
+            decisions = [
+                {"id": did, "title": t or ""}
+                for did, t, _at in queries.run(
+                    "shared_decisions", {"a": a["id"], "b": b["id"]}, world=repo
+                )
+            ]
+            docs = [
+                {"id": did, "title": t or ""}
+                for did, t, _path in queries.run(
+                    "shared_docs", {"a": a["id"], "b": b["id"]}, world=repo
+                )
+            ]
+            pairs.append(
+                {
+                    "a": {"id": a["id"], "name": a["name"]},
+                    "b": {"id": b["id"], "name": b["name"]},
+                    "shared_module_count": len(mods_list),
+                    "joint_familiarity": round(sum(m["joint"] for m in mods_list), 4),
+                    "top_shared_modules": mods_list[:5],
+                    "shared_prs": prs,
+                    "pr_count": len(prs),
+                    "shared_decisions": decisions,
+                    "decision_count": len(decisions),
+                    "shared_docs": docs,
+                    "doc_count": len(docs),
+                }
+            )
+
+    def sentence(p: dict) -> str:
+        who = f"{p['a']['name']} and {p['b']['name']}"
+        if not any(
+            (p["shared_module_count"], p["pr_count"], p["decision_count"], p["doc_count"])
+        ):
+            return f"{who}: no joint record in this graph — their work is disjoint."
+        bits = []
+        if p["shared_module_count"]:
+            top = ", ".join(m["name"] for m in p["top_shared_modules"][:4])
+            bits.append(
+                f"{p['shared_module_count']} shared module(s), joint familiarity "
+                f"{f2(p['joint_familiarity'])} (top: {top})"
+            )
+        if p["pr_count"]:
+            bits.append(f"{p['pr_count']} shared PR(s)")
+        if p["decision_count"]:
+            bits.append(f"{p['decision_count']} shared decision(s)")
+        if p["doc_count"]:
+            bits.append(f"{p['doc_count']} shared doc(s)")
+        return f"{who}: " + "; ".join(bits) + "."
+
+    strongest = max(
+        pairs,
+        key=lambda p: (p["shared_module_count"], p["joint_familiarity"], p["pr_count"]),
+    )
+    answer = " ".join(sentence(p) for p in pairs)
+    if strongest["shared_module_count"]:
+        answer += (
+            f" Closest pair: {strongest['a']['name']} and {strongest['b']['name']} — "
+            f"joint familiarity {f2(strongest['joint_familiarity'])}."
+        )
+    cites = [
+        cite("person", p["id"], p["name"], f"{p['commits']} commits") for p in resolved
+    ]
+    cites += [
+        cite("module", m["id"], m["name"], f"joint {f2(m['joint'])}")
+        for m in strongest["top_shared_modules"][:3]
+    ]
+    data = {
+        "people": [{"id": p["id"], "name": p["name"]} for p in resolved],
+        "unknown": unknown,
+        "pairs": pairs,
+        "pair_count": len(pairs),
+    }
+    return ok(tool, answer, data, cites)

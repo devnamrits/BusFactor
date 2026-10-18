@@ -1,4 +1,4 @@
-"""The eight-tool catalogue — the product's entire action surface.
+"""The nine-tool catalogue — the product's entire action surface.
 
 Console, API, CLI and MCP all dispatch through `TOOLS` here, so every
 front door runs identical code (invariant I9).
@@ -18,6 +18,7 @@ TOOLS = {
     "handover_plan": functions.handover_plan,
     "heal_and_verify": functions.heal_and_verify,
     "recall": functions.recall,
+    "relations": functions.relations,
 }
 
 

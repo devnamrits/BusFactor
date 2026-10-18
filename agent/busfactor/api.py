@@ -12,7 +12,7 @@ slug and resolve it through the registry; no business logic lives here.
     GET  /api/overview          one repo's headline numbers
     GET  /api/people            roster with knowledge mass
     GET  /api/timeline          every run + plan for a repo
-    POST /api/ask               the eight-tool agent loop
+    POST /api/ask               the nine-tool agent loop
     POST /api/drill             departure simulation
     POST /api/plan              handover plan from a drill
     POST /api/heal              apply a plan and re-measure

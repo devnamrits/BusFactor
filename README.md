@@ -75,7 +75,7 @@ Aviation has simulators. Surgery has drills. Infrastructure has game days. Knowl
 | **Heal loop** | "Re-simulate after plan" → shatter reverses, counters move | Projected `KNOWS {source:'plan'}` edges in a fresh clone; algorithms re-run; metrics recomputed and diffed | Proof, not promise: re-run the disaster with the fix in place (P4) |
 | **Memory** | Past simulations with dates and trend ("weakest node moved from X to Y"); recalled at session start | `Sim`/`Finding`/`Question` nodes written back; `CITED` edges; traversal + token-overlap recall | Institutional memory of risk; memory = more nodes, not vectors |
 | **Actions** | "Open handover issue" → a real GitHub issue + runbook PR draft appears | Plan steps + evidence paths → GitHub payload (scoped token, preview by default) | Closes the loop from diagnosis to action — agents that *act* |
-| **MCP server** | Use BusFactor from Claude Code / Cursor | The same 8-tool catalogue exposed over MCP — one implementation, two surfaces | Meet developers where they work; FalkorDB-native pattern |
+| **MCP server** | Use BusFactor from Claude Code / Cursor | The same 9-tool catalogue exposed over MCP — one implementation, two surfaces | Meet developers where they work; FalkorDB-native pattern |
 
 **The loop:** Ingest → Ask → Drill (shatter) → Proof (click) → Plan → Act (issue/PR) → Heal (re-simulate, verify) → Remember (next session starts smarter).
 
@@ -134,17 +134,17 @@ flowchart LR
 |---|---|---|
 | Console UI | React 18 + Vite (JSX) + `react-force-graph-2d` | World switcher, ask / drill / plan / heal flows, evidence panel, dark & light themes. Canvas for 60fps at thousands of edges. |
 | Agent API | Python 3.12 + FastAPI + official `falkordb` client | Turn loop, tool execution, validation, memory. Python client is first-class for `algo.*`, `GRAPH.COPY`, `RO_QUERY`. |
-| Tool catalogue | 8 tools; queries as versioned `.cypher` files | The only graph access the agent has. |
+| Tool catalogue | 9 tools; queries as versioned `.cypher` files | The only graph access the agent has. |
 | Sim engine | `GRAPH.COPY` + Cypher surgery + algorithm recompute + diff | Drill/heal worlds. |
 | FalkorDB | Docker image / FalkorDB Cloud | `main` + `sim:*` worlds — the substrate. |
-| LLM | OpenAI-compatible endpoint (env-configured; any gateway with app-callable free models, e.g. OpenRouter `:free`) | One job: route a question to one of the 8 tools. Deterministic regexes are the fallback and the default. No Cypher, no numbers, no ingestion. |
+| LLM | OpenAI-compatible endpoint (env-configured; any gateway with app-callable free models, e.g. OpenRouter `:free`) | One job: route a question to one of the 9 tools. Deterministic regexes are the fallback and the default. No Cypher, no numbers, no ingestion. |
 
 **Invariants — the constitution. If a feature can't satisfy these, the feature changes:**
 
 | # | Rule | Why |
 |---|---|---|
 | I1 | FalkorDB is the substrate, not the storage. Every capability lands as graph computation. | The "remove the graph and it stops being possible" bar. |
-| I2 | The LLM never writes Cypher. Only the frozen 8-tool catalogue; queries are versioned files. | Determinism, audit, injection safety, explainability. |
+| I2 | The LLM never writes Cypher. Only the frozen 9-tool catalogue; queries are versioned files. | Determinism, audit, injection safety, explainability. |
 | I3 | Worlds are isolated. `main` is never mutated by agent flows; drills/heals live in `sim:<id>`; projected edges only there, tagged `source:'plan'`. | What-if must never contaminate the record. |
 | I4 | Every answer cites evidence returned this turn; refusals are first-class. | An answer you can't audit is an oracle. |
 | I5 | Everything deterministic: sha256-pinned snapshot, fixed algorithm seeds (`samplingSeed 42`), pinned demo scenario. | Reproducible benchmark; reliable results. |
@@ -312,16 +312,17 @@ flowchart TD
   W --> O["Answer + citations + routing + validation"]
 ```
 
-**Tool catalogue — frozen at eight:**
+**Tool catalogue — frozen at nine:**
 
 | Tool | Engine | Returns | Why |
 |---|---|---|---|
 | `who_knows(module, limit=5)` | `KNOWS`/`OWNS` + review channel (`REVIEWED`→`PR`→`TOUCHES`) | Ranked people with evidence paths per channel | The primitive question; proves answers are traceable |
+| `relations(ref)` | Shared-ground join over `KNOWS`/`OWNS`, `AUTHORED`/`REVIEWED`, `DECIDED_BY`, `WROTE` | Pairwise overlap for 2–4 people: shared modules (joint familiarity = Σ min weight), PRs, decisions, docs | "How are A, B and C connected" answered from the graph, not vibes |
 | `critical_people(limit=5)` | Knowledge mass (`sum(KNOWS.weight)`) + sole-knower tallies over coverage | Ranked persons + reason (sole knower / breadth) | A fast prior — and it says so; ground truth comes from drilling |
 | `knowledge_islands(world)` | `algo.WCC` on G_k | Components with modules but no active persons | The shatter, made measurable |
 | `module_risk(module)` | Aggregation over `KNOWS`/`REVIEWED`/`DECIDED_BY` | Coverage, reviewers, doc safeties, orphaned decisions | Module-level verdict, not vibes |
 | `simulate_departure(person)` | Sim engine (§7) | `sim_id`, findings, deltas | The differentiator — an action, not a report |
-| `handover_plan(person, sim_id)` | Successor scoring + `algo.SPpaths` rationale | Ordered steps with named teachers + proof | Diagnosis must end in a plan |
+| `handover_plan(person, sim_id)` | Successor scoring (sibling mass + shared history) + `algo.SPpaths` bridge path per step | Ordered steps with named teachers + proof | Diagnosis must end in a plan |
 | `heal_and_verify(plan_id)` | Sim engine (§7) | Before/after deltas, resolved findings | The proof, not the promise |
 | `recall(query)` | `Question`/`CITED`/`Sim` traversal | Prior questions, findings, outcomes | Memory = more nodes |
 
@@ -348,11 +349,12 @@ RETURN componentId, [x IN members | coalesce(x.name, x.title)] AS stranded
 ```
 
 ```cypher
-// handover rationale — params: $teacher_id, $module_id
+// handover bridge — params: $teacher_id, $module_id (runs per plan step)
+// how the teacher's knowledge reaches the module: Person → Module → Person → Module
 MATCH (t:Person {id:$teacher_id}), (m:Module {id:$module_id})
 CALL algo.SPpaths({
-  sourceNode: t, targetNode: m, relTypes: ['KNOWS','OWNS'],
-  weightProp: 'cost', relDirection: 'outgoing', pathCount: 3, maxLen: 4
+  sourceNode: t, targetNode: m, relTypes: ['KNOWS'],
+  relDirection: 'both', weightProp: 'weight', pathCount: 1, maxLen: 5
 }) YIELD path, pathWeight
 RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 ```
@@ -383,6 +385,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 | **Multigraph** (graph per what-if) | Drill worlds, heal worlds, filmstrip | Every hypothetical is a fully isolated graph in one instance — the product *is* worlds |
 | **`GRAPH.COPY`** | Clone `main` → `sim:<id>` | Server-side atomic snapshot; copies indexes too; source stays queryable during copy |
 | **`algo.WCC`** (`nodeLabels`/`relationshipTypes` filters) | Knowledge islands + bridge detection | Linear-time components on G_k; a removal that raises the active-person component count is a measured bridge loss |
+| **`algo.SPpaths`** (`both` direction over the bipartite view) | Handover bridge path | Shortest weighted Person→Module→Person→Module walk linking a teacher's knowledge to the target module; lands in every plan step's proof |
 | **Knowledge-mass rollup** (`MATCH (m:Module)<-[k:KNOWS]-(p) … sum(k.weight)`) | Module criticality | Weighted in-degree = depended-upon knowledge; sizes nodes, weights plans. *(PageRank was tried first and degenerates to a near-uniform score on this bipartite view — verified empirically — so the direct rollup is the honest measure.)* |
 | **Weighted `KNOWS` + set operations** | Handover rationale | Successor scoring = sibling-tree mass + shared history; an index-free O(E) fold over hundreds of edges, executed server-side |
 | **`RO_QUERY`** | Every read | No read path can mutate anything |
@@ -403,7 +406,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 | `GET` | `/api/overview?repo=` | repo | headline metrics, coverage, memory meta |
 | `GET` | `/api/people?repo=` | repo | roster with commit mass |
 | `GET` | `/api/timeline?repo=` | repo | sims + plans + worlds (the filmstrip) |
-| `POST` | `/api/ask` | repo | grounded Q&A through the 8-tool catalogue |
+| `POST` | `/api/ask` | repo | grounded Q&A through the 9-tool catalogue |
 | `POST` | `/api/drill` | repo→clone | run a drill `{person}`; writes findings + Sim |
 | `POST` | `/api/plan` | repo | plan for `{sim_id}`; writes Plan + Step nodes |
 | `POST` | `/api/heal` | repo→clone | apply `{plan_id}`, re-run the drill; writes heal Sim + delta |
@@ -439,7 +442,7 @@ Style: persons teal · modules slate · docs ochre · decisions violet · loss r
 
 **Actions.** `POST /api/actions` renders the exact payload — issue title, labels, and a checklist body built from the plan's steps — before anything is sent; the console shows the same payload behind *preview Actions payload*. Actually opening the issue is gated by design (I8): it requires an operator-set `ACTIONS_REPO` and a scoped `GITHUB_TOKEN` in the environment (shown as `live_available` in the response), and it can only ever target that one repo. This is the agent acting on connected data, not just reading it — with the blast radius pinned to a named repo.
 
-**MCP server.** `agent/busfactor/mcp_server.py` exposes the same 8 tools via `FastMCP` (stdio), so BusFactor is usable from Claude Code / Cursor — the exact "context for AI agents" pattern:
+**MCP server.** `agent/busfactor/mcp_server.py` exposes the same 9 tools via `FastMCP` (stdio), so BusFactor is usable from Claude Code / Cursor — the exact "context for AI agents" pattern:
 
 ```json
 { "mcpServers": { "busfactor": {

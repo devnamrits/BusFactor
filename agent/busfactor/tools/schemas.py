@@ -107,4 +107,22 @@ TOOL_SCHEMAS = [
             "required": ["question"],
         },
     },
+    {
+        "name": "relations",
+        "description": (
+            "How two or more people relate: shared modules (joint familiarity), "
+            "co-authored/reviewed PRs, shared decisions and docs. Pass names "
+            "separated by commas or 'and'."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "ref": {
+                    "type": "string",
+                    "description": "Two or more person names, e.g. 'Dvir, Avi and Guy'",
+                }
+            },
+            "required": ["ref"],
+        },
+    },
 ]

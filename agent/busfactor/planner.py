@@ -105,6 +105,34 @@ def _heuristic(question: str) -> dict:
             "args": {},
             "reason": "heal/verify question",
         }
+    if re.search(
+        r"\b(relat(?:ion(?:ship)?s?|ed)|connections?|connected|linked|"
+        r"know\s+each\s+other|work(?:ed|ing)?\s+together)\b",
+        q,
+        re.IGNORECASE,
+    ):
+        mm = re.search(r"(?:between|among|b/w)\s+(.+?)[\?\.]?$", q, re.IGNORECASE)
+        if not mm:
+            mm = re.search(
+                r"^how\s+(?:are|is|do|does)\s+(.+?)\s+(?:relat|connect|link|know)"
+                r"\s+each\s+other",
+                q,
+                re.IGNORECASE,
+            )
+        if not mm:
+            mm = re.search(
+                r"^how\s+(?:are|is|do|does)\s+(.+?)\s+(?:relat|connect|link)",
+                q,
+                re.IGNORECASE,
+            )
+        if not mm:
+            mm = re.search(r"^(.+?)\s+(?:are\s+)?(?:relat|connect|link)", q, re.IGNORECASE)
+        if mm:
+            return {
+                "tool": "relations",
+                "args": {"ref": _clean_ref(mm.group(1))},
+                "reason": "relationship question",
+            }
     return {
         "tool": "recall",
         "args": {"question": q},

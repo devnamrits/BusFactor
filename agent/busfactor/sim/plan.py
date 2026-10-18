@@ -30,6 +30,31 @@ def _prefix(module_id: str) -> str:
     return name.split("/", 1)[0] if "/" in name else name
 
 
+def _knowledge_path(repo: str, teacher_id: str, module_id: str) -> list[str]:
+    """Shortest weighted bridge from a teacher's knowledge to a module.
+
+    `algo.SPpaths` walks KNOWS edges in both directions, so it crosses the
+    bipartite Person↔Module view: teacher → module they already carry →
+    person who knows both → the target module. Empty when no bridge exists.
+    """
+    try:
+        rows = db.ro(
+            repo,
+            "MATCH (t:Person {id:$t}), (m:Module {id:$m}) "
+            "CALL algo.SPpaths({sourceNode: t, targetNode: m, "
+            "relTypes:['KNOWS'], relDirection: 'both', weightProp: 'weight', "
+            "pathCount: 1, maxLen: 5}) YIELD path, pathWeight "
+            "RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight",
+            {"t": teacher_id, "m": module_id},
+        ).result_set
+    except Exception:
+        return []
+    if not rows:
+        return []
+    hops = rows[0][0] or []
+    return [str(h) for h in hops]
+
+
 def _get_sim(repo: str, sim_id: str | None) -> dict:
     if not sim_id or sim_id == "latest":
         rows = db.ro(repo, 
@@ -211,6 +236,7 @@ def make_plan(
                 why = "generalist — widest coverage in the graph"
             if c["shared"]:
                 why += f"; co-worked with {dep['name']} on {', '.join(c['shared'][:2])}"
+            path_hops = _knowledge_path(repo, c["id"], mid)
             steps.append(
                 {
                     "id": f"step-{token}-{order:02d}",
@@ -226,6 +252,7 @@ def make_plan(
                             "sibling_modules": c["sib_modules"],
                             "shared_with_departed": c["shared"],
                             "sibling_mass": round(c["sib_mass"], 4),
+                            "knowledge_path": path_hops,
                         }
                     ),
                 }

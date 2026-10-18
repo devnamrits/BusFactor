@@ -1,4 +1,4 @@
-"""BusFactor over MCP — the eight domain tools, for coding agents.
+"""BusFactor over MCP — the nine domain tools, for coding agents.
 
 Same functions as the HTTP API (I9), routed through the same repo registry.
 Reads are safe anywhere; drills and plans write audit nodes but never touch
@@ -37,6 +37,12 @@ def list_repos() -> list[dict]:
 def who_knows(ref: str, repo: str = "main") -> dict:
     """Who knows a module (e.g. 'src/udf'), or what a person carries (name or id)."""
     return run_tool("who_knows", {"ref": ref}, _graph(repo))
+
+
+@mcp.tool()
+def relations(ref: str, repo: str = "main") -> dict:
+    """How two or more people relate: shared modules, PRs, decisions and docs."""
+    return run_tool("relations", {"ref": ref}, _graph(repo))
 
 
 @mcp.tool()

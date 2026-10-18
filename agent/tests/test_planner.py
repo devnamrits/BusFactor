@@ -75,3 +75,17 @@ def test_fallback_is_recall_with_full_question():
     r = route(q)
     assert r["tool"] == "recall"
     assert r["args"]["question"] == q
+
+
+def test_relations_routes_multi_name_questions():
+    r = route("What is the relation between Dvir, Avi and Guy?")
+    assert r["tool"] == "relations"
+    assert r["args"]["ref"] == "Dvir, Avi and Guy"
+
+    r = route("How are Dvir and Avi related?")
+    assert r["tool"] == "relations"
+    assert r["args"]["ref"] == "Dvir and Avi"
+
+    r = route("what is the relation b/w dvir, avi and guy")
+    assert r["tool"] == "relations"
+    assert r["args"]["ref"] == "dvir, avi and guy"
