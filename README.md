@@ -372,7 +372,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 
 **Validator rules, in order:** (1) on answered outcomes only — refusals and errors assert nothing numeric and are exempt; (2) extract every number from the answer text; (3) each must match a value in the turn's returned data or citations within ±0.011; (4) answers format floats to 2 decimals so rounding always survives; (5) unbacked numbers flunk the envelope (`validated: false`), which the console shows as a badge. Names are protected by the tools themselves: answer templates only ever interpolate rows that came back from the graph.
 
-**Memory:** each turn writes `Question {text, outcome, created_at}` + `CITED`/`TRIGGERED` edges. Session bootstrap: the console (and MCP server) opens with a recall summary — last sim, open findings, bus-factor trend ("weakest node moved from X to Y", computed by diffing consecutive drill metrics). `recall` resolves names first, then token-overlap over `Question.text`. Deterministic, auditable, no vector store.
+**Memory:** each turn writes `Question {text, outcome, created_at}` + `CITED`/`TRIGGERED` edges. Session bootstrap: the console (and MCP server) opens with a recall summary — last sim, open findings, bus-factor trend ("weakest node moved from X to Y", computed by diffing consecutive drill metrics). `recall` resolves names first, then token-overlap over `Question.text`. A repeat question replays the stored answer and rebuilds its citations from the original's `CITED` edges — a remembered answer still lights up the same nodes on the map. The whole drill → plan → heal arc is clearable per repo (`POST /api/runs/clear`, or *clear runs* in the console): the audit nodes and cloned worlds go, while the indexed snapshot and the question log stay. Deterministic, auditable, no vector store.
 
 **LLM contract:** input = question + resolved ids + tool schemas + world context. Output = **JSON only** (`{tool, args}`), schema-validated server-side before execution. Temperature low. Env: `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`. Refusal instruction: if tools return no evidence, the model must say so and must not estimate. Any OpenAI-compatible endpoint works — e.g. an OpenRouter `:free` model (`LLM_BASE_URL=https://openrouter.ai/api/v1`), which is callable from a normal app. (Caveat we verified: OpenCode Console's free-tier models only answer requests from inside the OpenCode client; other callers get `403 FreeTierError`.) Without an endpoint configured, the deterministic router is used and every flow in this README still holds.
 
@@ -410,6 +410,7 @@ RETURN [n IN nodes(path) | coalesce(n.name, n.path)] AS hops, pathWeight
 | `POST` | `/api/drill` | repo→clone | run a drill `{person}`; writes findings + Sim |
 | `POST` | `/api/plan` | repo | plan for `{sim_id}`; writes Plan + Step nodes |
 | `POST` | `/api/heal` | repo→clone | apply `{plan_id}`, re-run the drill; writes heal Sim + delta |
+| `POST` | `/api/runs/clear` | repo | forget a repo's drills, plans and throwaway worlds (snapshot + question log stay) |
 | `POST` | `/api/actions` | repo | render the exact GitHub payload a live run would send (preview only, I8) |
 | `GET` | `/api/findings?repo=&sim_id=` | repo | findings with proofs for any run |
 | `GET` | `/api/memory?repo=` | repo | question log + counters |

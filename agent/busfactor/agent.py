@@ -46,18 +46,23 @@ def ask(question: str, repo: str = "main") -> dict:
             ),
         }
         canonical = memory.canonical_answer(prior["answer"])
+        # cite what the original answer cited (not the wrapper question) —
+        # otherwise the map has nothing to light up when a memory replays
+        cites = memory.cited_nodes(repo, prior["id"])
+        if not cites:
+            cites = [{
+                "kind": "question",
+                "id": prior["id"],
+                "label": "earlier question",
+                "detail": prior["text"],
+            }]
         res = {
             "tool": "recall",
             "ok": True,
             "outcome": "answered_from_memory",
             "answer": f"From memory — I answered this earlier ({prior['id']}): {canonical}",
             "data": {"prior": prior},
-            "citations": [{
-                "kind": "question",
-                "id": prior["id"],
-                "label": "earlier question",
-                "detail": prior["text"],
-            }],
+            "citations": cites,
         }
         v = validator.validate(res)
         # Record the factual answer, not the framing — otherwise every repeat

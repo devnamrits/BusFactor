@@ -161,7 +161,9 @@ function AnswerCard({ r, onCite }) {
   )
 }
 
-export function ScenarioPanel({ drill, plan, heal, people, busy, onDrill, onPlan, onHeal }) {
+export function ScenarioPanel({
+  drill, plan, heal, people, busy, onDrill, onPlan, onHeal, hasRuns, onClear,
+}) {
   const active = (people || []).filter((p) => p.status === 'active')
   const [person, setPerson] = useState('')
   const [resilience, setResilience] = useState(true)
@@ -175,7 +177,19 @@ export function ScenarioPanel({ drill, plan, heal, people, busy, onDrill, onPlan
 
   return (
     <section className="panel">
-      <h3>Departure drill</h3>
+      <div className="panelhead">
+        <h3>Departure drill</h3>
+        {hasRuns && (
+          <button
+            className="btn ghost"
+            disabled={!!busy}
+            onClick={onClear}
+            title="forget this repo's drills, plans and throwaway worlds — the indexed snapshot is never touched"
+          >
+            {busy === 'clear' ? 'clearing…' : 'clear runs'}
+          </button>
+        )}
+      </div>
       {active.length === 0 ? (
         <p className="empty">No active people in this repo graph yet.</p>
       ) : (
@@ -349,7 +363,7 @@ function ActionsPreview({ plan }) {
   )
 }
 
-export function FindingsPanel({ findings }) {
+export function FindingsPanel({ findings, onFocus }) {
   const sorted = useMemo(
     () =>
       [...(findings || [])].sort(
@@ -367,21 +381,29 @@ export function FindingsPanel({ findings }) {
   }
   return (
     <section className="panel">
-      <h3>Findings · {sorted.length}</h3>
+      <h3 title="click a finding to point the map at the module and the people it names">
+        Findings · {sorted.length}
+      </h3>
       <ul className="findinglist">
         {sorted.map((f) => (
-          <FindingItem key={f.id} f={f} />
+          <FindingItem key={f.id} f={f} onFocus={onFocus} />
         ))}
       </ul>
     </section>
   )
 }
 
-function FindingItem({ f }) {
+function FindingItem({ f, onFocus }) {
   const [open, setOpen] = useState(false)
   const proof = f.proof && Object.keys(f.proof).length > 0 ? f.proof : null
   return (
-    <li className={`finding sev-${f.severity}`} onClick={() => setOpen((v) => !v)}>
+    <li
+      className={`finding sev-${f.severity}`}
+      onClick={() => {
+        onFocus?.(f)
+        setOpen((v) => !v)
+      }}
+    >
       <div className="fline">
         <span className={`sev s${f.severity}`}>S{f.severity}</span>
         <span className="fkind">{(f.kind || '').replaceAll('_', ' ')}</span>
@@ -574,7 +596,7 @@ export function ReposPanel({ repos, active, busy, onSelect, onIndex }) {
 }
 
 
-export function Filmstrip({ repo, overview, timeline, world, onWorld }) {
+export function Filmstrip({ repo, overview, timeline, world, onWorld, onClear, busy }) {
   const sims = timeline?.sims || []
   const summary = overview?.summary
   const entries = [
@@ -615,6 +637,16 @@ export function Filmstrip({ repo, overview, timeline, world, onWorld }) {
           </button>
         ))}
       </div>
+      {sims.length > 0 && (
+        <button
+          className="btn ghost fs-clear"
+          disabled={!!busy}
+          onClick={onClear}
+          title="forget this repo's drills, plans and throwaway worlds — the indexed snapshot is never touched"
+        >
+          {busy === 'clear' ? 'clearing…' : 'clear runs'}
+        </button>
+      )}
     </footer>
   )
 }

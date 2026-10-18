@@ -35,7 +35,7 @@ from pydantic import BaseModel
 from . import db, memory, repos
 from .agent import ask as agent_ask
 from .config import settings
-from .sim import engine, make_plan, metrics
+from .sim import clone, engine, make_plan, metrics
 from .sim.people import get_person, list_people
 from .sim.plan import get_plan
 from .tools.base import K, clean_ref, people_hint
@@ -78,6 +78,10 @@ class PlanBody(BaseModel):
 
 class HealBody(BaseModel):
     plan_id: str | None = None
+    repo: str = "main"
+
+
+class ClearBody(BaseModel):
     repo: str = "main"
 
 
@@ -328,6 +332,34 @@ def heal(body: HealBody) -> dict:
         return engine.run_heal(body.plan_id, _graph(body.repo))
     except ValueError as e:
         raise HTTPException(400, str(e)) from e
+
+
+@app.post("/api/runs/clear")
+def runs_clear(body: ClearBody) -> dict:
+    """Forget this repo's drills, plans and throwaway worlds.
+
+    Sim/Plan/Step/Finding audit nodes and the cloned worlds go; the indexed
+    snapshot and the question log stay, so past answers still cite real nodes.
+    """
+    graph = _graph(body.repo)
+    worlds = [
+        w
+        for (w,) in db.ro(graph, "MATCH (s:Sim) RETURN DISTINCT s.world").result_set
+        if w
+    ]
+    cleared = {
+        "sims": _count(graph, "MATCH (s:Sim) RETURN count(s)"),
+        "plans": _count(graph, "MATCH (p:Plan) RETURN count(p)"),
+        "findings": _count(graph, "MATCH (f:Finding) RETURN count(f)"),
+        "worlds": len(worlds),
+    }
+    db.rw(
+        graph,
+        "MATCH (n) WHERE n:Sim OR n:Finding OR n:Plan OR n:Step DETACH DELETE n",
+    )
+    for w in worlds:
+        clone.delete_world(w)
+    return {"repo": graph, "cleared": cleared}
 
 
 @app.post("/api/actions")

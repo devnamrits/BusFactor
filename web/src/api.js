@@ -51,4 +51,5 @@ export const api = {
   plan: (simId, repo, includeResilience = true) =>
     post('/api/plan', { sim_id: simId || null, repo, include_resilience: includeResilience }),
   heal: (planId, repo) => post('/api/heal', { plan_id: planId || null, repo }),
+  clearRuns: (repo) => post('/api/runs/clear', { repo }),
 }

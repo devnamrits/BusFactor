@@ -1,22 +1,22 @@
 # Benchmark results
 
-_2026-10-18 12:09 UTC · Darwin arm64 · Python 3.12.12 · repo `main` · snapshot `4f980d091577`_
+_2026-10-18 12:40 UTC · Darwin arm64 · Python 3.12.12 · repo `main` · snapshot `4f980d091577`_
 
 **12/12 tickets passed.**
 
 | # | ticket | routed | outcome | validated | s | verdict |
 |---|---|---|---|---|---|---|
-| B1 | Who knows src/udf? | `who_knows` | `answered_with_path` | yes | 0.06 | pass |
+| B1 | Who knows src/udf? | `who_knows` | `answered_with_path` | yes | 0.04 | pass |
 | B2 | Who can we least afford to lose? | `critical_people` | `answered_with_path` | yes | 0.01 | pass |
-| B3 | Where is knowledge stranded? | `knowledge_islands` | `answered_with_path` | yes | 0.02 | pass |
+| B3 | Where is knowledge stranded? | `knowledge_islands` | `answered_with_path` | yes | 0.01 | pass |
 | B4 | Risk for src/udf | `module_risk` | `answered_with_path` | yes | 0.01 | pass |
-| B5 | What if Roi Lipman leaves? | `simulate_departure` | `answered_with_path` | yes | 0.23 | pass |
+| B5 | What if Roi Lipman leaves? | `simulate_departure` | `answered_with_path` | yes | 0.26 | pass |
 | B6 | Build a handover plan | `handover_plan` | `answered_with_path` | yes | 0.05 | pass |
-| B7 | Heal it and verify | `heal_and_verify` | `answered_with_path` | yes | 0.16 | pass |
-| B8 | What did we decide about graphblas? | `recall` | `answered_from_memory` | yes | 0.02 | pass |
+| B7 | Heal it and verify | `heal_and_verify` | `answered_with_path` | yes | 0.14 | pass |
+| B8 | What did we decide about graphblas? | `recall` | `answered_from_memory` | yes | 0.01 | pass |
 | B9 | What are the billing SLAs? | `recall` | `not_in_graph` | yes | 0.01 | pass |
 | B10 | What if Jane Nobody leaves? | `simulate_departure` | `unknown_entity` | yes | 0.0 | pass |
-| B11 | Hmm. | `recall` | `not_in_graph` | yes | 0.01 | pass |
+| B11 | Hmm. | `recall` | `not_in_graph` | yes | 0.02 | pass |
 | B12 | Who can we least afford to lose? | `recall` | `answered_from_memory` | yes | 0.0 | pass |
 
 Routing is deterministic (no LLM configured), so this table is reproducible:

@@ -125,6 +125,38 @@ def recent(repo: str, limit: int = 12) -> list[dict]:
     ]
 
 
+def cited_nodes(repo: str, qid: str) -> list[dict]:
+    """What an earlier answer pointed at, rebuilt as replayable citations.
+
+    Replays used to cite only the old Question node, which the console cannot
+    draw — so a remembered answer never lit up the map. The original answer's
+    CITED edges carry the real graph ids; rebuild citations from them.
+    """
+    try:
+        rows = db.ro(
+            repo,
+            "MATCH (q:Question {id:$qid})-[:CITED]->(n) "
+            "RETURN labels(n)[0], n.id, coalesce(n.name, n.title, n.path, n.id)",
+            {"qid": qid},
+        ).result_set
+    except Exception:
+        return []
+    kind_of = {
+        (label or "").lower(): kind
+        for kind, label in LABELS.items()
+        if kind != "question"
+    }
+    out: list[dict] = []
+    seen: set[str] = set()
+    for lab, nid, name in rows:
+        kind = kind_of.get((lab or "").lower())
+        if not kind or nid in seen:
+            continue
+        seen.add(nid)
+        out.append({"kind": kind, "id": nid, "label": name or nid})
+    return out
+
+
 def stats(repo: str) -> dict:
     def c(query: str) -> int:
         try:

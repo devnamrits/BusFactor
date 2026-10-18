@@ -649,16 +649,25 @@ def _overview(question: str, repo: str, tool: str) -> dict:
 
     if re.search(r"\bmodules?\b", q):
         mods = [
-            {"name": n, "commits": int(c or 0)}
-            for n, c in queries.run("modules_top", world=repo)
+            {"id": mid, "name": n, "commits": int(c or 0)}
+            for mid, n, c in queries.run("modules_top", world=repo)
         ]
         data["modules"] = mods
+        # cite what the answer names — the map should point at the same things
+        cites = [
+            cite("module", m["id"], m["name"], f"{m['commits']} commits")
+            for m in mods[:4]
+        ]
         answer = (
             f"This graph holds {counts}. Biggest modules by commit volume: "
             f"{', '.join(m['name'] for m in mods[:5])}. Bus factor {bf}."
         )
     elif re.search(r"\b(people|persons|team|engineers)\b", q):
         data["people"] = ranked[:6]
+        cites = [
+            cite("person", r["id"], r["name"], f"mass {f2(r['mass'])}")
+            for r in ranked[:4]
+        ]
         answer = (
             f"This graph holds {counts}. Most depended-on: "
             f"{', '.join(r['name'] for r in ranked[:5])}. Bus factor {bf}."
@@ -669,11 +678,13 @@ def _overview(question: str, repo: str, tool: str) -> dict:
             for did, t, *_rest in queries.run("decisions", world=repo)
         ][:6]
         data["decisions"] = decs
+        cites = [cite("decision", d["id"], d["title"]) for d in decs[:4]]
         answer = (
             f"This graph holds {counts}. Recent decisions: "
             + "; ".join(d["title"] for d in decs[:3]) + f". Bus factor {bf}."
         )
     else:
+        cites = list((crit.get("citations") or [])[:4])
         answer = (
             f"This graph holds {counts} — plus {stats['questions']} remembered "
             f"questions and {stats['runs']} runs. Bus factor {bf}."
@@ -685,7 +696,6 @@ def _overview(question: str, repo: str, tool: str) -> dict:
             )
         answer += " Ask about any person, module, decision, doc or PR by name."
 
-    cites = list((crit.get("citations") or [])[:4])
     return ok(tool, answer, data, cites)
 
 

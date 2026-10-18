@@ -479,6 +479,29 @@ button:focus-visible {
   width: 100%;
 }
 
+.panelhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.panelhead h3 {
+  margin: 0;
+}
+
+.panelhead .btn {
+  padding: 3px 9px;
+  font-size: 11px;
+}
+
+.fs-clear {
+  margin-left: auto;
+  flex: none;
+  padding: 3px 9px;
+  font-size: 11px;
+}
+
 /* ---------- main split ---------- */
 
 main {

@@ -133,6 +133,8 @@ export default function App() {
     setRepoSlug(slug)
     setTab('ask')
     setSelected(null)
+    setCitedIds([])
+    setSearchIds([])
     setDrill(null)
     setPlan(null)
     setHeal(null)
@@ -276,6 +278,51 @@ export default function App() {
       await refreshOverview()
       await refreshMemory()
     })
+
+  // forget the drill → plan → heal arc for this repo: audit nodes and the
+  // cloned worlds go; the indexed snapshot and the question log stay
+  const clearRuns = () =>
+    guard('clear', async () => {
+      if (
+        !window.confirm(
+          "Forget this repo's drills, plans and throwaway worlds? The indexed snapshot is not touched."
+        )
+      ) {
+        return
+      }
+      await api.clearRuns(repoSlug)
+      setDrill(null)
+      setPlan(null)
+      setHeal(null)
+      setCitedIds([])
+      setSearchIds([])
+      const g = repo.graph
+      setWorld(g)
+      const [t, m, o] = await Promise.all([
+        api.timeline(repoSlug),
+        api.memory(repoSlug),
+        api.overview(repoSlug),
+      ])
+      setTimeline(t)
+      setMemory(m)
+      setOverview(o)
+      setGraph(await api.graph(g, repoSlug))
+    })
+
+  // a finding names a module and often a person — point the map at both
+  const focusFinding = (f) => {
+    const nodes = graph?.nodes || []
+    const ids = []
+    if (f.module_id && nodes.some((n) => n.id === f.module_id)) ids.push(f.module_id)
+    for (const n of nodes) {
+      if (n.label === 'Person' && f.claim?.includes(n.name)) ids.push(n.id)
+    }
+    if (!ids.length) return
+    setSearchIds(ids)
+    const node = nodes.find((n) => n.id === ids[0])
+    if (node) setSelected(node)
+    setFocus({ id: ids[0], nonce: Date.now() })
+  }
 
   const askAboutNode = (node) => {
     if (!node) return
@@ -422,9 +469,13 @@ export default function App() {
                 onDrill={runDrill}
                 onPlan={runPlan}
                 onHeal={runHeal}
+                hasRuns={(timeline?.sims?.length || 0) > 0}
+                onClear={clearRuns}
               />
             )}
-            {tab === 'findings' && <FindingsPanel findings={findings} />}
+            {tab === 'findings' && (
+              <FindingsPanel findings={findings} onFocus={focusFinding} />
+            )}
             {tab === 'memory' && (
               <MemoryPanel repo={repo} memory={memory} config={config} />
             )}
@@ -447,6 +498,8 @@ export default function App() {
         timeline={timeline}
         world={world}
         onWorld={selectWorld}
+        onClear={clearRuns}
+        busy={busy}
       />
     </div>
   )
