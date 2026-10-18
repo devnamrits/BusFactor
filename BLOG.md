@@ -93,6 +93,8 @@ On the Elasticsearch history: bus factor **1** — one departure strands knowled
 
 ## Run it on your repo
 
+Prefer not to set anything up? The hosted demo runs at **https://busfactor.onrender.com** — both demo graphs are ready on first boot.
+
 ```bash
 docker compose up -d            # falkordb + api + web
 make ingest                     # load the pinned demo data
