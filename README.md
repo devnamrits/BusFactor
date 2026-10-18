@@ -247,8 +247,8 @@ module bus factor = R(m)
 team bus factor   = min over modules with R(m) > 0 in main (pre-existing zeros tracked separately)
 island(sim)       = WCC component of G_k with >=1 Module and 0 active Persons
 sole_knower_lost  = R(m) was 1 in main, now 0
-orphaned_decision = Decision with 0 active DECIDED_BY and 0 Doc RECORDS
-review_blindspot  = Module active in window whose reviewers all departed
+orphaned_decision = Decision whose deciders exist but none are active in the world
+module_blind      = R(m) was > 1 in main and the world holds 0 knowers
 bridge_lost       = departure splits G_k into >=2 components that each contain an active Person
 coverage_thin     = R(m) dropped below K (K=2) but stayed > 0
 was_already_blind = R(m)=0 in main too — reported separately, never blamed on the departure

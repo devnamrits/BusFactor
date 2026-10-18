@@ -68,7 +68,7 @@ The hardest part of an assistant like this is not making it answer; it's making 
 
 1. **A fixed tool catalogue.** The model can only choose among the nine reads; free-form Cypher generation is banned by design (audit, injection safety, and the small matter of not letting a language model invent join logic).
 2. **A number validator.** Every answer template is built from tool data, and a final pass checks that each numeric claim appears in the returned data. Fabricated figures don't render.
-3. **Four outcome shapes.** Answers are `answered_with_path`, `answered_from_memory`, `refused_not_in_graph`, or `error` — and refusals are treated as demonstrations, not failures.
+3. **Four outcome shapes.** Answers are `answered_with_path`, `answered_from_memory`, `not_in_graph`, or `error` — and refusals are treated as demonstrations, not failures.
 
 My favorite test of that last point came from a real user question about a real Elasticsearch contributor: *"What does István Zoltán Szabó carry?"* The interesting answer — the honest one — is:
 
@@ -88,7 +88,7 @@ On the Elasticsearch history: bus factor **1** — one departure strands knowled
 
 - **Reviews need a token.** The knowledge weight has a review component; without a GitHub token (the default), it degrades gracefully to commits + recency. The graph says what it had.
 - **Docs are excluded from modules by design.** A documentation-heavy contributor can carry enormous real value and zero module knowledge. The graph is explicit about this instead of pretending otherwise.
-- **Identity is a heuristic.** Same-person-different-name collapse uses normalization and similarity with a confidence curve. It's conservative by design; merged identities are auditable.
+- **Identity is a heuristic.** Author strings that normalize to the same name (case/space/punctuation-insensitive) collapse into the most active record; every merge is logged and auditable.
 - **Headline numbers are for reading together.** A drill can lower a module below one knower — at which point it stops counting as a "minimum knowers" module entirely and the headline bus factor can even *rise*. Every surface therefore shows zero-knower modules and stranded components next to the bus factor. If a tool showed you only one number, you should distrust it.
 
 ## Run it on your repo
