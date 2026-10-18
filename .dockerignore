@@ -1,0 +1,32 @@
+# Build-context hygiene — nothing here is needed by any Dockerfile.
+
+# git & editors
+.git
+.gitignore
+.idea
+.vscode
+
+# local env & secrets — never ship these into an image
+.env
+.env.*
+
+# python
+.venv
+**/.venv
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+.ruff_cache
+**/*.egg-info
+
+# node
+node_modules
+**/node_modules
+web/dist
+
+# local data & internal notes
+data/source
+data/raw
+data/snapshots
+TRACKER.md
+results.md

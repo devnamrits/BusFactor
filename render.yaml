@@ -1,0 +1,26 @@
+# Render Blueprint — deploy BusFactor as one free Docker service.
+#
+#   1. Push this repo to GitHub.
+#   2. Render Dashboard → New → Blueprint → pick this repo → Apply.
+#
+# deploy/Dockerfile builds a self-contained image (FalkorDB + API +
+# console); the pinned demo graph is seeded on first boot, so no external
+# database is needed. Free instances sleep after 15 idle minutes and wake
+# on the next request.
+
+services:
+  - type: web
+    name: busfactor
+    runtime: docker
+    plan: free
+    dockerfilePath: ./deploy/Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      # Optional: route questions through a free OpenAI-compatible model
+      # (e.g. OpenRouter). Leave blank for the deterministic router.
+      - key: LLM_BASE_URL
+        sync: false
+      - key: LLM_MODEL
+        sync: false
+      - key: LLM_API_KEY
+        sync: false
