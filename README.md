@@ -96,7 +96,7 @@ Aviation has simulators. Surgery has drills. Infrastructure has game days. Knowl
 | **World** | One FalkorDB graph: `main` (observed reality) or `sim:<id>` (a what-if). Kept for replay. |
 | **Projected edge** | A hypothetical knowledge edge from the plan, `source:'plan'`, existing **only inside sim worlds**, rendered gold. |
 | **Finding** | A claim produced by a drill (island, sole-knower, orphaned decision…) with severity + proof paths. |
-| **Outcome shape** | Label on every answer: `answered_with_path` / `answered_from_memory` / `not_in_graph` / `unknown_person`. |
+| **Outcome shape** | Label on every answer: `answered_with_path` / `answered_from_memory` / `not_in_graph` / `unknown_entity`. |
 | **Show your work** | The audit panel: which tool ran, on which world, with which query, in how long, returning what. |
 
 ## 5. Architecture and invariants
@@ -109,7 +109,7 @@ flowchart LR
   subgraph Server["Agent API — FastAPI"]
     ROUTER["Turn loop<br/>resolve to plan to execute to validate"]
     LLM{{"LLM router (optional)<br/>picks one tool or falls back<br/>to regexes; never writes Cypher"}}
-    TOOLS["Tool catalogue<br/>8 fixed tools"]
+    TOOLS["Tool catalogue<br/>9 fixed tools"]
     SIM["Sim engine<br/>copy, surgery, recompute, diff"]
     VAL["Validator + memory writer"]
   end
