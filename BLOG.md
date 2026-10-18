@@ -94,8 +94,9 @@ On the Elasticsearch history: bus factor **1** — one departure strands knowled
 ## Run it on your repo
 
 ```bash
-docker compose up -d            # FalkorDB
-make up                         # API + console on http://localhost:8000
+docker compose up -d            # falkordb + api + web
+make ingest                     # load the pinned demo data
+# console on http://localhost:5173 · API on http://localhost:8000
 # then: paste any git URL (or a local clone path) into the console and index it
 ```
 

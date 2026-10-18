@@ -2,8 +2,8 @@
 #
 #   docker compose up -d        # falkordb + api + web
 #
-# The API auto-loads data/snapshot.json into FalkorDB on first start,
-# so a fresh clone becomes a working demo with no extra steps.
+# A fresh clone starts with an empty database; load the pinned demo data
+# once with `make ingest` (see README quickstart) to reproduce the story.
 
 name: busfactor
 
@@ -31,7 +31,6 @@ services:
     environment:
       FALKORDB_HOST: falkordb
       FALKORDB_PORT: "6379"
-      AUTO_INGEST: "1"
       LLM_BASE_URL: ${LLM_BASE_URL:-}
       LLM_MODEL: ${LLM_MODEL:-}
       LLM_API_KEY: ${LLM_API_KEY:-}
