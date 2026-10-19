@@ -10,6 +10,8 @@
 ![Python + FastAPI](https://img.shields.io/badge/agent-Python%20%2B%20FastAPI-3572A5?style=flat-square)
 ![React](https://img.shields.io/badge/console-React%20%2B%20force--graph-61DAFB?style=flat-square)
 
+**[Live demo](https://busfactor.onrender.com) · [Blog post: _Your team’s bus factor is a graph problem_](https://devnamrits.vercel.app/#/blog/busfactor)**
+
 </div>
 
 > **What this is.** A knowledge-graph agent that maps who knows what across a repository, **simulates losing a person** on a clone of the graph, produces a **handover plan**, and **proves the fix by re-running the same simulation with the plan applied** — then renders the action it would take (preview-first, repo-scoped) and exposes the same tool catalogue over **MCP** so any coding agent can consult it.

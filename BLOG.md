@@ -2,6 +2,8 @@
 
 *How BusFactor models who-knows-what in a repository — and lets you rehearse losing a teammate before it happens.*
 
+> **Rendered version (with diagrams):** [devnamrits.vercel.app/#/blog/busfactor](https://devnamrits.vercel.app/#/blog/busfactor)
+
 Every long-lived codebase has a quiet asymmetry: activity is easy to measure, knowledge is not. Your dashboard can tell you who commits the most lines. It cannot tell you that one person is the only human who has ever touched *why* the high-level REST client works the way it does — or that an architecture decision points at a module whose last maintainer just handed in their notice.
 
 The bus factor is the number of people who can vanish before a project stalls. Most teams treat it as a joke with a number attached, because every tool they have measures the past: commits, lines, review counts. None of those numbers answer the question that actually keeps a tech lead up at night:
